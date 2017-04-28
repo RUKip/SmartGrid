@@ -11,8 +11,9 @@ public class SampleAgent extends Agent {
 
     @Override
     public void setup() {
-        //final String otherAgentName = (String) this.getArguments()[0];
-        System.out.println("Hello! "+getAID().getName()+ " is my name!");
+        final String otherAgentName = (String) this.getArguments()[0];
+        System.out.println("ik besta, dus ik ben");
+        doDelete();
     }
 
     @Override
