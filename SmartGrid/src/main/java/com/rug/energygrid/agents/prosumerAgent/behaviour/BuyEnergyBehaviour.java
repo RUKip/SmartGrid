@@ -1,5 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.behaviour;
 
+import com.rug.energygrid.agents.prosumerAgent.EnergyOffer;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import jade.core.AID;
 import jade.core.Agent;
@@ -13,6 +14,7 @@ import jade.lang.acl.MessageTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by thijs on 28-4-17.
@@ -22,6 +24,7 @@ import java.util.List;
 public class BuyEnergyBehaviour extends Behaviour {
     private double neededEnergy;
     //double startEnergy;
+    private PriorityQueue<EnergyOffer> pq;
 
     private int step;
 

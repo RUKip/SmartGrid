@@ -9,6 +9,8 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 
+import java.util.PriorityQueue;
+
 /**
  * Created by thijs on 28-4-17.
  */
