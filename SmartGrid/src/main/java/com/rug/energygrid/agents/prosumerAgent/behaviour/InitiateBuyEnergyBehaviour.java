@@ -18,15 +18,15 @@ import java.util.List;
  */
 
 //This behaviour tries to sell the surplusEnergy it has
-public class InitiateSellEnergyBehaviour extends Behaviour {
-    SellEnergy sellEnergy;
+public class InitiateBuyEnergyBehaviour extends Behaviour {
+    BuyEnergy buyEnergy;
 
     List<AID> prosumerAgentList;
     private int repliesCnt = 0; // The counter of replies from seller agents
     private MessageTemplate mt; // The template to receive replies
     private int step = 1;
 
-    public InitiateSellEnergyBehaviour(Agent parent, double surplusEnergy) {
+    public InitiateBuyEnergyBehaviour(Agent parent, double surplusEnergy) {
         super(parent);
         System.out.println("going to sell "+ surplusEnergy);
         // create the list of seller agents
@@ -44,7 +44,7 @@ public class InitiateSellEnergyBehaviour extends Behaviour {
             fe.printStackTrace();
         }
 
-        this.sellEnergy = new SellEnergy(parent, surplusEnergy);
+        this.buyEnergy = new BuyEnergy(parent, surplusEnergy);
 
         sendMessageToPotentialBuyers();
     }
@@ -55,7 +55,7 @@ public class InitiateSellEnergyBehaviour extends Behaviour {
         for (AID agent : prosumerAgentList) {
             cfp.addReceiver(agent);
         }
-        cfp.setContent(Double.toString(sellEnergy.getSurplusEnergy()));
+        cfp.setContent(Double.toString(buyEnergy.getNeededEnergy()));
         cfp.setConversationId(BuySellConstants.CONVERSATIONID);
         cfp.setReplyWith("cfp"+System.currentTimeMillis()); // Unique value
         myAgent.send(cfp);
@@ -68,7 +68,7 @@ public class InitiateSellEnergyBehaviour extends Behaviour {
     //ASUMES THAT ALL THE OTHER BUYER AGENTS RESPOND, SO NONE CAN LEAVE SUDDENLY
     @Override
     public void action() {
-        System.out.println("name: "+getBehaviourName()+"lets sell some energy! "+ sellEnergy.getSurplusEnergy());
+        System.out.println("name: "+getBehaviourName()+"lets sell some energy! "+ buyEnergy.getNeededEnergy());
         // Receive all proposals/refusals from buyer agents
         ACLMessage reply = myAgent.receive(mt);
         if (reply != null) {
@@ -80,7 +80,7 @@ public class InitiateSellEnergyBehaviour extends Behaviour {
 
                 //Store all the buyers in the buyers list
                 if (neededEnergy > 0) {
-                    sellEnergy.addBuyer(reply.getSender(), neededEnergy);
+                    buyEnergy.addSeller(reply.getSender(), neededEnergy);
                 }
             }
             repliesCnt++;
@@ -94,7 +94,7 @@ public class InitiateSellEnergyBehaviour extends Behaviour {
     @Override
     public boolean done() {
         if (repliesCnt >= prosumerAgentList.size()) {
-            sellEnergy.divideEnergy();
+            buyEnergy.divideEnergy();
             return true;
         }
         return false;

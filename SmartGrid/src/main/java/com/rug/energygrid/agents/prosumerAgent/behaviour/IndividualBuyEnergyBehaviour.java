@@ -9,19 +9,19 @@ import jade.lang.acl.MessageTemplate;
 /**
  * Created by thijs on 28-4-17.
  */
-public class IndividualSellEnergyBehaviour extends Behaviour {
+public class IndividualBuyEnergyBehaviour extends Behaviour {
     AID otherAgent;
-    double energyToBeSold;
-    SellEnergy sellEnergy;
+    double energyToBeBought;
+    BuyEnergy buyEnergy;
     private MessageTemplate mt; // The template to receive replies
     private int step = 0;
     private boolean finished = false;
 
-    public IndividualSellEnergyBehaviour(Agent parent, AID otherAgent, double energyToBeSold, SellEnergy sellEnergy) {
+    public IndividualBuyEnergyBehaviour(Agent parent, AID otherAgent, double energyToBeBought, BuyEnergy buyEnergy) {
         super(parent);
         this.otherAgent = otherAgent;
-        this.energyToBeSold = energyToBeSold;
-        this.sellEnergy = sellEnergy;
+        this.energyToBeBought = energyToBeBought;
+        this.buyEnergy = buyEnergy;
 
         sendOffer();
     }
@@ -29,7 +29,7 @@ public class IndividualSellEnergyBehaviour extends Behaviour {
     private void sendOffer() {
         ACLMessage offer = new ACLMessage(ACLMessage.PROPOSE);
         offer.addReceiver(otherAgent);
-        offer.setContent(Double.toString(energyToBeSold));
+        offer.setContent(Double.toString(energyToBeBought));
         offer.setConversationId(BuySellConstants.INDIVIDUALCONVERSTATIONID);
         offer.setReplyWith("offer"+System.currentTimeMillis()); // Unique value
         myAgent.send(offer);
@@ -46,9 +46,9 @@ public class IndividualSellEnergyBehaviour extends Behaviour {
                 System.out.println("we have a deal!");
 
             } else if (msg.getPerformative() == ACLMessage.PROPOSE) {
-                System.out.println("No deal, he wants less. Only: "+msg.getContent());
-                sellEnergy.addBuyer(msg.getSender(),Double.parseDouble(msg.getContent()));
-                sellEnergy.addSurplusEnergy(energyToBeSold);
+                System.out.println("No deal, he has less. Only: "+msg.getContent());
+                buyEnergy.addSeller(msg.getSender(),Double.parseDouble(msg.getContent()));
+                buyEnergy.addNeededEnergy(energyToBeBought);
             }
             finished = true;
         } else {

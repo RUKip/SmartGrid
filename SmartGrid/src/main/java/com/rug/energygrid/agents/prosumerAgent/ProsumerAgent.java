@@ -1,15 +1,13 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.rug.energygrid.agents.prosumerAgent.behaviour.BuyEnergyBehaviour;
+import com.rug.energygrid.agents.prosumerAgent.behaviour.SellEnergyBehaviour;
 import com.rug.energygrid.agents.prosumerAgent.behaviour.BuySellConstants;
-import com.rug.energygrid.agents.prosumerAgent.behaviour.InitiateSellEnergyBehaviour;
+import com.rug.energygrid.agents.prosumerAgent.behaviour.InitiateBuyEnergyBehaviour;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
-
-import java.util.PriorityQueue;
 
 /**
  * Created by thijs on 28-4-17.
@@ -25,7 +23,7 @@ public class ProsumerAgent extends Agent {
         curEnergy = startEnergy;
         realEnergy = startEnergy;
         if (startEnergy > 0) {
-            this.addBehaviour(new InitiateSellEnergyBehaviour(this, curEnergy));
+            this.addBehaviour(new InitiateBuyEnergyBehaviour(this, curEnergy));
             curEnergy = 0;
         } else if (startEnergy < 0) {
             // Register the book-selling service in the yellow pages
@@ -41,7 +39,7 @@ public class ProsumerAgent extends Agent {
                 fe.printStackTrace();
             }
 
-            this.addBehaviour(new BuyEnergyBehaviour(this, curEnergy*-1));
+            this.addBehaviour(new SellEnergyBehaviour(this, curEnergy*-1));
             curEnergy = 0;
         }
     }

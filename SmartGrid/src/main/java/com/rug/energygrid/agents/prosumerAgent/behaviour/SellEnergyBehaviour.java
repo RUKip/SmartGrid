@@ -21,14 +21,14 @@ import java.util.PriorityQueue;
  */
 
 //This behaviour tries to buy the energy it needs
-public class BuyEnergyBehaviour extends Behaviour {
+public class SellEnergyBehaviour extends Behaviour {
     private double neededEnergy;
     //double startEnergy;
     private PriorityQueue<EnergyOffer> pq;
 
     private int step;
 
-    public BuyEnergyBehaviour(Agent parent, double neededEnergy) {
+    public SellEnergyBehaviour(Agent parent, double neededEnergy) {
         super(parent);
 
         //Set the variables for the amount of energy that has to be bought.
@@ -38,7 +38,7 @@ public class BuyEnergyBehaviour extends Behaviour {
 
     @Override
     public void action() {
-        System.out.println("name: "+getBehaviourName()+" needs to buy: "+ neededEnergy);
+        System.out.println("name: "+getBehaviourName()+" needs to Sell: "+ neededEnergy);
         MessageTemplate mt = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.INFORM),
                                                  MessageTemplate.MatchConversationId(BuySellConstants.CONVERSATIONID));
         ACLMessage msg = myAgent.receive(mt);
