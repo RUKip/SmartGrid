@@ -35,7 +35,7 @@ public abstract class Weather {
 
 
     //TODO: finish, and test
-    protected Map<Integer, Map<Integer, Double>> readDataSet(String fileName, String seperator){
+    protected Map<Integer, Map<Integer, Double>> readDataSet(String fileName, String seperator, String... cleanStrings){
         BufferedReader br = null;
         int nrElements;
         Map<Integer, Map<Integer, Double>> dataSet = new HashMap<Integer, Map<Integer, Double>>();
@@ -48,23 +48,21 @@ public abstract class Weather {
         try {
             String line = br.readLine();
 
-            //int cnt = 0;
             while (line != null) {
-                //cnt++;
                 Map dataRow = new HashMap<Integer, Double>();
-                line = line.replace(" ", ""); //cleans string before split
+                for(String clean : cleanStrings) {
+                    line = line.replace(clean, ""); //cleans string before split
+                }
                 String[] rowEntry = line.split(seperator);
                 Integer key = Integer.parseInt(rowEntry[TIME_POS]);
                 nrElements = rowEntry.length;
 
-                //TODO: now parses/stores every entry, we could also only read required onces, also remove all debug print statements
-                //System.out.println("Line: " + cnt);
+                //TODO: now parses/stores every entry, we could also only read required onces
                 for (int i = 0; i < nrElements; i++) {
                     if(i!=TIME_POS){
                         if(rowEntry[i].equals("")){
                             dataRow.put(i, null); //There is no measurement/data for this entry.
                         }else {
-                            //System.out.println("read number: " + rowEntry[i]);
                             dataRow.put(i, Double.parseDouble(rowEntry[i]));
                         }
                     }
