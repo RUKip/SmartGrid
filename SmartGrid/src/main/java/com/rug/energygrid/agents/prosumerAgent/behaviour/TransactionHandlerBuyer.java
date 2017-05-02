@@ -15,9 +15,7 @@ public class TransactionHandlerBuyer extends Behaviour{
     AID otherAgent;
     double energyToBeBought;
     EnergyOffer currentOffer;
-
     private MessageTemplate mt; // The template to receive replies
-    private int step = 0;
     private boolean finished = false;
 
     public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, AID otherAgent, double energyToBeBought, EnergyOffer currentOffer) {
@@ -54,7 +52,8 @@ public class TransactionHandlerBuyer extends Behaviour{
                 System.out.println("bought: "+boughtEnergy+" wanted: "+energyToBeBought+" from: "+myAgent.getLocalName()+" to: "+otherAgent.getLocalName());
 
             } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
-                System.out.println("No deal");
+                buyEnergy.boughtLessEnergy(energyToBeBought);
+                System.out.println("No deal, energy wanted: "+ energyToBeBought);
             }
             finished = true;
         } else {
@@ -66,4 +65,4 @@ public class TransactionHandlerBuyer extends Behaviour{
         return finished;
     }
 }
-}
+

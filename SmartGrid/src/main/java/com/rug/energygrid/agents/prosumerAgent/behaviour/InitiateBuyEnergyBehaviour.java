@@ -44,7 +44,7 @@ public class InitiateBuyEnergyBehaviour extends Behaviour {
             fe.printStackTrace();
         }
 
-        this.buyEnergy = new BuyEnergy(parent, surplusEnergy);
+        this.buyEnergy = new BuyEnergy(null, surplusEnergy);
 
         sendMessageToPotentialBuyers();
     }
