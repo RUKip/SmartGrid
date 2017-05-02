@@ -26,19 +26,6 @@ public class ProsumerAgent extends Agent {
             this.addBehaviour(new InitiateBuyEnergyBehaviour(this, curEnergy));
             curEnergy = 0;
         } else if (startEnergy < 0) {
-            // Register the book-selling service in the yellow pages
-            DFAgentDescription dfd = new DFAgentDescription();
-            dfd.setName(getAID());
-            ServiceDescription sd = new ServiceDescription();
-            sd.setType(BuySellConstants.BUYTYPE);
-            sd.setName("JADE - book - buying");
-            dfd.addServices(sd);
-            try {
-                DFService.register(this, dfd);
-            } catch (FIPAException fe) {
-                fe.printStackTrace();
-            }
-
             this.addBehaviour(new SellEnergyBehaviour(this, curEnergy*-1));
             curEnergy = 0;
         }
@@ -48,6 +35,14 @@ public class ProsumerAgent extends Agent {
     public void updateRealEnergy(double energy) {
         //Is negated since if you sell energy the realenergy goes down.
         realEnergy -= energy;
+    }
+
+    public double addCurEnergy(double energy) {
+        curEnergy += energy;
+    }
+
+    public double subtractCurEnergy(double energy) {
+        curEnergy -= energy;
     }
 
     public double getCurEnergy() {
