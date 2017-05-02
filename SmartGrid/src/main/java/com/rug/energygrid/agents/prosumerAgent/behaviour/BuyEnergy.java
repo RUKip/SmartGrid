@@ -1,5 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.behaviour;
 
+import com.rug.energygrid.agents.prosumerAgent.CustomPriorityQueue;
 import com.rug.energygrid.agents.prosumerAgent.EnergyOffer;
 import com.rug.energygrid.agents.prosumerAgent.GreedyComp;
 import jade.core.AID;
@@ -12,13 +13,15 @@ import java.util.List;
  * Created by thijs on 28-4-17.
  */
 public class BuyEnergy {
-    private List<EnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer
+    private List<EnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
     private double neededEnergy;
     private Agent parent;
+    private CustomPriorityQueue pq;
 
     public BuyEnergy(Agent parent, double neededEnergy) {
         this.neededEnergy = neededEnergy;
         this.parent = parent;
+        this.pq = new CustomPriorityQueue(new GreedyComp()); //TODO: add a nice place to set/choose the Comperator
     }
 
     public void divideEnergy() {
@@ -35,9 +38,7 @@ public class BuyEnergy {
     }
 
     public synchronized void addSeller(AID agent, double sellingEnergy) {
-
-        //TODO: priority queue
-        sellers.add(new EnergyOffer(agent, sellingEnergy, new GreedyComp()));
+        pq.add(new EnergyOffer(agent, sellingEnergy, new GreedyComp()));
     }
 
     private synchronized void updateBuyerList(EnergyOffer seller, double energyToBeBought) {

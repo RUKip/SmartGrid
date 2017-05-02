@@ -1,7 +1,8 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import jade.core.AID;
-import jade.core.Agent;
+
+import java.util.Comparator;
 
 /**
  * Created by Ruben on 01-May-17.
@@ -9,9 +10,9 @@ import jade.core.Agent;
 public class EnergyOffer implements Comparable<EnergyOffer>{
         private AID agent;
         private double sellingEnergy;
-        private CompAlgorithm algorithm;
+        private Comparator<EnergyOffer> algorithm;
 
-        public EnergyOffer(AID agent, double sellingEnergy, CompAlgorithm a) {
+        public EnergyOffer(AID agent, double sellingEnergy, Comparator<EnergyOffer> a) {
             this.agent = agent;
             this.sellingEnergy = sellingEnergy;
             this.algorithm = a;
@@ -29,10 +30,6 @@ public class EnergyOffer implements Comparable<EnergyOffer>{
             return null;
         }
 
-        public double getCompareValue(EnergyOffer other){
-            return this.algorithm.calcValue(this, other);
-        }
-
         public AID getAgent() {
             return agent;
         }
@@ -41,9 +38,14 @@ public class EnergyOffer implements Comparable<EnergyOffer>{
             return sellingEnergy;
         }
 
-    @Override
-    public int compareTo(EnergyOffer other) {
-            //if(buyer == this.getAgent()) return 1;
-            return (int) this.getCompareValue(other);
-    }
+        @Override
+        public boolean equals(Object o){
+            return (o instanceof EnergyOffer && ((EnergyOffer)o).getAgent().equals(this.getAgent()));
+        }
+
+        @Override
+        public int compareTo(EnergyOffer other) {
+                //if(buyer == this.getAgent()) return 1; //TODO: build this check in later
+                return this.algorithm.compare(this, other);
+        }
 }
