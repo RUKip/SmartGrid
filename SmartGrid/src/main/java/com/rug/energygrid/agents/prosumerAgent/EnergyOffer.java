@@ -24,22 +24,26 @@ public class EnergyOffer implements Comparable<EnergyOffer>{
 
         public EnergyOffer remaining(double energyToBeBought) {
             if (sellingEnergy > energyToBeBought) {
-                return new EnergyOffer(agent, sellingEnergy-energyToBeBought);
+                return new EnergyOffer(agent, sellingEnergy-energyToBeBought, algorithm);
             }
             return null;
         }
 
-        public int getCompareValue(EnergyOffer other){
-            this.algorithm.calcValue(this, other);
+        public double getCompareValue(EnergyOffer other){
+            return this.algorithm.calcValue(this, other);
         }
 
         public AID getAgent() {
             return agent;
         }
 
+        public double getSellingEnergy(){
+            return sellingEnergy;
+        }
+
     @Override
     public int compareTo(EnergyOffer other) {
             //if(buyer == this.getAgent()) return 1;
-            return (this.getCompareValue(other));
+            return (int) this.getCompareValue(other);
     }
 }
