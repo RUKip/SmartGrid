@@ -5,11 +5,15 @@ import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import org.apache.log4j.Logger;
+import org.apache.log4j.BasicConfigurator;
 
 /**
  * Created by thijs on 28-4-17.
  */
 public class IndividualBuyEnergyBehaviour extends Behaviour {
+    static Logger logger = Logger.getLogger(IndividualBuyEnergyBehaviour.class);
+
     AID otherAgent;
     double energyToBeBought;
     BuyEnergy buyEnergy;
@@ -43,6 +47,7 @@ public class IndividualBuyEnergyBehaviour extends Behaviour {
         if (msg != null) {
             System.out.println("got a deal or nodeal Message: "+msg.getContent());
             if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
+                logger.debug("sold: "+energyToBeBought+" from: "+myAgent.getLocalName()+" to: "+otherAgent.getLocalName());
                 System.out.println("we have a deal!");
 
             } else if (msg.getPerformative() == ACLMessage.PROPOSE) {
