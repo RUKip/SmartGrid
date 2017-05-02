@@ -7,19 +7,21 @@ public class ExampleDataSet_KNI extends Weather {
 
     public ExampleDataSet_KNI(){
         super();
-        this.dataSet = readDataSet("weatherDataKNI", ","); //This is done because of Constant set
+        this.dataSet = readDataSet("weatherDataKNI.txt", ","); //This is done because of Constant set
     }
 
     //These methods change depending on constant set or API
-    public double getWindSpeed(int time) {
+    public Double getWindSpeed(int time) {
         return dataSet.get(time).get(WIND_SPEED_POS);
     }
 
-    public int getWindDirection(int time) {
-        return dataSet.get(time).get(WIND_DIRECTION_POS);
+    public Integer getWindDirection(int time) {
+        Double value = dataSet.get(time).get(WIND_DIRECTION_POS);
+        if(value == null) return null;
+        return value.intValue();
     }
 
-    public double getSunIrradiation(int time) {
+    public Double getSunIrradiation(int time) {
         return dataSet.get(time).get(SOLAR_IRRIDIANCE_POS);
     }
 

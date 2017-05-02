@@ -15,7 +15,7 @@ public abstract class Weather {
     protected static int WIND_SPEED_POS;
     protected static int SOLAR_IRRIDIANCE_POS;
 
-    protected Map<Integer, Map<Integer, Integer>> dataSet;
+    protected Map<Integer, Map<Integer, Double>> dataSet;
 
     public Weather() {
         this.TIME_POS = getTimePos();;
@@ -29,16 +29,16 @@ public abstract class Weather {
     public abstract int getWindSpeedPos();
     public abstract int getSolarIrrPos();
 
-    public abstract double getWindSpeed(int time);       //in m/s
-    public abstract int getWindDirection(int time);      //degree angle
-    public abstract double getSunIrradiation(int time);  //J/M
+    public abstract Double getWindSpeed(int time);       //in m/s
+    public abstract Integer getWindDirection(int time);      //degree angle
+    public abstract Double getSunIrradiation(int time);  //J/M
 
 
     //TODO: finish, and test
-    protected Map<Integer, Map<Integer, Integer>> readDataSet(String fileName, String seperator){
+    protected Map<Integer, Map<Integer, Double>> readDataSet(String fileName, String seperator){
         BufferedReader br = null;
         int nrElements;
-        Map<Integer, Map<Integer, Integer>> dataSet = new HashMap<Integer, Map<Integer, Integer>>();
+        Map<Integer, Map<Integer, Double>> dataSet = new HashMap<Integer, Map<Integer, Double>>();
         try {
             br = new BufferedReader(new FileReader(fileName));
         } catch (FileNotFoundException e) {
@@ -48,19 +48,29 @@ public abstract class Weather {
         try {
             String line = br.readLine();
 
+            //int cnt = 0;
             while (line != null) {
-                Map dataRow = new HashMap<Integer, Integer>();
+                //cnt++;
+                Map dataRow = new HashMap<Integer, Double>();
                 line = line.replace(" ", ""); //cleans string before split
                 String[] rowEntry = line.split(seperator);
                 Integer key = Integer.parseInt(rowEntry[TIME_POS]);
                 nrElements = rowEntry.length;
 
+                //TODO: now parses/stores every entry, we could also only read required onces, also remove all debug print statements
+                //System.out.println("Line: " + cnt);
                 for (int i = 0; i < nrElements; i++) {
                     if(i!=TIME_POS){
-                        dataRow.put(i,Integer.parseInt(rowEntry[i]));
+                        if(rowEntry[i].equals("")){
+                            dataRow.put(i, null); //There is no measurement/data for this entry.
+                        }else {
+                            //System.out.println("read number: " + rowEntry[i]);
+                            dataRow.put(i, Double.parseDouble(rowEntry[i]));
+                        }
                     }
                 }
                 dataSet.put(key, dataRow);
+                line = br.readLine();
             }
 
             br.close();
