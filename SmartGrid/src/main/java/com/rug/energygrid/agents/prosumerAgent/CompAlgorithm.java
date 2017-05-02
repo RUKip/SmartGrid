@@ -5,5 +5,5 @@ package com.rug.energygrid.agents.prosumerAgent;
  */
 public abstract class CompAlgorithm {
 
-    public abstract int calcValue(EnergyOffer me, EnergyOffer others);
+    public abstract double calcValue(EnergyOffer me, EnergyOffer others);
 }

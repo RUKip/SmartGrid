@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.behaviour;
 
 import com.rug.energygrid.agents.prosumerAgent.EnergyOffer;
+import com.rug.energygrid.agents.prosumerAgent.GreedyComp;
 import jade.core.AID;
 import jade.core.Agent;
 
@@ -34,13 +35,9 @@ public class BuyEnergy {
     }
 
     public synchronized void addSeller(AID agent, double sellingEnergy) {
-        for (EnergyOffer curSeller : sellers) {
-            if (curSeller.getAgent().equals(agent)) {
-                curSeller.sellingEnergy += sellingEnergy;
-                return;
-            }
-        }
-        sellers.add(new EnergyOffer(agent, neededEnergy));
+
+        //TODO: priority queue
+        sellers.add(new EnergyOffer(agent, sellingEnergy, new GreedyComp()));
     }
 
     private synchronized void updateBuyerList(EnergyOffer seller, double energyToBeBought) {
