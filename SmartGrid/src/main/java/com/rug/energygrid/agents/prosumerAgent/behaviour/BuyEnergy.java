@@ -3,6 +3,7 @@ package com.rug.energygrid.agents.prosumerAgent.behaviour;
 import com.rug.energygrid.agents.prosumerAgent.CustomPriorityQueue;
 import com.rug.energygrid.agents.prosumerAgent.EnergyOffer;
 import com.rug.energygrid.agents.prosumerAgent.GreedyComp;
+import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import jade.core.AID;
 import jade.core.Agent;
 
@@ -15,13 +16,14 @@ import java.util.List;
 public class BuyEnergy {
     private List<EnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
     private double neededEnergy;
-    private Agent parent;
     private CustomPriorityQueue pq;
+    private ProsumerAgent myAgent;
 
-    public BuyEnergy(Agent parent, double neededEnergy) {
+    //TODO: add the new behaviours
+    public BuyEnergy(ProsumerAgent myAgent, double neededEnergy) {
         this.neededEnergy = neededEnergy;
-        this.parent = parent;
         this.pq = new CustomPriorityQueue(new GreedyComp()); //TODO: add a nice place to set/choose the Comperator
+        this.myAgent = myAgent;
     }
 
     public void divideEnergy() {
@@ -29,7 +31,7 @@ public class BuyEnergy {
             if (neededEnergy > 0) {
                 double energyToBeBought = curBuyer.calcEnergyToBeSold(neededEnergy);
                 subtractNeededEnergy(energyToBeBought);
-                parent.addBehaviour(new IndividualBuyEnergyBehaviour(parent, curBuyer.getAgent(), energyToBeBought, this));
+                myAgent.addBehaviour(new IndividualBuyEnergyBehaviour(myAgent, curBuyer.getAgent(), energyToBeBought, this));
                 updateBuyerList(curBuyer, energyToBeBought);
             } else {
                 break;
@@ -46,6 +48,12 @@ public class BuyEnergy {
         if (remainSeller != null) {
             sellers.add(remainSeller);
         }
+    }
+
+    //A bought behaviour couldn't buy all the energy that was planned.
+    public void boughtLessEnergy(double energy) {
+        myAgent.subtractCurEnergy(energy);
+        divideEnergy();
     }
 
     public double getNeededEnergy() {

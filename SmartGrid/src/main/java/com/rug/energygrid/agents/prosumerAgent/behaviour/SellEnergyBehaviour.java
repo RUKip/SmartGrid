@@ -59,7 +59,7 @@ public class SellEnergyBehaviour extends Behaviour {
             myAgent.send(reply);
         } else {
             mt = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.PROPOSE),
-                                     MessageTemplate.MatchConversationId(BuySellConstants.INDIVIDUALCONVERSTATIONID));
+                                     MessageTemplate.MatchConversationId(BuySellConstants.CONVERSATIONID));
             msg = myAgent.receive(mt);
             if (msg != null) {
                 System.out.println("got a real buy Message: "+msg.getContent());
