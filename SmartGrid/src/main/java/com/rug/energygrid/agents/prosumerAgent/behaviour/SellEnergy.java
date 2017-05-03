@@ -13,6 +13,7 @@ public class SellEnergy {
 
     public SellEnergy(ProsumerAgent myAgent) {
         this.myAgent = myAgent;
+        myAgent.addBehaviour(new MessageHandlerSellerBehaviour(myAgent, this));
     }
 
     public int compareDeal(double energyOffer) {

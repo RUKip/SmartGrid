@@ -12,16 +12,14 @@ import jade.lang.acl.MessageTemplate;
  */
 public class TransactionHandlerBuyer extends Behaviour{
     BuyEnergy buyEnergy;
-    AID otherAgent;
     double energyToBeBought;
     EnergyOffer currentOffer;
     private MessageTemplate mt; // The template to receive replies
     private boolean finished = false;
 
-    public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, AID otherAgent, double energyToBeBought, EnergyOffer currentOffer) {
+    public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, double energyToBeBought, EnergyOffer currentOffer) {
         super(parent);
         this.buyEnergy = buyEnergy;
-        this.otherAgent = otherAgent;
         this.energyToBeBought = energyToBeBought;
         this.currentOffer = currentOffer;
 
@@ -30,7 +28,7 @@ public class TransactionHandlerBuyer extends Behaviour{
 
     private void sendOffer() {
         ACLMessage offer = new ACLMessage(ACLMessage.PROPOSE);
-        offer.addReceiver(otherAgent);
+        offer.addReceiver(currentOffer.getAgent());
         offer.setContent(Double.toString(energyToBeBought));//TODO: Add later here also the currentOffer
         offer.setConversationId(BuySellConstants.TRANSACTION);
         offer.setReplyWith("transaction"+System.currentTimeMillis()); // Unique value
@@ -49,7 +47,7 @@ public class TransactionHandlerBuyer extends Behaviour{
                 if (boughtEnergy < energyToBeBought) {
                     buyEnergy.boughtLessEnergy(energyToBeBought - boughtEnergy);
                 }
-                System.out.println("bought: "+boughtEnergy+" wanted: "+energyToBeBought+" from: "+myAgent.getLocalName()+" to: "+otherAgent.getLocalName());
+                System.out.println("bought: "+boughtEnergy+" wanted: "+energyToBeBought+" from: "+myAgent.getLocalName()+" to: "+currentOffer.getAgent().getLocalName());
 
             } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
                 buyEnergy.boughtLessEnergy(energyToBeBought);

@@ -1,8 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.rug.energygrid.agents.prosumerAgent.behaviour.SellEnergyBehaviour;
-import com.rug.energygrid.agents.prosumerAgent.behaviour.BuySellConstants;
-import com.rug.energygrid.agents.prosumerAgent.behaviour.InitiateBuyEnergyBehaviour;
+import com.rug.energygrid.agents.prosumerAgent.behaviour.*;
 import jade.core.Agent;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -15,20 +13,16 @@ import jade.domain.FIPAException;
 public class ProsumerAgent extends Agent {
     private double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
     private double realEnergy = 0; //This is the real amount of energy (if for example energy is sold it will be subtracted from this.
+    private BuyEnergy buyEnergy;
+    private SellEnergy sellEnergy;
 
     @Override
     protected void setup() {
         final double startEnergy = Double.parseDouble((String) this.getArguments()[0]);
         System.out.println("name: "+getAID().getName()+" energy: "+ startEnergy);
         curEnergy = startEnergy;
-        realEnergy = startEnergy;
-        if (startEnergy > 0) {
-            this.addBehaviour(new InitiateBuyEnergyBehaviour(this, curEnergy));
-            curEnergy = 0;
-        } else if (startEnergy < 0) {
-            this.addBehaviour(new SellEnergyBehaviour(this, curEnergy*-1));
-            curEnergy = 0;
-        }
+        buyEnergy = new BuyEnergy(this);
+        sellEnergy = new SellEnergy(this);
     }
 
     //Used when a behaviour sold or bought energy, the real energy left in the system has to be updated.
@@ -37,12 +31,13 @@ public class ProsumerAgent extends Agent {
         realEnergy -= energy;
     }
 
-    public double addCurEnergy(double energy) {
+    public void addCurEnergy(double energy) {
         curEnergy += energy;
     }
 
-    public double subtractCurEnergy(double energy) {
+    public void subtractCurEnergy(double energy) {
         curEnergy -= energy;
+        buyEnergy.refillEnergy();
     }
 
     public double getCurEnergy() {

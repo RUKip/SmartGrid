@@ -15,26 +15,26 @@ import java.util.List;
  */
 public class BuyEnergy {
     private List<EnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
-    private double neededEnergy;
     private CustomPriorityQueue pq;
-    private ProsumerAgent myAgent;
+    private ProsumerAgent prosumerAgent;
 
     //TODO: add the new behaviours
-    public BuyEnergy(ProsumerAgent myAgent, double neededEnergy) {
-        this.neededEnergy = neededEnergy;
+    public BuyEnergy(ProsumerAgent prosumerAgent) {
         this.pq = new CustomPriorityQueue(new GreedyComp()); //TODO: add a nice place to set/choose the Comperator
-        this.myAgent = myAgent;
+        this.prosumerAgent = prosumerAgent;
+        refillEnergy();
     }
 
-    public void divideEnergy() {
-        for (EnergyOffer curBuyer : sellers) {
-            if (neededEnergy > 0) {
-                double energyToBeBought = curBuyer.calcEnergyToBeSold(neededEnergy);
-                subtractNeededEnergy(energyToBeBought);
-                myAgent.addBehaviour(new IndividualBuyEnergyBehaviour(myAgent, curBuyer.getAgent(), energyToBeBought, this));
-                updateBuyerList(curBuyer, energyToBeBought);
+    public void refillEnergy() {
+        while (prosumerAgent.getCurEnergy() < 0) {
+            if (!pq.isEmpty()) {
+                EnergyOffer energyOffer = pq.pop(prosumerAgent.getCurEnergy() * -1);
+                double energyToBeBought = energyOffer.calcEnergyToBeBought(prosumerAgent.getCurEnergy() * -1);
+                prosumerAgent.addCurEnergy(energyToBeBought);
+                prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, energyToBeBought, energyOffer));
             } else {
-                break;
+                //TODO: add buying energy from the 'big guys'
+                System.out.println("I have to buy energy at the big guys");
             }
         }
     }
@@ -52,19 +52,7 @@ public class BuyEnergy {
 
     //A bought behaviour couldn't buy all the energy that was planned.
     public void boughtLessEnergy(double energy) {
-        myAgent.subtractCurEnergy(energy);
-        divideEnergy();
-    }
-
-    public double getNeededEnergy() {
-        return neededEnergy;
-    }
-
-    public void subtractNeededEnergy(double amount) {
-        neededEnergy -= amount;
-    }
-
-    public void addNeededEnergy(double amount) {
-        neededEnergy += amount;
+        prosumerAgent.subtractCurEnergy(energy);
+        refillEnergy();
     }
 }

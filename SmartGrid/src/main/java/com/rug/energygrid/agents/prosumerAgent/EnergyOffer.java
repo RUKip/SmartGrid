@@ -19,7 +19,7 @@ public class EnergyOffer implements Comparable<EnergyOffer>{
         }
 
         //Calculates what is the max energy that can be sold to this buyer
-        public double calcEnergyToBeSold(double neededEnergy) {
+        public double calcEnergyToBeBought(double neededEnergy) {
             return sellingEnergy <= neededEnergy ? sellingEnergy : neededEnergy;
         }
 
@@ -36,6 +36,10 @@ public class EnergyOffer implements Comparable<EnergyOffer>{
 
         public double getSellingEnergy(){
             return sellingEnergy;
+        }
+
+        public void subtractSellingEnergy(double energy) {
+            this.sellingEnergy -= energy;
         }
 
         @Override
