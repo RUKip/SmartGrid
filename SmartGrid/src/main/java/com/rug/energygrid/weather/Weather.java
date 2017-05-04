@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Ruben on 26-Apr-17.
  */
-public abstract class Weather {
+public abstract class Weather { //TODO: extend with max, min and adjustable
 
     protected static int TIME_POS;
     protected static int WIND_DIRECTION_POS;

@@ -1,9 +1,6 @@
 package com.rug.energygrid.weather;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.*;
-import java.util.Date;
 
 /**
  * Created by Ruben on 02-May-17.
