@@ -1,6 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellConstants;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.core.Agent;
 import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
@@ -29,7 +29,7 @@ public class TransactionHandlerBuyer extends Behaviour{
         ACLMessage offer = new ACLMessage(ACLMessage.PROPOSE);
         offer.addReceiver(currentOffer.getAgent());
         offer.setContent(Double.toString(energyToBeBought));//TODO: Add later here also the currentOffer
-        offer.setConversationId(BuySellConstants.TRANSACTION);
+        offer.setConversationId(BuySellComConstants.TRANSACTION);
         offer.setReplyWith("transaction"+System.currentTimeMillis()); // Unique value
         myAgent.send(offer);
         // Prepare the template to get proposals

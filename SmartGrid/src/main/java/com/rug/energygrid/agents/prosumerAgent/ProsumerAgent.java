@@ -28,16 +28,16 @@ public class ProsumerAgent extends Agent {
         realEnergy -= energy;
     }
 
-    public void addCurEnergy(double energy) {
+    public synchronized void addCurEnergy(double energy) {
         curEnergy += energy;
     }
 
-    public void subtractCurEnergy(double energy) {
+    public synchronized void subtractCurEnergy(double energy) {
         curEnergy -= energy;
         buyEnergy.refillEnergy();
     }
 
-    public double getCurEnergy() {
+    public synchronized double getCurEnergy() {
         return curEnergy;
     }
 }

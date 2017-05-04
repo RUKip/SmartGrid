@@ -1,6 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellConstants;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -14,7 +14,7 @@ import jade.lang.acl.MessageTemplate;
  * Created by thijs on 2-5-17.
  */
 public class MessageHandlerBuyerBehavior extends CyclicBehaviour {
-    MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellConstants.ENERGY_OFFER_MESSAGE);
+    MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
     BuyEnergy buyEnergy;
 
     public MessageHandlerBuyerBehavior(Agent myAgent, BuyEnergy buyEnergy) {
@@ -28,7 +28,7 @@ public class MessageHandlerBuyerBehavior extends CyclicBehaviour {
         DFAgentDescription dfd = new DFAgentDescription();
         dfd.setName(myAgent.getAID());
         ServiceDescription sd = new ServiceDescription();
-        sd.setType(BuySellConstants.CONSUMER_SD);
+        sd.setType(BuySellComConstants.CONSUMER_SD);
         sd.setName("Consumers");
         dfd.addServices(sd);
         try {
