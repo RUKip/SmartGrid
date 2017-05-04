@@ -1,4 +1,6 @@
-package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
+package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.comparisonAlgorithms;
+
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.EnergyOffer;
 
 import java.util.Comparator;
 

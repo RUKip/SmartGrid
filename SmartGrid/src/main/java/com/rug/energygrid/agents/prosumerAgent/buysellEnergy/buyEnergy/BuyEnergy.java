@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.comparisonAlgorithms.GreedyComp;
 
 import java.util.ArrayList;
 import java.util.List;
