@@ -20,22 +20,6 @@ public class CustomPriorityQueue {
         this.comparator = c;
     }
 
-    public void add(EnergyOffer e1) {
-        int position = size;
-        if (size == 0) {
-            this.queue.add(e1);
-            this.size++;
-        } else {
-            EnergyOffer e2 = queue.get(position - 1);
-            while (comparator.compare(e1, e2) > 0) {
-                position--;
-                e2 = queue.get(position - 1);
-            }
-            this.queue.add(position, e1);
-            this.size++;
-        }
-    }
-
     public void remove(EnergyOffer e) {
         this.queue.remove(e);
     }
@@ -49,7 +33,6 @@ public class CustomPriorityQueue {
         }
     }
 
-    //TODO: Ruben popt hij zo op de goede manier?
     //Tries to get curEnergy from the first element
     public EnergyOffer pop(double curEnergy) {
         EnergyOffer realOffer = queue.remove(0);
@@ -58,21 +41,23 @@ public class CustomPriorityQueue {
         if (energyToBeBought == realOffer.getSellingEnergy()) {
             return realOffer;
         } else {
-            this.add(new EnergyOffer(realOffer.getAgent(),realOffer.getSellingEnergy()-energyToBeBought, null));
-            return new EnergyOffer(realOffer.getAgent(), energyToBeBought, null);
+            this.add(new EnergyOffer(realOffer.getAgent(),realOffer.getSellingEnergy()-energyToBeBought));
+            return new EnergyOffer(realOffer.getAgent(), energyToBeBought);
         }
     }
 
     //TODO: check if this removes it the right way because of equals override
-    public void update(EnergyOffer e1) {
+    public void add(EnergyOffer e1) {
         if (size == 0) return;
         int pos = 0;
         EnergyOffer e2 = queue.get(pos);
-        while (!e1.equals(e2)){
-            e2 = queue.get(pos);
-            pos++;
+        for (pos = 0; pos < queue.size(); pos++) {
+            if (e1.equals(queue.get(pos))) {
+                queue.remove(pos);
+                break;
+            }
         }
-        queue.set(pos, e1);
+        queue.add(e1);
     }
 
     public boolean isEmpty() {

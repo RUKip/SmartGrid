@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,12 +30,14 @@ public abstract class Weather {
     public abstract int getWindSpeedPos();
     public abstract int getSolarIrrPos();
 
-    public abstract Double getWindSpeed(int time);       //in m/s
-    public abstract Integer getWindDirection(int time);      //degree angle
-    public abstract Double getSunIrradiation(int time);  //J/M
+    public abstract Double getWindSpeed(Instant time);       //in m/s
+    public abstract Integer getWindDirection(Instant time);      //degree angle
+    public abstract Double getSunIrradiation(Instant time);  //J/M
 
+    //when using data set has to be implemented
+    protected abstract int convertToIntOfDataSet(Instant time);
 
-    //TODO: finish, and test
+    //TODO: finish
     protected Map<Integer, Map<Integer, Double>> readDataSet(String fileName, String seperator, String... cleanStrings){
         BufferedReader br = null;
         int nrElements;

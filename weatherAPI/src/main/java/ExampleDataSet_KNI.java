@@ -1,3 +1,7 @@
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 /**
  * Created by Ruben on 26-Apr-17.
  */
@@ -11,20 +15,26 @@ public class ExampleDataSet_KNI extends Weather {
     }
 
     //These methods change depending on constant set or API
-    public Double getWindSpeed(int time) {
+    public Double getWindSpeed(Instant time) {
         return dataSet.get(time).get(WIND_SPEED_POS);
     }
 
-    public Integer getWindDirection(int time) {
+    public Integer getWindDirection(Instant time) {
         Double value = dataSet.get(time).get(WIND_DIRECTION_POS);
         if(value == null) return null;
         return value.intValue();
     }
 
-    public Double getSunIrradiation(int time) {
-        return dataSet.get(time).get(SOLAR_IRRIDIANCE_POS);
+    public Double getSunIrradiation(Instant time) {
+        int iTime = convertToIntOfDataSet(time);
+        return dataSet.get(iTime).get(SOLAR_IRRIDIANCE_POS);
     }
 
+    //when using data set has to be implemented
+    protected int convertToIntOfDataSet(Instant time){
+        LocalDateTime ldt = LocalDateTime.ofInstant(time, ZoneId.systemDefault());
+        return Integer.valueOf("" + ldt.getYear() + ldt.getMonth() + ldt.getDayOfMonth());
+    }
 
     //These are the values that have to be set depending on your dataset indexing
     public int getTimePos() {
