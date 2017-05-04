@@ -1,5 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
+import com.rug.energygrid.energyProducers.EnergyProducer;
 import jade.core.AID;
 
 import java.util.ArrayList;

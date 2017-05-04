@@ -1,6 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellConstants;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
@@ -11,7 +11,7 @@ import jade.lang.acl.MessageTemplate;
  */
 public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
     MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.PROPOSE),
-                                                    MessageTemplate.MatchConversationId(BuySellConstants.TRANSACTION));
+                                                    MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION));
     SellEnergy sellEnergy;
 
     public MessageHandlerSellerBehaviour(Agent myAgent, SellEnergy sellEnergy) {
