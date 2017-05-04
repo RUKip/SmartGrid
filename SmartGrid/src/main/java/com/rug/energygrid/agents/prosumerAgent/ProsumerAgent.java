@@ -1,11 +1,8 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.rug.energygrid.agents.prosumerAgent.behaviour.*;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
 import jade.core.Agent;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
-import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 
 /**
  * Created by thijs on 28-4-17.

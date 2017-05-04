@@ -1,5 +1,6 @@
-package com.rug.energygrid.agents.prosumerAgent.behaviour;
+package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellConstants;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;

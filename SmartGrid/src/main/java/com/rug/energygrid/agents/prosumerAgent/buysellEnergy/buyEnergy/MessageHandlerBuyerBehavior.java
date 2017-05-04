@@ -1,6 +1,6 @@
-package com.rug.energygrid.agents.prosumerAgent.behaviour;
+package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.EnergyOffer;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellConstants;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -49,7 +49,7 @@ public class MessageHandlerBuyerBehavior extends CyclicBehaviour {
                 double energy = Double.parseDouble(reply.getContent());
 
                 //Store the EnergyOffer in the priorityQueue
-                buyEnergy.enqueueEnergyOffer(new EnergyOffer(reply.getSender(), energy, null));
+                buyEnergy.addEnergyOffer(new EnergyOffer(reply.getSender(), energy));
             }
         }
         else {

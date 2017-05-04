@@ -1,11 +1,6 @@
-package com.rug.energygrid.agents.prosumerAgent.behaviour;
+package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.CustomPriorityQueue;
-import com.rug.energygrid.agents.prosumerAgent.EnergyOffer;
-import com.rug.energygrid.agents.prosumerAgent.GreedyComp;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
-import jade.core.AID;
-import jade.core.Agent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,15 +34,8 @@ public class BuyEnergy {
         }
     }
 
-    public synchronized void addSeller(AID agent, double sellingEnergy) {
-        pq.add(new EnergyOffer(agent, sellingEnergy, new GreedyComp()));
-    }
-
-    private synchronized void updateBuyerList(EnergyOffer seller, double energyToBeBought) {
-        EnergyOffer remainSeller = seller.remaining(energyToBeBought);
-        if (remainSeller != null) {
-            sellers.add(remainSeller);
-        }
+    public synchronized void addEnergyOffer(EnergyOffer energyOffer) {
+        pq.add(energyOffer);
     }
 
     //A bought behaviour couldn't buy all the energy that was planned.
