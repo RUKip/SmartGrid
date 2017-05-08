@@ -28,6 +28,12 @@ public class ProsumerAgent extends Agent {
         realEnergy -= energy;
     }
 
+    @Override
+    public void takeDown() {
+        buyEnergy.takeDown();
+        sellEnergy.takeDown();
+    }
+
     public synchronized void addCurEnergy(double energy) {
         curEnergy += energy;
     }

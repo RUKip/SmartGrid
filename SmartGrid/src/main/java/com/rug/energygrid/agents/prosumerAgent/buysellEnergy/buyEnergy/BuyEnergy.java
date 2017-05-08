@@ -13,11 +13,13 @@ public class BuyEnergy {
     private List<EnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
     private CustomPriorityQueue pq;
     private ProsumerAgent prosumerAgent;
+    private MessageHandlerBuyerBehaviour messageHandler;
 
     //TODO: add the new behaviours
     public BuyEnergy(ProsumerAgent prosumerAgent) {
         this.pq = new CustomPriorityQueue(new GreedyComp()); //TODO: add a nice place to set/choose the Comperator
         this.prosumerAgent = prosumerAgent;
+        messageHandler = new MessageHandlerBuyerBehaviour(prosumerAgent, this);
         refillEnergy();
     }
 
@@ -43,5 +45,10 @@ public class BuyEnergy {
     public void boughtLessEnergy(double energy) {
         prosumerAgent.subtractCurEnergy(energy);
         refillEnergy();
+    }
+
+    //This method is called when the agent shuts down.
+    public void takeDown() {
+        messageHandler.takeDown();
     }
 }
