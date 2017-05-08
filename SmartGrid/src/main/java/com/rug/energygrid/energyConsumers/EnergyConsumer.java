@@ -6,6 +6,6 @@ import java.time.Instant;
 /**
  * Created by thijs on 8-5-17.
  */
-public interface energyConsumer {
+public interface EnergyConsumer {
     double consumeEnergy(Instant start, Duration duration);
 }
