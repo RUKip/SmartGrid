@@ -33,6 +33,7 @@ public class BuyEnergy {
             } else {
                 //TODO: add buying energy from the 'big guys'
                 System.out.println("I have to buy energy at the big guys");
+                prosumerAgent.addCurEnergy(prosumerAgent.getCurEnergy()*-1);
             }
         }
     }
