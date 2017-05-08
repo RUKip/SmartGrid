@@ -35,4 +35,9 @@ public class SellEnergy {
         prosumerAgent.subtractCurEnergy(soldEnergy);
         return soldEnergy;
     }
+
+    //This method is called when the agent shutsdown.
+    public void takeDown() {
+        //nothing needs to happen.
+    }
 }

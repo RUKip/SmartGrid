@@ -1,5 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
+import jade.core.behaviours.Behaviour;
+
 import java.time.Duration;
 import java.time.Instant;
 
@@ -36,7 +38,9 @@ public class SimulationTimeBehaviour extends Behaviour {
     //To get the middle of the step do simulationTime.minus(passedTime/2);
 
     @Override
+    //The whole simulation is finished. so the agent can stop.
     public boolean done() {
+        prosumerAgent.doDelete();
         return !simulationTime.isBefore(endSimulationTime);
     }
 }

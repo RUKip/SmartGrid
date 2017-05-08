@@ -13,11 +13,13 @@ import jade.lang.acl.MessageTemplate;
 /**
  * Created by thijs on 2-5-17.
  */
-public class MessageHandlerBuyerBehavior extends CyclicBehaviour {
+public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
     MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
     BuyEnergy buyEnergy;
+    DFAgentDescription dfd;
+    ServiceDescription sd;
 
-    public MessageHandlerBuyerBehavior(Agent myAgent, BuyEnergy buyEnergy) {
+    public MessageHandlerBuyerBehaviour(Agent myAgent, BuyEnergy buyEnergy) {
         super(myAgent);
         this.buyEnergy = buyEnergy;
         registerConsumer();
@@ -25,9 +27,9 @@ public class MessageHandlerBuyerBehavior extends CyclicBehaviour {
 
     private void registerConsumer() {
         // Register the agent as a consumer
-        DFAgentDescription dfd = new DFAgentDescription();
+        dfd = new DFAgentDescription();
         dfd.setName(myAgent.getAID());
-        ServiceDescription sd = new ServiceDescription();
+        sd = new ServiceDescription();
         sd.setType(BuySellComConstants.CONSUMER_SD);
         sd.setName("Consumers");
         dfd.addServices(sd);
@@ -55,5 +57,10 @@ public class MessageHandlerBuyerBehavior extends CyclicBehaviour {
         else {
             block();
         }
+    }
+
+    //This method is called when the agent shutsdown.
+    public void takeDown() {
+        dfd.removeServices(sd);
     }
 }
