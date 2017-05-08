@@ -14,7 +14,6 @@ import java.util.Map;
 public abstract class Weather { //TODO: extend with max, min and adjustable
 
     protected static int TIME_POS;
-    protected static int WIND_DIRECTION_POS;
     protected static int WIND_SPEED_POS;
     protected static int SOLAR_IRRIDIANCE_POS;
 
@@ -22,18 +21,15 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
 
     public Weather() {
         this.TIME_POS = getTimePos();;
-        this.WIND_DIRECTION_POS = getWindDirPos();
         this.WIND_SPEED_POS = getWindSpeedPos();
         this.SOLAR_IRRIDIANCE_POS = getSolarIrrPos();
     }
 
     public abstract int getTimePos();
-    public abstract int getWindDirPos();
     public abstract int getWindSpeedPos();
     public abstract int getSolarIrrPos();
 
     public abstract Double getWindSpeed(Instant time);       //in m/s
-    public abstract Integer getWindDirection(Instant time);      //degree angle
     public abstract Double getSunIrradiation(Instant time);  //J/M
 
     //when using data set has to be implemented

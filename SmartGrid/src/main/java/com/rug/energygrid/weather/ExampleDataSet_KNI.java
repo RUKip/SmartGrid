@@ -22,13 +22,6 @@ public class ExampleDataSet_KNI extends Weather {
         return dataSet.get(iTime).get(WIND_SPEED_POS);
     }
 
-    public Integer getWindDirection(Instant time) {
-        int iTime = convertToIntOfDataSet(time);
-        Double value = dataSet.get(iTime).get(WIND_DIRECTION_POS);
-        if(value == null) return null;
-        return value.intValue();
-    }
-
     public Double getSunIrradiation(Instant time) {
         int iTime = convertToIntOfDataSet(time);
         return dataSet.get(iTime).get(SOLAR_IRRIDIANCE_POS);
@@ -46,10 +39,6 @@ public class ExampleDataSet_KNI extends Weather {
     //These are the values that have to be set depending on your dataset indexing
     public int getTimePos() {
         return 1;
-    }
-
-    public int getWindDirPos() {
-        return 2;
     }
 
     public int getWindSpeedPos() {
