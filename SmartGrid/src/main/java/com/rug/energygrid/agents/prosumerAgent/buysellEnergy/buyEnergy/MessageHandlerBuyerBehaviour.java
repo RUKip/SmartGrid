@@ -31,7 +31,7 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
         dfd.setName(myAgent.getAID());
         sd = new ServiceDescription();
         sd.setType(BuySellComConstants.CONSUMER_SD);
-        sd.setName("Consumers");
+        sd.setName("Buyers");
         dfd.addServices(sd);
         try {
             DFService.register(myAgent, dfd);

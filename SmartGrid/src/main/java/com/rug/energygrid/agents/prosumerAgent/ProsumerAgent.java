@@ -1,19 +1,21 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.google.gson.Gson;
+import com.rug.energygrid.agents.Time.TimedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
-import jade.core.Agent;
 import jade.util.Logger;
 
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 
 /**
  * Created by thijs on 28-4-17.
  */
-public class ProsumerAgent extends Agent {
+public class ProsumerAgent extends TimedAgent {
     private final Logger logger = jade.util.Logger.getMyLogger(this.getClass().getName());
 
     private double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
@@ -37,6 +39,11 @@ public class ProsumerAgent extends Agent {
     public void updateRealEnergy(double energy) {
         //Is negated since if you sell energy the realenergy goes down.
         realEnergy -= energy;
+    }
+
+    @Override
+    public void timedEvent(Instant end, Duration passedTime) {
+        //TODO: do stuff add timed events.
     }
 
     @Override
