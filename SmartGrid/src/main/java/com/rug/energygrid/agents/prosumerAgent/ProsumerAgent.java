@@ -1,16 +1,20 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.google.gson.Gson;
+import com.rug.energygrid.JSON.JSON_Deserializer;
 import com.rug.energygrid.agents.Time.TimedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
+import com.rug.energygrid.energyProducers.EnergyProducer;
 import jade.util.Logger;
 
 
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by thijs on 28-4-17.
@@ -23,6 +27,8 @@ public class ProsumerAgent extends TimedAgent {
     private BuyEnergy buyEnergy;
     private SellEnergy sellEnergy;
     private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, TODO: check if this is unique as identifier
+    private List<Cable> connectedCables = new ArrayList<>();
+    private List<EnergyProducer> energyProducers = new ArrayList<>();
 
     @Override
     protected void setup() {
@@ -80,7 +86,17 @@ public class ProsumerAgent extends TimedAgent {
 
     //TODO: parse JSON value of costs and nodes then implement dijkstra search algorithm to put right values into routingTable
     private void parseJSON(){
-        Gson g = new Gson();
-        //g.fromJson()
+        JSON_Deserializer deserializer = new JSON_Deserializer();
+        //TODO: This can be done quicker maybe?? Now each agent filters out his elements but we could also choose to generate different .json files with as name the agents identifier
+        List<Cable> allCables = deserializer.getCables();
+        List<EnergyProducer> allEnergyProducers = deserializer.getEnergyProducers();
+        for(Cable c : allCables){
+            if(c.getConnectedNode() == this.getLocalName() || c.getOriginNode() == this.getLocalName()){
+                this.connectedCables.add(c);
+            }
+        }
+        for(EnergyProducer e : allEnergyProducers){
+           //TODO: still have to implement and decide if we are going to put in Agent name in the list of energyproducers or each a file (Has to be done in JsonDeserializer
+        }
     }
 }

@@ -5,9 +5,9 @@ import java.util.List;
 /**
  * Created by Ruben on 08-May-17.
  */
-public class JSON_Array_Group {
+public class JSON_Array_Group<T> {
         private String name;
-        private List list;
+        private List<T> list;
 
         public JSON_Array_Group(String n, List l){
             this.name = n;
