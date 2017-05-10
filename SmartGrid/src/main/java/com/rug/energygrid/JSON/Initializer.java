@@ -20,7 +20,7 @@ import java.util.List;
 public class Initializer {
 
     private Weather weather;
-    private List<JSON_Array_Group<EnergyProducer>> agentEPList; //TODO: extend
+    private List<JSON_Array_Group<JSON_Array_Group<EnergyProducer>>> agentEPList; //TODO: extend
     //private List<List<EnergyConsumer>> energyConsumerList; TODO: implement if we are going to use it
     private List<Cable> cableList;
 
@@ -43,15 +43,26 @@ public class Initializer {
 
     //Add Energyproducers here
     private void initEnergyProducers(){
-        List<EnergyProducer> energyProducerList = new ArrayList<>();
-        energyProducerList.add(new SolarPanel(weather));
-        energyProducerList.add(new SolarPanel(weather));
-        energyProducerList.add(new WindMill(weather));
-        agentEPList.add(new JSON_Array_Group<EnergyProducer>("9471KN24", energyProducerList)); //TODO: maybe we should put the names of the Agents somewhere that case we can use them everywhere
+        //for house/agent 9471KN24
+        List<JSON_Array_Group> allTypes = new ArrayList<>();
+        List<SolarPanel> solarPanelList = new ArrayList<>();
+        solarPanelList.add(new SolarPanel(weather));
+        solarPanelList.add(new SolarPanel(weather));
+        JSON_Array_Group<EnergyProducer> solarpanelGroup = new JSON_Array_Group<>(ConstantsJSON.SOLARPANEL_LIST_NAME, solarPanelList);
+        List<WindMill> windMillList = new ArrayList<>();
+        windMillList.add(new WindMill(weather));
+        JSON_Array_Group<EnergyProducer> windMillGroup = new JSON_Array_Group<>(ConstantsJSON.WINMILL_LIST_NAME, windMillList);
+        allTypes.add(windMillGroup);
+        allTypes.add(solarpanelGroup);
+        agentEPList.add(new JSON_Array_Group<>("9471KN24", allTypes)); //TODO: maybe we should put the names of the Agents somewhere that case we can use them everywhere
 
-        List<EnergyProducer> energyProducerList2 = new ArrayList<>();
-        energyProducerList2.add(new WindMill(weather));
-        agentEPList.add(new JSON_Array_Group<EnergyProducer>("9717KH6", energyProducerList2));
+        //for house/agent 9717KH6
+        List<JSON_Array_Group> allTypes2 = new ArrayList<>();
+        List<WindMill> windMillList2 = new ArrayList<>();
+        windMillList.add(new WindMill(weather));
+        JSON_Array_Group<EnergyProducer> windMillGroup2 = new JSON_Array_Group<>(ConstantsJSON.WINMILL_LIST_NAME, windMillList);
+        allTypes2.add(windMillGroup2);
+        agentEPList.add(new JSON_Array_Group<>("9717KH6", allTypes2));
     }
 
     //serializes

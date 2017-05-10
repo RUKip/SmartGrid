@@ -10,6 +10,11 @@ public class Generator implements AdjustableEP {
     }
 
     @Override
+    public String getClassName() {
+        return getClass().getName();
+    }
+
+    @Override
     public double generateEnergy(Instant start, Duration duration, double energyNeeded) {
         return 0;
     }

@@ -1,5 +1,8 @@
 package com.rug.energygrid.JSON;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.List;
 
 /**
@@ -8,6 +11,7 @@ import java.util.List;
 public class JSON_Array_Group<T> {
         private String name;
         private List<T> list;
+        private String parameterType;
 
         public JSON_Array_Group(String n, List l){
             this.name = n;

@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.google.gson.Gson;
+import com.rug.energygrid.JSON.JSON_Array_Group;
 import com.rug.energygrid.JSON.JSON_Deserializer;
 import com.rug.energygrid.agents.Time.TimedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
@@ -96,6 +97,7 @@ public class ProsumerAgent extends TimedAgent {
             }
         }
         for(EnergyProducer e : allEnergyProducers){
+            System.out.println(e.toString());
            //TODO: still have to implement and decide if we are going to put in Agent name in the list of energyproducers or each a file (Has to be done in JsonDeserializer
         }
     }

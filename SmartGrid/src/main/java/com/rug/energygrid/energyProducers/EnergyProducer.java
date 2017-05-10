@@ -8,4 +8,5 @@ import java.time.Instant;
  */
 public interface EnergyProducer {
     double generateMaxEnergy(Instant start, Duration duration);
+    String getClassName();
 }
