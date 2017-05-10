@@ -1,6 +1,5 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-import com.rug.energygrid.energyProducers.EnergyProducer;
 import jade.core.AID;
 
 import java.util.ArrayList;
@@ -12,7 +11,7 @@ import java.util.List;
  */
 public class CustomPriorityQueue {
 
-    private List<EnergyOffer> queue;
+    private List<RemoteEnergyOffer> queue;
     private int size = 0;
     private Comparator comparator;
 
@@ -21,7 +20,7 @@ public class CustomPriorityQueue {
         this.comparator = c;
     }
 
-    public void remove(EnergyOffer e) {
+    public void remove(RemoteEnergyOffer e) {
         this.queue.remove(e);
     }
 
@@ -35,23 +34,23 @@ public class CustomPriorityQueue {
     }
 
     //Tries to get curEnergy from the first element
-    public EnergyOffer pop(double curEnergy) {
-        EnergyOffer realOffer = queue.remove(0);
+    public RemoteEnergyOffer pop(double curEnergy) {
+        RemoteEnergyOffer realOffer = queue.remove(0);
         double energyToBeBought = Math.min(realOffer.getSellingEnergy(), curEnergy);
         //If the whole offer is used up remove it, otherwise update it.
         if (energyToBeBought == realOffer.getSellingEnergy()) {
             return realOffer;
         } else {
-            this.add(new EnergyOffer(realOffer.getAgent(),realOffer.getSellingEnergy()-energyToBeBought));
-            return new EnergyOffer(realOffer.getAgent(), energyToBeBought);
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(),realOffer.getSellingEnergy()-energyToBeBought));
+            return new RemoteEnergyOffer(realOffer.getAgent(), energyToBeBought);
         }
     }
 
     //TODO: check if this removes it the right way because of equals override
-    public void add(EnergyOffer e1) {
+    public void add(RemoteEnergyOffer e1) {
         if (size == 0) return;
         int pos = 0;
-        EnergyOffer e2 = queue.get(pos);
+        RemoteEnergyOffer e2 = queue.get(pos);
         for (pos = 0; pos < queue.size(); pos++) {
             if (e1.equals(queue.get(pos))) {
                 queue.remove(pos);

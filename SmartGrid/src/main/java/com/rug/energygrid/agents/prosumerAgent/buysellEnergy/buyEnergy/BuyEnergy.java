@@ -10,7 +10,7 @@ import java.util.List;
  * Created by thijs on 28-4-17.
  */
 public class BuyEnergy {
-    private List<EnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
+    private List<RemoteEnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
     private CustomPriorityQueue pq;
     private ProsumerAgent prosumerAgent;
     private MessageHandlerBuyerBehaviour messageHandler;
@@ -26,7 +26,7 @@ public class BuyEnergy {
     public void refillEnergy() {
         while (prosumerAgent.getCurEnergy() < 0) {
             if (!pq.isEmpty()) {
-                EnergyOffer energyOffer = pq.pop(prosumerAgent.getCurEnergy() * -1);
+                RemoteEnergyOffer energyOffer = pq.pop(prosumerAgent.getCurEnergy() * -1);
                 double energyToBeBought = energyOffer.calcEnergyToBeBought(prosumerAgent.getCurEnergy() * -1);
                 prosumerAgent.addCurEnergy(energyToBeBought);
                 prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, energyToBeBought, energyOffer));
@@ -38,7 +38,7 @@ public class BuyEnergy {
         }
     }
 
-    public synchronized void addEnergyOffer(EnergyOffer energyOffer) {
+    public synchronized void addEnergyOffer(RemoteEnergyOffer energyOffer) {
         pq.add(energyOffer);
     }
 

@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.EnergyOffer;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -45,13 +46,13 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
         ACLMessage reply = myAgent.receive(mt);
         if (reply != null) {
             // Reply received
-            System.out.println("got an EnergyOffer: "+reply.getContent());
+            System.out.println("got an RemoteEnergyOffer: "+reply.getContent());
             if (reply.getPerformative() == ACLMessage.PROPOSE) {
                 // This is an offer
-                double energy = Double.parseDouble(reply.getContent());
+                EnergyOffer energyOffer = EnergyOffer.deserialize(reply.getContent());
 
-                //Store the EnergyOffer in the priorityQueue
-                buyEnergy.addEnergyOffer(new EnergyOffer(reply.getSender(), energy));
+                //Store the RemoteEnergyOffer in the priorityQueue
+                buyEnergy.addEnergyOffer(new RemoteEnergyOffer(reply.getSender(), energyOffer));
             }
         }
         else {

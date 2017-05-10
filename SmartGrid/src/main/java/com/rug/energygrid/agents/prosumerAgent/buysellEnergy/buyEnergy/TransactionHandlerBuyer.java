@@ -12,11 +12,11 @@ import jade.lang.acl.MessageTemplate;
 public class TransactionHandlerBuyer extends Behaviour{
     BuyEnergy buyEnergy;
     double energyToBeBought;
-    EnergyOffer currentOffer;
+    RemoteEnergyOffer currentOffer;
     private MessageTemplate mt; // The template to receive replies
     private boolean finished = false;
 
-    public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, double energyToBeBought, EnergyOffer currentOffer) {
+    public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, double energyToBeBought, RemoteEnergyOffer currentOffer) {
         super(parent);
         this.buyEnergy = buyEnergy;
         this.energyToBeBought = energyToBeBought;
