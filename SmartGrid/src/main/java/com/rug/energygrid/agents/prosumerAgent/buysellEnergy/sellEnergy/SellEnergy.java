@@ -1,6 +1,15 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
+import com.rug.energygrid.agents.Time.TimerComConstants;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
+import jade.lang.acl.ACLMessage;
+
+import java.io.Serializable;
 
 /**
  * Created by thijs on 2-5-17.
@@ -34,6 +43,35 @@ public class SellEnergy {
         double soldEnergy = Math.min(prosumerAgent.getCurEnergy(), energyOffer);
         prosumerAgent.subtractCurEnergy(soldEnergy);
         return soldEnergy;
+    }
+
+    public void sellSurplussEnergy() {
+        double energy = prosumerAgent.getCurEnergy();
+        if (energy > 0) {
+            EnergyOffer offer = new EnergyOffer(energy);
+            broadCastOffer(offer);
+        }
+    }
+
+    public void broadCastOffer(EnergyOffer offer) {
+        DFAgentDescription template = new DFAgentDescription();
+        ServiceDescription sd = new ServiceDescription();
+        sd.setType(BuySellComConstants.CONSUMER_SD);
+        template.addServices(sd);
+
+        ACLMessage energyOffer = new ACLMessage(ACLMessage.PROPOSE);
+        energyOffer.setConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
+        energyOffer.setContent(offer.serialize());
+        try {
+            DFAgentDescription[] result = DFService.search(prosumerAgent, template);
+            for (int i = 0; i < result.length; ++i) {
+                energyOffer.addReceiver(result[i].getName());
+            }
+        }
+        catch (FIPAException fe) {
+            fe.printStackTrace();
+        }
+        prosumerAgent.send(energyOffer);
     }
 
     //This method is called when the agent shutsdown.

@@ -3,6 +3,10 @@ package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
+import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
