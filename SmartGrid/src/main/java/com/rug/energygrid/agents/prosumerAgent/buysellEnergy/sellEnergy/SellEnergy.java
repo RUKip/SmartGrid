@@ -1,6 +1,5 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
-import com.rug.energygrid.agents.Time.TimerComConstants;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.domain.DFService;
@@ -8,8 +7,6 @@ import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
-
-import java.io.Serializable;
 
 /**
  * Created by thijs on 2-5-17.

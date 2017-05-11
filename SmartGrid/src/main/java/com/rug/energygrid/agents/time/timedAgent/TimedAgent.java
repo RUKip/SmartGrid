@@ -1,4 +1,4 @@
-package com.rug.energygrid.agents.Time.TimedAgent;
+package com.rug.energygrid.agents.time.timedAgent;
 
 import jade.core.Agent;
 
@@ -9,7 +9,8 @@ import java.time.Instant;
  * Created by thijs on 9-5-17.
  */
 public abstract class TimedAgent extends Agent {
-    public TimedAgent() {
+    @Override
+    protected void setup() {
         InitiateTimeBhvr itb = new InitiateTimeBhvr(this);
         this.addBehaviour(itb);
     }

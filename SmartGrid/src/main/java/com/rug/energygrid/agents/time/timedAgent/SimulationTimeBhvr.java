@@ -1,4 +1,4 @@
-package com.rug.energygrid.agents.Time.TimedAgent;
+package com.rug.energygrid.agents.time.timedAgent;
 
 import jade.core.behaviours.Behaviour;
 

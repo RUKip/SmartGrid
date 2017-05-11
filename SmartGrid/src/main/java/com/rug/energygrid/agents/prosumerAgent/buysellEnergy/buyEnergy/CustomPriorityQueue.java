@@ -1,5 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.EnergyOffer;
 import jade.core.AID;
 
 import java.util.ArrayList;
@@ -41,8 +42,8 @@ public class CustomPriorityQueue {
         if (energyToBeBought == realOffer.getSellingEnergy()) {
             return realOffer;
         } else {
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(),realOffer.getSellingEnergy()-energyToBeBought));
-            return new RemoteEnergyOffer(realOffer.getAgent(), energyToBeBought);
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getSellingEnergy()-energyToBeBought)));
+            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(energyToBeBought));
         }
     }
 

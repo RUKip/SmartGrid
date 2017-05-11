@@ -1,8 +1,6 @@
-package com.rug.energygrid.agents.Time;
+package com.rug.energygrid.agents.time;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by thijs on 9-5-17.

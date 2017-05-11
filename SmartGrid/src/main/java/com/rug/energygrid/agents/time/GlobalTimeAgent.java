@@ -1,7 +1,7 @@
-package com.rug.energygrid.agents.Time;
+package com.rug.energygrid.agents.time;
 
-import com.rug.energygrid.agents.Time.TimerComConstants;
 import jade.core.Agent;
+import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -21,16 +21,16 @@ public class GlobalTimeAgent extends Agent {
     private Instant realStartTime;
 
     protected void setup() {
+        System.out.println("STringy Simulating from: "+getArguments()[0]+" till: "+getArguments()[1]+" with speedup: "+getArguments()[2]);
         startSimulationTime = Instant.parse((String) getArguments()[0]);
         endSimulationTime = Instant.parse((String) getArguments()[1]);
         speedup = Integer.parseInt((String) getArguments()[2]);
         System.out.println("Simulating from: "+startSimulationTime+" till: "+endSimulationTime+" with speedup: "+speedup);
-        try {
-            //wait untill all other agents registerd in the yellow pages.
-            wait(TimerComConstants.YELLOW_PAGES_REGISTER_WAIT_TIME);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        //wait untill all other agents registerd in the yellow pages.
+        System.out.println("start waiting");
+        this.doWait(TimerComConstants.YELLOW_PAGES_REGISTER_WAIT_TIME);
+        System.out.println("done waiting: "+ Instant.now());
         sendGlobalTime();
     }
 
@@ -55,6 +55,7 @@ public class GlobalTimeAgent extends Agent {
         timeMessage.setContent(TimerComConstants.timeMessageSerialize(realStartTime, startSimulationTime, endSimulationTime, speedup));
         timeMessage.setConversationId(TimerComConstants.CONVERSATION_ID);
         this.send(timeMessage);
+        System.out.println("sending message");
         this.doDelete();
     }
 }

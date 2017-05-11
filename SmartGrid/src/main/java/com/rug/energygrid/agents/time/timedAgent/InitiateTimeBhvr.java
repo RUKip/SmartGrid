@@ -1,6 +1,6 @@
-package com.rug.energygrid.agents.Time.TimedAgent;
+package com.rug.energygrid.agents.time.timedAgent;
 
-import com.rug.energygrid.agents.Time.TimerComConstants;
+import com.rug.energygrid.agents.time.TimerComConstants;
 import jade.core.behaviours.Behaviour;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -31,17 +31,19 @@ public class InitiateTimeBhvr extends Behaviour{
 
     private void addToYellowPages() {
         // Register the agent as a consumer
+        System.out.println(timedAgent.getAID().getName());
         dfd = new DFAgentDescription();
-        dfd.setName(myAgent.getAID());
+        dfd.setName(timedAgent.getAID());
         sd = new ServiceDescription();
         sd.setType(TimerComConstants.TIMER_SD);
-        sd.setName("TimedAgent");
+        sd.setName("timedAgent");
         dfd.addServices(sd);
         try {
-            DFService.register(myAgent, dfd);
+            DFService.register(timedAgent, dfd);
         } catch (FIPAException fe) {
             fe.printStackTrace();
         }
+        System.out.println("ready for time message: "+ Instant.now());
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.google.gson.Gson;
-import com.rug.energygrid.JSON.JSON_Array_Group;
 import com.rug.energygrid.JSON.JSON_Deserializer;
-import com.rug.energygrid.agents.Time.TimedAgent.TimedAgent;
+import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;

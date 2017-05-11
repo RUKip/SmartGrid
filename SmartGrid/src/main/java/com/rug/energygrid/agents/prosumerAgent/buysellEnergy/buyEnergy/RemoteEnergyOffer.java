@@ -15,6 +15,10 @@ public class RemoteEnergyOffer {
         this.energyOffer = energyOffer;
     }
 
+    public double getSellingEnergy(){
+        return energyOffer.getSellingEnergy();
+    }
+
     //Calculates what is the max energy that can be sold to this buyer
     public double calcEnergyToBeBought(double neededEnergy) {
         return energyOffer.getSellingEnergy() <= neededEnergy ? energyOffer.getSellingEnergy() : neededEnergy;
