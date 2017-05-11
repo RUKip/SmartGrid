@@ -8,7 +8,9 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
+import java.time.Duration;
 import java.time.Instant;
+import java.util.Iterator;
 
 /**
  * Created by thijs on 9-5-17.
@@ -21,16 +23,12 @@ public class GlobalTimeAgent extends Agent {
     private Instant realStartTime;
 
     protected void setup() {
-        System.out.println("STringy Simulating from: "+getArguments()[0]+" till: "+getArguments()[1]+" with speedup: "+getArguments()[2]);
         startSimulationTime = Instant.parse((String) getArguments()[0]);
         endSimulationTime = Instant.parse((String) getArguments()[1]);
         speedup = Integer.parseInt((String) getArguments()[2]);
-        System.out.println("Simulating from: "+startSimulationTime+" till: "+endSimulationTime+" with speedup: "+speedup);
 
         //wait untill all other agents registerd in the yellow pages.
-        System.out.println("start waiting");
         this.doWait(TimerComConstants.YELLOW_PAGES_REGISTER_WAIT_TIME);
-        System.out.println("done waiting: "+ Instant.now());
         sendGlobalTime();
     }
 
@@ -44,6 +42,7 @@ public class GlobalTimeAgent extends Agent {
         ACLMessage timeMessage = new ACLMessage(ACLMessage.INFORM);
         try {
             DFAgentDescription[] result = DFService.search(this, template);
+            System.out.println("Amount of timed agents: "+result.length);
             for (int i = 0; i < result.length; ++i) {
                 timeMessage.addReceiver(result[i].getName());
             }
@@ -55,7 +54,13 @@ public class GlobalTimeAgent extends Agent {
         timeMessage.setContent(TimerComConstants.timeMessageSerialize(realStartTime, startSimulationTime, endSimulationTime, speedup));
         timeMessage.setConversationId(TimerComConstants.CONVERSATION_ID);
         this.send(timeMessage);
-        System.out.println("sending message");
+        printSimulationMessage(realStartTime, startSimulationTime, endSimulationTime, speedup);
         this.doDelete();
+    }
+
+    private void printSimulationMessage(Instant realStartTime, Instant startSimulationTime, Instant endSimulationTime, int speedup) {
+        Duration realSimulationDuration = Duration.between(startSimulationTime, endSimulationTime).dividedBy(speedup);
+        System.out.println("Simulating from: "+startSimulationTime+" till: "+endSimulationTime+" with speedup: "+speedup);
+        System.out.println("Simulation takes: " +realSimulationDuration.getSeconds()+ "s, from: "+ realStartTime+" till: " + realStartTime.plus(realSimulationDuration));
     }
 }

@@ -1,15 +1,16 @@
 package com.rug.energygrid.agents.time.timedAgent;
 
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import com.rug.energygrid.agents.time.TimerComConstants;
+import com.rug.energygrid.agents.time.TimingException;
 import jade.core.behaviours.Behaviour;
-import jade.domain.DFService;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jdk.nashorn.internal.runtime.Timing;
 
 import java.time.Instant;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Created by thijs on 9-5-17.
@@ -19,7 +20,6 @@ public class InitiateTimeBhvr extends Behaviour{
     private boolean timeReceived = false;
     TimedAgent timedAgent;
 
-    DFAgentDescription dfd;
     ServiceDescription sd;
 
 
@@ -30,20 +30,11 @@ public class InitiateTimeBhvr extends Behaviour{
     }
 
     private void addToYellowPages() {
-        // Register the agent as a consumer
-        System.out.println(timedAgent.getAID().getName());
-        dfd = new DFAgentDescription();
-        dfd.setName(timedAgent.getAID());
+        // Register the agent as a Timed instance
         sd = new ServiceDescription();
         sd.setType(TimerComConstants.TIMER_SD);
         sd.setName("timedAgent");
-        dfd.addServices(sd);
-        try {
-            DFService.register(timedAgent, dfd);
-        } catch (FIPAException fe) {
-            fe.printStackTrace();
-        }
-        System.out.println("ready for time message: "+ Instant.now());
+        timedAgent.addService(sd);
     }
 
     @Override
@@ -53,6 +44,11 @@ public class InitiateTimeBhvr extends Behaviour{
             // Reply received
             System.out.println("got an timedMessage: "+timeMessage.getContent());
             TimerComConstants.TimeMessageValues tmv = TimerComConstants.timeMessageDeserialize(timeMessage.getContent());
+            try {
+                checkStartTime(tmv.startTime);
+            } catch (TimingException e) {
+                e.printStackTrace();
+            }
             InitiateSimulationTimeBehaviour(tmv.startTime,tmv.startSimulationTime,tmv.endSimulationTime,tmv.speedup);
             timeReceived = true;
         }
@@ -66,9 +62,20 @@ public class InitiateTimeBhvr extends Behaviour{
         timedAgent.addBehaviour(stb);
     }
 
+    //Check if the current time is before the start time.
+    private void checkStartTime(Instant startTime) throws TimingException{
+        if (!startTime.isAfter(Instant.now())) {
+            throw new TimingException();
+        }
+    }
+
     @Override
     public boolean done() {
-        dfd.removeServices(sd);
-        return timeReceived;
+        if (timeReceived) {
+            timedAgent.removeService(sd);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
