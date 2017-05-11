@@ -26,7 +26,7 @@ public class ProsumerAgent extends TimedAgent {
     private BuyEnergy buyEnergy;
     private SellEnergy sellEnergy;
     private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, TODO: check if this is unique as identifier
-    private List<Cable> connectedCables = new ArrayList<>();
+    private List<Cable> allCables = new ArrayList<>();
     private List<EnergyProducer> energyProducers = new ArrayList<>();
 
     @Override
@@ -87,13 +87,8 @@ public class ProsumerAgent extends TimedAgent {
     private void parseJSON(){
         JSON_Deserializer deserializer = new JSON_Deserializer();
         //TODO: This can be done quicker maybe?? Now each agent filters out his elements but we could also choose to generate different .json files with as name the agents identifier
-        List<Cable> allCables = deserializer.getCables();
-        List<EnergyProducer> allEnergyProducers = deserializer.getEnergyProducers();
-        for(Cable c : allCables){
-            if(c.getConnectedNode() == this.getLocalName() || c.getOriginNode() == this.getLocalName()){
-                this.connectedCables.add(c);
-            }
-        }
+        allCables = deserializer.getCables();
+        List<EnergyProducer> allEnergyProducers = deserializer.getEnergyProducers(this.getLocalName());
         for(EnergyProducer e : allEnergyProducers){
             System.out.println(e.toString());
            //TODO: still have to implement and decide if we are going to put in Agent name in the list of energyproducers or each a file (Has to be done in JsonDeserializer

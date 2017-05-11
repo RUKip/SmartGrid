@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class JSON_Deserializer {
 
-    private List<Cable> cables;
-    private List<EnergyProducer> energyProducers = new ArrayList<>();
+    private JSON_Array_Group cableGroup;
+    private JSON_Array_Group energyProducerGroup;
 
     public JSON_Deserializer(){
         deserialize();
@@ -36,10 +36,10 @@ public class JSON_Deserializer {
             for(JSON_Array_Group group : groups) {
                switch (group.getName()) {
                    case ConstantsJSON.CABLE_LIST_NAME:
-                       cables = gson.fromJson(group.getGroup().toString(), new TypeToken<List<Cable>>() {}.getType()); //TODO: check this another time i think im kinda doing something hacky here
+                       cableGroup = group;
                        break;
                    case ConstantsJSON.EP_LIST_NAME:
-                       deserializeEP(group);
+                       energyProducerGroup = group;
                        break;
                }
             }
@@ -48,35 +48,44 @@ public class JSON_Deserializer {
         }
     }
 
-    private void deserializeEP(JSON_Array_Group group){
+
+    private List<Cable> deserializeCables(){
         Gson gson = new Gson();
-        System.out.println(group.getGroup().toString());
-        List<JSON_Array_Group> agentGroups = gson.fromJson(group.getGroup().toString(), new TypeToken<List<JSON_Array_Group>>() {}.getType());
+        List<Cable> cables;
+        cables = gson.fromJson(cableGroup.getGroup().toString(), new TypeToken<List<Cable>>() {}.getType());
+        return cables;
+    }
+
+
+    private List<EnergyProducer> deserializeEP(String agentName){
+        Gson gson = new Gson();
+        List<EnergyProducer> energyProducers = new ArrayList<>();
+
+        List<JSON_Array_Group> agentGroups = gson.fromJson(energyProducerGroup.getGroup().toString(), new TypeToken<List<JSON_Array_Group>>() {}.getType());
         for(JSON_Array_Group agentGroup : agentGroups){
-            System.out.println("    " + agentGroup.getName());
-            System.out.println("    " + agentGroup.getGroup().toString());
+            if(!agentGroup.getName().equals(agentName)) continue;
             List<JSON_Array_Group> energyGroups = gson.fromJson(agentGroup.getGroup().toString(), new TypeToken<List<JSON_Array_Group>>() {}.getType());
             for(JSON_Array_Group energyGroup : energyGroups) {
-                System.out.println("         " + energyGroup.getName());
                 switch (energyGroup.getName()){
                     case ConstantsJSON.SOLARPANEL_LIST_NAME:
-                        List<SolarPanel> solarPanels = gson.fromJson(group.getGroup().toString(), new TypeToken<List<SolarPanel>>() {}.getType());
+                        List<SolarPanel> solarPanels = gson.fromJson(energyGroup.getGroup().toString(), new TypeToken<List<SolarPanel>>() {}.getType());
                         energyProducers.addAll(solarPanels);
                         break;
                     case ConstantsJSON.WINMILL_LIST_NAME:
-                        List<WindMill> windMills = gson.fromJson(group.getGroup().toString(), new TypeToken<List<WindMill>>() {}.getType());
+                        List<WindMill> windMills = gson.fromJson(energyGroup.getGroup().toString(), new TypeToken<List<WindMill>>() {}.getType());
                         energyProducers.addAll(windMills);
                         break;
                 }
             }
         }
+        return energyProducers;
     }
 
     public List<Cable> getCables(){
-        return this.cables;
+        return deserializeCables();
     }
 
-    public List<EnergyProducer> getEnergyProducers(){
-        return this.energyProducers;
+    public List<EnergyProducer> getEnergyProducers(String agentName){
+        return deserializeEP(agentName);
     }
 }

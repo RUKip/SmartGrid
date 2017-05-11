@@ -90,5 +90,11 @@ public class Initializer {
         for(Cable c : deserializer.getCables()) {
             System.out.println("The cable: " + c.getOriginNode() + " to " + c.getConnectedNode() );
         }
+
+        System.out.println("The energy producers of 9471KN24 are:");
+        List<EnergyProducer> energyProducers = deserializer.getEnergyProducers("9471KN24");
+        for(EnergyProducer e : energyProducers){
+            System.out.println(e);
+        }
     }
 }
