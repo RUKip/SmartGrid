@@ -15,30 +15,13 @@ import jade.lang.acl.MessageTemplate;
  * Created by thijs on 2-5-17.
  */
 public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
-    MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
-    BuyEnergy buyEnergy;
-    DFAgentDescription dfd;
-    ServiceDescription sd;
+    private MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
+    private BuyEnergy buyEnergy;
+    private ServiceDescription sd;
 
     public MessageHandlerBuyerBehaviour(Agent myAgent, BuyEnergy buyEnergy) {
         super(myAgent);
         this.buyEnergy = buyEnergy;
-        registerConsumer();
-    }
-
-    private void registerConsumer() {
-        // Register the agent as a consumer
-        dfd = new DFAgentDescription();
-        dfd.setName(myAgent.getAID());
-        sd = new ServiceDescription();
-        sd.setType(BuySellComConstants.CONSUMER_SD);
-        sd.setName("Buyers");
-        dfd.addServices(sd);
-        try {
-            DFService.register(myAgent, dfd);
-        } catch (FIPAException fe) {
-            fe.printStackTrace();
-        }
     }
 
     @Override
@@ -58,10 +41,5 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
         else {
             block();
         }
-    }
-
-    //This method is called when the agent shutsdown.
-    public void takeDown() {
-        dfd.removeServices(sd);
     }
 }

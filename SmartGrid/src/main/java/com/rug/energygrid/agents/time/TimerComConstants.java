@@ -6,8 +6,8 @@ import java.time.Instant;
  * Created by thijs on 9-5-17.
  */
 public class TimerComConstants {
-    public static final int YELLOW_PAGES_REGISTER_WAIT_TIME = 5000;
-    public static final int START_SIMULATION_WAIT_TIME = 5000;
+    public static final int YELLOW_PAGES_REGISTER_WAIT_TIME = 1000;
+    public static final int START_SIMULATION_WAIT_TIME = 1000;
 
     public static final String TIMER_SD = "TimerSd";
     public static final String CONVERSATION_ID = "InitiateTimerMessage";
@@ -24,7 +24,7 @@ public class TimerComConstants {
         tmv.startTime = Instant.parse(parts[0]);
         tmv.startSimulationTime = Instant.parse(parts[1]);
         tmv.endSimulationTime = Instant.parse(parts[2]);
-        tmv.speedup = Integer.parseInt(parts[4]);
+        tmv.speedup = Integer.parseInt(parts[3]);
         return tmv;
     }
 

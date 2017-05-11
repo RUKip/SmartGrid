@@ -7,3 +7,5 @@ MTPs-Main-Container.txt
 .idea/libraries/*
 .idea/inspectionProfiles
 
+*.json
+

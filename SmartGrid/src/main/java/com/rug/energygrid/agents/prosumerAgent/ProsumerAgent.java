@@ -31,6 +31,7 @@ public class ProsumerAgent extends TimedAgent {
 
     @Override
     protected void setup() {
+        super.setup();
         final double startEnergy = Double.parseDouble((String) this.getArguments()[0]);
         System.out.println("name: "+getAID().getName()+" energy: "+ startEnergy);
         curEnergy = startEnergy;

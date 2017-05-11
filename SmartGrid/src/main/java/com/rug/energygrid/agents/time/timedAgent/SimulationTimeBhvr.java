@@ -34,9 +34,11 @@ public class SimulationTimeBhvr extends Behaviour {
         Instant curStep = Instant.now();
         if (prevStep.isBefore(curStep)) {
             Duration passedTime = Duration.between(prevStep, curStep);
-            passedTime.multipliedBy(speedup);
-            simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
+            passedTime = passedTime.multipliedBy(speedup);
+            simulationTime = simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
+            //System.out.println("simulating: "+startSimulationTime +", "+ simulationTime +", "+ endSimulationTime+ " - "+ passedTime);
             timedAgent.timedEvent(curStep, passedTime);
+            prevStep = curStep;
         }
     }
     //To get the middle of the step do simulationTime.minus(passedTime/2);
@@ -44,7 +46,12 @@ public class SimulationTimeBhvr extends Behaviour {
     @Override
     //The whole simulation is finished. so the agent can stop.
     public boolean done() {
-        timedAgent.doDelete();
-        return !simulationTime.isBefore(endSimulationTime);
+        if (!simulationTime.isBefore(endSimulationTime)) {
+            System.out.println("Simulation done, shutting down");
+            timedAgent.doDelete();
+            return true;
+        } else {
+            return false;
+        }
     }
 }
