@@ -14,9 +14,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ruben on 08-May-17.
- */
+//Class used to generate agents to JSON, if you don't like to type it by hand
 public class Initializer {
 
     private Weather weather;
@@ -81,14 +79,20 @@ public class Initializer {
         }
 
 
-
-
-        //below is for Testing purposes TODO: remove if done testing
-        JSON_Deserializer deserializer = new JSON_Deserializer();
-        System.out.println("The cables are:");
-        List<Cable> cables = deserializer.getCables();
-        for(Cable c : deserializer.getCables()) {
-            System.out.println("The cable: " + c.getOriginNode() + " to " + c.getConnectedNode() );
-        }
+//
+//
+//        //below is for Testing purposes TODO: remove if done testing
+//        JSON_Deserializer deserializer = new JSON_Deserializer();
+//        System.out.println("The cables are:");
+//        List<Cable> cables = deserializer.getCables();
+//        for(Cable c : deserializer.getCables()) {
+//            System.out.println("The cable: " + c.getOriginNode() + " to " + c.getConnectedNode() );
+//        }
+//
+//        System.out.println("The energy producers of 9471KN24 are:");
+//        List<EnergyProducer> energyProducers = deserializer.getEnergyProducers("9471KN24");
+//        for(EnergyProducer e : energyProducers){
+//            System.out.println(e);
+//        }
     }
 }

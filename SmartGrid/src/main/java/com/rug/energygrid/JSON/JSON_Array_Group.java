@@ -11,7 +11,6 @@ import java.util.List;
 public class JSON_Array_Group<T> {
         private String name;
         private List<T> list;
-        private String parameterType;
 
         public JSON_Array_Group(String n, List l){
             this.name = n;
