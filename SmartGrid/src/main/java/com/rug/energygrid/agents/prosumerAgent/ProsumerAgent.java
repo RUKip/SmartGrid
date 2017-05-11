@@ -1,11 +1,14 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
+import com.jcraft.jsch.HASH;
 import com.rug.energygrid.JSON.JSON_Deserializer;
+import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
 import com.rug.energygrid.energyProducers.EnergyProducer;
+import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.util.Logger;
 
 
@@ -32,11 +35,11 @@ public class ProsumerAgent extends TimedAgent {
     @Override
     protected void setup() {
         final double startEnergy = Double.parseDouble((String) this.getArguments()[0]);
-        System.out.println("name: "+getAID().getName()+" energy: "+ startEnergy);
+        System.out.println("name: "+getAID().getName()+" energy: "+ startEnergy); //TODO: make log statement
         curEnergy = startEnergy;
         buyEnergy = new BuyEnergy(this);
         sellEnergy = new SellEnergy(this);
-        parseJSON();
+        parseJSON(); //TODO: if no JSON file exists then run initializer
         logger.log(Logger.SEVERE, "heftuuuuug: "+ this.getAID().getLocalName());
     }
 
@@ -88,5 +91,6 @@ public class ProsumerAgent extends TimedAgent {
         JSON_Deserializer deserializer = new JSON_Deserializer();
         allCables = deserializer.getCables();
         energyProducers = deserializer.getEnergyProducers(this.getLocalName());
+        routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
     }
 }
