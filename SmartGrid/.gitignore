@@ -9,3 +9,5 @@ MTPs-Main-Container.txt
 
 *.json
 
+logs/*
+

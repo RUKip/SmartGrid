@@ -7,6 +7,6 @@ import java.time.Instant;
  * Created by s2752077 on 5/4/17.
  */
 public interface EnergyProducer {
-    double generateMaxEnergy(Instant start, Duration duration);
+    double generateMaxEnergy(Instant end, Duration duration);
     String getClassName();
 }

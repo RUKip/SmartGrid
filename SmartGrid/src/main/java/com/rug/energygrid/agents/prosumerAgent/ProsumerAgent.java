@@ -1,14 +1,15 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.jcraft.jsch.HASH;
 import com.rug.energygrid.JSON.JSON_Deserializer;
-import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
+import com.rug.energygrid.agents.time.StaticTest;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
+import com.rug.energygrid.energyConsumers.EnergyConsumer;
+import com.rug.energygrid.energyConsumers.GeneralEnergyConsumer;
 import com.rug.energygrid.energyProducers.EnergyProducer;
-import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import com.rug.energygrid.logging.LocalLogger;
 import jade.util.Logger;
 
 
@@ -22,26 +23,28 @@ import java.util.List;
  * Created by thijs on 28-4-17.
  */
 public class ProsumerAgent extends TimedAgent {
-    private final Logger logger = jade.util.Logger.getMyLogger(this.getClass().getName());
-
+    private static final Logger logger = LocalLogger.getLogger();
     private double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
     private double realEnergy = 0; //This is the real amount of energy (if for example energy is sold it will be subtracted from this.
     private BuyEnergy buyEnergy;
     private SellEnergy sellEnergy;
     private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, TODO: check if this is unique as identifier
     private List<Cable> allCables;
-    private List<EnergyProducer> energyProducers;
+    private List<EnergyProducer> energyProducers; //TODO: change To maxEnergy producers
+    //TODO: add Adjustable Energy Producer list
+    private List<EnergyConsumer> energyConsumers;
 
     @Override
     protected void setup() {
         super.setup();
-        final double startEnergy = Double.parseDouble((String) this.getArguments()[0]);
-        System.out.println("name: "+getAID().getName()+" energy: "+ startEnergy); //TODO: make log statement
-        curEnergy = startEnergy;
+        //logger = LocalLogger.getLogger();
+        logger.info("name: "+getAID().getName()+" is alive!"); //TODO: make log statement
         buyEnergy = new BuyEnergy(this);
         sellEnergy = new SellEnergy(this);
         parseJSON(); //TODO: if no JSON file exists then run initializer
-        logger.log(Logger.SEVERE, "heftuuuuug: "+ this.getAID().getLocalName());
+
+        energyConsumers = new ArrayList<>(); //TODO: add this to JSON
+        energyConsumers.add(new GeneralEnergyConsumer());
     }
 
     //Used when a behaviour sold or bought energy, the real energy left in the system has to be updated.
@@ -52,7 +55,17 @@ public class ProsumerAgent extends TimedAgent {
 
     @Override
     public void timedEvent(Instant end, Duration passedTime) {
-        //TODO: do stuff add timed events.
+        double newEnergy = 0;
+        for (EnergyProducer ep : energyProducers) {
+            newEnergy += ep.generateMaxEnergy(end, passedTime);
+        }
+
+        for (EnergyConsumer ec : energyConsumers) {
+            newEnergy -= ec.consumeEnergy(end, passedTime);
+        }
+
+        logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
+        addCurEnergy(newEnergy);
     }
 
     @Override
@@ -63,11 +76,20 @@ public class ProsumerAgent extends TimedAgent {
 
     public synchronized void addCurEnergy(double energy) {
         curEnergy += energy;
+        if (curEnergy > 0) {
+            sellEnergy.sellSurplussEnergy();
+        } else {
+            buyEnergy.refillEnergy();
+        }
     }
 
     public synchronized void subtractCurEnergy(double energy) {
         curEnergy -= energy;
-        buyEnergy.refillEnergy();
+        if (curEnergy > 0) {
+            sellEnergy.sellSurplussEnergy();
+        } else {
+            buyEnergy.refillEnergy();
+        }
     }
 
     public synchronized double getCurEnergy() {
@@ -92,6 +114,6 @@ public class ProsumerAgent extends TimedAgent {
         JSON_Deserializer deserializer = new JSON_Deserializer();
         allCables = deserializer.getCables();
         energyProducers = deserializer.getEnergyProducers(this.getLocalName());
-        routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
+        //routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables); TODO: commented out since it gave errors.
     }
 }

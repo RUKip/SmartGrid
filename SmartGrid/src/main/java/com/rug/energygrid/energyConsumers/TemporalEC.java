@@ -9,10 +9,10 @@ public abstract class TemporalEC extends ConstantEC {
     private LocalDate lastUsed;
 
     @Override
-    public double consumeEnergy(Instant start, Duration duration) {
-        LocalTime localStart = LocalTime.from(start);
+    public double consumeEnergy(Instant end, Duration duration) {
+        LocalTime localStart = LocalTime.from(end.minus(duration));
         if (localStart.isAfter(startUsing()) && localStart.isBefore(stopUsing())) {
-            LocalDate localDate = LocalDate.from(start);
+            LocalDate localDate = LocalDate.from(end.minus(duration));
             if (localDate.isEqual(lastUsed)) {
                 return energyConsumption();
             }

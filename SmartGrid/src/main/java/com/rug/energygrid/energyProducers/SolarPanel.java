@@ -15,7 +15,7 @@ public class SolarPanel extends WeatherDependantEP{
     }
 
     @Override
-    public double generateMaxEnergy(Instant start, Duration duration) {
+    public double generateMaxEnergy(Instant end, Duration duration) {
         return 10;
     }
 }

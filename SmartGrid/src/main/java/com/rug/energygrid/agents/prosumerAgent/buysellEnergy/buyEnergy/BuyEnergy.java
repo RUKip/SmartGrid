@@ -44,8 +44,8 @@ public class BuyEnergy {
                 prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, energyToBeBought, energyOffer));
             } else {
                 //TODO: add buying energy from the 'big guys'
-                System.out.println("I have to buy energy at the big guys");
-                prosumerAgent.addCurEnergy(prosumerAgent.getCurEnergy()*-1);
+                //System.out.println("I have to buy energy at the big guys");
+                //prosumerAgent.addCurEnergy(prosumerAgent.getCurEnergy()*-1);
             }
         }
     }

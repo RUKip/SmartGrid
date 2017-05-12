@@ -15,7 +15,7 @@ public class Generator implements AdjustableEP {
     }
 
     @Override
-    public double generateEnergy(Instant start, Duration duration, double energyNeeded) {
+    public double generateEnergy(Instant end, Duration duration, double energyNeeded) {
         return 0;
     }
 }

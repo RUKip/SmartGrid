@@ -9,8 +9,8 @@ import java.time.Instant;
 public abstract class ConstantEC implements EnergyConsumer {
 
     @Override
-    public double consumeEnergy(Instant start, Duration duration) {
-        return energyConsumption();
+    public double consumeEnergy(Instant end, Duration duration) {
+        return energyConsumption()*duration.getSeconds();
     }
 
     public abstract double energyConsumption();
