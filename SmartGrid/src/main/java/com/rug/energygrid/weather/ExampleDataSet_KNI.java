@@ -13,7 +13,7 @@ public class ExampleDataSet_KNI extends Weather {
 
     public ExampleDataSet_KNI(){
         super();
-        this.dataSet = readDataSet("weatherDataKNI.txt", ",", " ", "-"); //This is done because of Constant set
+        this.dataSet = readDataSet("weatherDataKNI.txt", ",", " ", "-"); //This is done because of Constant set //TODO: this can be speed up, now we read/parse everytime we create a document, but we could also read once and copy the data for each weather
     }
 
     //These methods change depending on constant set or API

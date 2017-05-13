@@ -10,6 +10,8 @@ import com.rug.energygrid.energyConsumers.EnergyConsumer;
 import com.rug.energygrid.energyConsumers.GeneralEnergyConsumer;
 import com.rug.energygrid.energyProducers.EnergyProducer;
 import com.rug.energygrid.logging.LocalLogger;
+import com.rug.energygrid.weather.ExampleDataSet_KNI;
+import com.rug.energygrid.weather.Weather;
 import jade.util.Logger;
 
 
@@ -33,6 +35,7 @@ public class ProsumerAgent extends TimedAgent {
     private List<EnergyProducer> energyProducers; //TODO: change To maxEnergy producers
     //TODO: add Adjustable Energy Producer list
     private List<EnergyConsumer> energyConsumers;
+    private Weather usedWeather = new ExampleDataSet_KNI();
 
     @Override
     protected void setup() {
@@ -114,6 +117,9 @@ public class ProsumerAgent extends TimedAgent {
         JSON_Deserializer deserializer = new JSON_Deserializer();
         allCables = deserializer.getCables();
         energyProducers = deserializer.getEnergyProducers(this.getLocalName());
+        for(EnergyProducer e : energyProducers){
+            e.setWeather(usedWeather);
+        }
         //routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables); TODO: commented out since it gave errors.
     }
 }

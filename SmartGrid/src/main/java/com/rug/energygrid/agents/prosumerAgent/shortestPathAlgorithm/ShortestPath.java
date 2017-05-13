@@ -60,7 +60,7 @@ public class ShortestPath {
 
         //step 3 calculate the shortest distance compared to all the neighbours(start of loop)
 
-
+        //TODO: set all nodes connected to value of connection + current node(over writting all others), then pick the smallest value of those, then mark old node as visited and dont pick/change anymore ,repeat.
 
         //We just convert or calculated graph to one with only a double as cost
         HashMap<String,Double> finalGraph = new HashMap<>();

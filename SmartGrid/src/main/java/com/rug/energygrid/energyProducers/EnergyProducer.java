@@ -1,5 +1,7 @@
 package com.rug.energygrid.energyProducers;
 
+import com.rug.energygrid.weather.Weather;
+
 import java.time.Duration;
 import java.time.Instant;
 
@@ -8,5 +10,5 @@ import java.time.Instant;
  */
 public interface EnergyProducer {
     double generateMaxEnergy(Instant end, Duration duration);
-    String getClassName();
+    void setWeather(Weather w);
 }

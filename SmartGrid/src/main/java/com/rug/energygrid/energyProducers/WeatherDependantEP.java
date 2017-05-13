@@ -11,6 +11,8 @@ public abstract class WeatherDependantEP implements EnergyProducer{
     }
 
     @Override
-    public String getClassName(){ return getClass().getName();}
+    public void setWeather(Weather w){
+        this.weather = w;
+    }
 
 }
