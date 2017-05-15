@@ -39,7 +39,7 @@ public class ShortestPath {
         PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>(new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
-                return (int)(o1.getCost()-o2.getCost()); //TODO: is vulnerable to Double to Integer conversion, find solution
+                return (int)(o1.getCost()-o2.getCost()); //TODO: is vulnerable to Double to Integer conversion, solution just check then return 0/1/-1 yourself
             }
         }); //TODO: smallest node should be on top
 
@@ -55,12 +55,25 @@ public class ShortestPath {
         sNode.setCost(0.0);
         graph.put(startingNode, sNode);
 
-        //step 2 set current node the start node
-        Node currentNode =  unvisitedNodes.poll();
+        //step 2, setting current node will be the first poll because cost is 0.0
+        Node currentNode;
 
         //step 3 calculate the shortest distance compared to all the neighbours(start of loop)
 
-        //TODO: set all nodes connected to value of connection + current node(over writting all others), then pick the smallest value of those, then mark old node as visited and dont pick/change anymore ,repeat.
+        //TODO: test
+        while((currentNode = unvisitedNodes.poll()) != null) {
+            currentNode.setVisited(true);       //here the current node is visited
+            graph.put(currentNode.getName(), currentNode);
+            for (Connection c : currentNode.getConnections()) {
+                if(c.getConnectedNode() == null) continue;
+                Node n = graph.get(c.getConnectedNode().getName());
+                if ((!n.getVisited()) && (n.getCost() > currentNode.getCost() + c.getConnectionCost())) {
+                    n.setCost(currentNode.getCost() + c.getConnectionCost());
+                    unvisitedNodes.add(n); //duplicates can be added but once visited all are visited an thus never become the new current node or updated.
+                }
+
+            }
+        }
 
         //We just convert or calculated graph to one with only a double as cost
         HashMap<String,Double> finalGraph = new HashMap<>();
@@ -73,11 +86,20 @@ public class ShortestPath {
     private class Node{
         private String name;
         private Double cost;
+        private boolean visited = false;
         private List<Connection> connected = new ArrayList<>();
 
         public Node(String n){
             cost = Double.MAX_VALUE;
             name = n;
+        }
+
+        public boolean getVisited(){
+            return visited;
+        }
+
+        public void setVisited(boolean b){
+            this.visited = b;
         }
 
         public String getName(){
