@@ -1,11 +1,16 @@
 package com.rug.energygrid.energyProducers;
 
+import com.rug.energygrid.logging.LocalLogger;
 import com.rug.energygrid.weather.Weather;
+import jade.util.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
 
 public class WindMill extends WeatherDependantEP{
+
+    private static Logger logger = LocalLogger.getLogger();
+
 
     private double airDensity = 1.225;  //airDensity = 1.225; Default because representive of normal airDensity Groningen
     private double areaBlades = (Math.pow((5.5/2),2)*Math.PI); //Default is 5.5 radius because of a smaller wind turbine, The Britwind(Evance)R9000 (same as paper)
@@ -16,7 +21,6 @@ public class WindMill extends WeatherDependantEP{
         super(weather);
     }
 
-    //TODO: implement correctly if needed.
     @Override
     public double generateMaxEnergy(Instant end, Duration duration) {
 
@@ -45,7 +49,7 @@ public class WindMill extends WeatherDependantEP{
 
     private void setEfficiency(double efficiency){
         if(efficiency<0 || efficiency>1){
-            //TODO: LOG wrong efficiency given, has to be between 0 and 1
+            logger.warning("A wind mill efficiency was set to: "+efficiency+" min is 0 and max is 1");
             return;
         }
         this.efficiency = efficiency;

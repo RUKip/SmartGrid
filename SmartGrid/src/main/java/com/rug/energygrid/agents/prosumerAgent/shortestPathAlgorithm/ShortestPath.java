@@ -39,7 +39,13 @@ public class ShortestPath {
         PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>(new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
-                return (int)(o1.getCost()-o2.getCost()); //TODO: is vulnerable to Double to Integer conversion, solution just check then return 0/1/-1 yourself
+                if(o1.getCost()>o2.getCost()){
+                    return 1;
+                } else if(o1.getCost()<o2.getCost()){
+                    return -1;
+                } else {
+                    return 0;
+                }
             }
         }); //TODO: smallest node should be on top
 
@@ -48,8 +54,6 @@ public class ShortestPath {
         }
 
         //We use Dijkstra's algorithm, because its one of the faster path algorithm which has a reasonable understandable implementation, also we want shortest path to all.
-        //TODO: Here calculate the shortest path over the grid
-
         //step 1 set starting node to 0
         Node sNode = graph.get(startingNode);
         sNode.setCost(0.0);
