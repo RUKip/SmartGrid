@@ -1,5 +1,7 @@
 package com.rug.energygrid.energyProducers;
 
+import com.rug.energygrid.weather.Weather;
+
 import java.time.Duration;
 import java.time.Instant;
 
@@ -10,8 +12,8 @@ public class Generator implements AdjustableEP {
     }
 
     @Override
-    public String getClassName() {
-        return getClass().getName();
+    public void setWeather(Weather w) { //TODO: fix
+        return;
     }
 
     @Override

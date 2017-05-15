@@ -10,7 +10,6 @@ public abstract class WeatherDependantEP implements EnergyProducer{
         this.weather = weather;
     }
 
-    @Override
     public void setWeather(Weather w){
         this.weather = w;
     }
