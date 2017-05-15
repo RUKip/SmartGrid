@@ -32,6 +32,7 @@ public class TransactionHandlerBuyer extends Behaviour{
         offer.setConversationId(BuySellComConstants.TRANSACTION);
         offer.setReplyWith("transaction"+System.currentTimeMillis()); // Unique value
         myAgent.send(offer);
+        System.out.println("sending a energyrequest");
         // Prepare the template to get proposals
         mt = MessageTemplate.and(MessageTemplate.MatchConversationId(offer.getConversationId()),
                                  MessageTemplate.MatchInReplyTo(offer.getReplyWith()));

@@ -23,6 +23,7 @@ public class BuyEnergy {
         this.pq = new CustomPriorityQueue(new GreedyComp()); //TODO: add a nice place to set/choose the Comperator
         this.prosumerAgent = prosumerAgent;
         messageHandler = new MessageHandlerBuyerBehaviour(prosumerAgent, this);
+        prosumerAgent.addBehaviour(messageHandler);
         registerConsumer();
         refillEnergy();
     }
@@ -37,6 +38,7 @@ public class BuyEnergy {
 
     public void refillEnergy() {
         while (prosumerAgent.getCurEnergy() < 0) {
+            System.out.println("amount of message: "+pq.getSize());
             if (!pq.isEmpty()) {
                 RemoteEnergyOffer energyOffer = pq.pop(prosumerAgent.getCurEnergy() * -1);
                 double energyToBeBought = energyOffer.calcEnergyToBeBought(prosumerAgent.getCurEnergy() * -1);
@@ -45,7 +47,7 @@ public class BuyEnergy {
             } else {
                 //TODO: add buying energy from the 'big guys'
                 //System.out.println("I have to buy energy at the big guys");
-                //prosumerAgent.addCurEnergy(prosumerAgent.getCurEnergy()*-1);
+                prosumerAgent.addCurEnergy(prosumerAgent.getCurEnergy()*-1);
             }
         }
     }

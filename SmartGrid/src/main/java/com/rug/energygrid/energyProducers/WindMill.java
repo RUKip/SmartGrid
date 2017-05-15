@@ -19,7 +19,7 @@ public class WindMill extends WeatherDependantEP{
     //TODO: implement correctly if needed.
     @Override
     public double generateMaxEnergy(Instant end, Duration duration) {
-        System.out.println("date: "+end.minus(duration.dividedBy(2)));
+
         double windSpeed = weather.getWindSpeed(end.minus(duration.dividedBy(2)));
         double p1 = 0.5*areaBlades*airDensity*(Math.pow(windSpeed,3))*efficiency;
         double watt = Math.min(p1, maxPower);

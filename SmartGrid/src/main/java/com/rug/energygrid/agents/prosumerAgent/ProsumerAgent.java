@@ -67,8 +67,9 @@ public class ProsumerAgent extends TimedAgent {
             newEnergy -= ec.consumeEnergy(end, passedTime);
         }
 
-        logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
         addCurEnergy(newEnergy);
+        System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
+        //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
     }
 
     @Override

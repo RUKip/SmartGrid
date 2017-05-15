@@ -33,11 +33,10 @@ public class SimulationTimeBhvr extends Behaviour {
     public void action() {
         Instant curStep = Instant.now();
         if (prevStep.isBefore(curStep)) {
-            Duration passedTime = Duration.between(prevStep, curStep);
-            passedTime = passedTime.multipliedBy(speedup);
+            Duration passedTime = Duration.between(prevStep, curStep).multipliedBy(speedup);
             simulationTime = simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
             //System.out.println("simulating: "+startSimulationTime +", "+ simulationTime +", "+ endSimulationTime+ " - "+ passedTime);
-            timedAgent.timedEvent(curStep, passedTime);
+            timedAgent.timedEvent(simulationTime, passedTime);
             prevStep = curStep;
         }
     }

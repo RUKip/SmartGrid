@@ -3,6 +3,7 @@ package com.rug.energygrid.weather;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by Ruben on 26-Apr-17.
@@ -28,12 +29,10 @@ public class ExampleDataSet_KNI extends Weather {
     }
 
     //when using data set has to be implemented
-    protected int convertToIntOfDataSet(Instant time){
+    protected int convertToIntOfDataSet(Instant time) {
         LocalDateTime ldt = LocalDateTime.ofInstant(time, ZoneId.systemDefault());
-        String monthAdditive = "", dayAdditive = "";
-        if(ldt.getMonthValue()<10) monthAdditive = "0";
-        if(ldt.getDayOfMonth()<10) dayAdditive = "0";
-        return Integer.valueOf("" + ldt.getYear() + monthAdditive + ldt.getMonthValue() + dayAdditive + ldt.getDayOfMonth());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        return Integer.valueOf(ldt.format(formatter));
     }
 
     //These are the values that have to be set depending on your dataset indexing

@@ -46,6 +46,7 @@ public class SellEnergy {
         double energy = prosumerAgent.getCurEnergy();
         if (energy > 0) {
             EnergyOffer offer = new EnergyOffer(energy);
+            System.out.println("selling: "+ offer.getSellingEnergy());
             broadCastOffer(offer);
         }
     }
@@ -61,8 +62,11 @@ public class SellEnergy {
         energyOffer.setContent(offer.serialize());
         try {
             DFAgentDescription[] result = DFService.search(prosumerAgent, template);
+            System.out.println("message send to: "+result.length);
             for (int i = 0; i < result.length; ++i) {
-                energyOffer.addReceiver(result[i].getName());
+                //To make sure that you don't send offers to yourself
+                if (!result[i].getName().equals(prosumerAgent.getAID()))
+                    energyOffer.addReceiver(result[i].getName());
             }
         }
         catch (FIPAException fe) {
