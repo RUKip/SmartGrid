@@ -18,6 +18,8 @@ public class SimulationTimeBhvr extends Behaviour {
 
     private Instant simulationTime;
 
+    private Duration minimalStepsize = Duration.ofMillis(100);
+
 
     public SimulationTimeBhvr(TimedAgent timedAgent, Instant startTime, Instant startSimulationTime, Instant endSimulationTime, long speedup) {
         this.timedAgent = timedAgent;
@@ -33,12 +35,14 @@ public class SimulationTimeBhvr extends Behaviour {
     public void action() {
         Instant curStep = Instant.now();
         if (prevStep.isBefore(curStep)) {
-            Duration passedTime = Duration.between(prevStep, curStep);
-            passedTime = passedTime.multipliedBy(speedup);
-            simulationTime = simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
-            //System.out.println("simulating: "+startSimulationTime +", "+ simulationTime +", "+ endSimulationTime+ " - "+ passedTime);
-            timedAgent.timedEvent(curStep, passedTime);
-            prevStep = curStep;
+            Duration realPassedTime = Duration.between(prevStep, curStep);
+            if (realPassedTime.compareTo(minimalStepsize) > 0) {
+                Duration passedTime = Duration.between(prevStep, curStep).multipliedBy(speedup);
+                simulationTime = simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
+                //System.out.println("simulating: "+startSimulationTime +", "+ simulationTime +", "+ endSimulationTime+ " - "+ passedTime);
+                timedAgent.timedEvent(simulationTime, passedTime);
+                prevStep = curStep;
+            }
         }
     }
     //To get the middle of the step do simulationTime.minus(passedTime/2);

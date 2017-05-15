@@ -40,4 +40,8 @@ public class RemoteEnergyOffer {
     public boolean equals(Object o){
         return (o instanceof RemoteEnergyOffer && ((RemoteEnergyOffer)o).getAgent().equals(this.getAgent()));
     }
+
+    public boolean equals(RemoteEnergyOffer o){
+        return (o.getAgent().equals(this.getAgent()));
+    }
 }

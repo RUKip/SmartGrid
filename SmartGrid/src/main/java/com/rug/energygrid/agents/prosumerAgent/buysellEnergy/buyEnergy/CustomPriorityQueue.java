@@ -48,14 +48,21 @@ public class CustomPriorityQueue {
     }
 
     //TODO: check if this removes it the right way because of equals override
-    public void add(RemoteEnergyOffer e1) {
-        if (size == 0) return;
-        int pos = 0;
-        RemoteEnergyOffer e2 = queue.get(pos);
-        for (pos = 0; pos < queue.size(); pos++) {
+    private void checkDuplicate(RemoteEnergyOffer e1) {
+        for (int pos = 0; pos < queue.size(); pos++) {
             if (e1.equals(queue.get(pos))) {
                 queue.remove(pos);
-                break;
+                return;
+            }
+        }
+    }
+
+    public void add(RemoteEnergyOffer e1) {
+        checkDuplicate(e1);
+        for (int pos = 0; pos < queue.size(); pos++) {
+            if (comparator.compare(e1, queue.get(pos)) < 0) {
+                queue.add(pos, e1);
+                return;
             }
         }
         queue.add(e1);
@@ -67,6 +74,10 @@ public class CustomPriorityQueue {
 
     public void setComparator(Comparator c){
         this.comparator = c;
+    }
+
+    public int getSize() {
+        return queue.size();
     }
 
 }
