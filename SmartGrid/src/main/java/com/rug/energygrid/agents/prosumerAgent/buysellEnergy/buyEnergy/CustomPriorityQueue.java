@@ -49,7 +49,6 @@ public class CustomPriorityQueue {
 
     //TODO: check if this removes it the right way because of equals override
     private void checkDuplicate(RemoteEnergyOffer e1) {
-        if (size == 0) return;
         for (int pos = 0; pos < queue.size(); pos++) {
             if (e1.equals(queue.get(pos))) {
                 queue.remove(pos);

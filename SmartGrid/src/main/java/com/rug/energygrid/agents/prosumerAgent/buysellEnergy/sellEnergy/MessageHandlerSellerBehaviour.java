@@ -14,8 +14,8 @@ import jade.lang.acl.MessageTemplate;
  * Created by thijs on 2-5-17.
  */
 public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
-    MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchPerformative(ACLMessage.PROPOSE),
-                                                    MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION));
+    MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION),
+                                                        MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
     SellEnergy sellEnergy;
 
     public MessageHandlerSellerBehaviour(Agent myAgent, SellEnergy sellEnergy) {
@@ -25,30 +25,35 @@ public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
 
     @Override
     public void action() {
+        System.out.println(myAgent.getAID().getName()+ " runnninnng " + myAgent.getCurQueueSize());
         ACLMessage msg = myAgent.receive(mtTransaction);
         if (msg != null) {
             System.out.println("got a Message: "+msg.getContent());
-
-            double energy = Double.parseDouble(msg.getContent());
-            ACLMessage reply = msg.createReply();
-
-            switch (sellEnergy.compareDeal(energy)) {
-                case SellEnergy.PERFECT_DEAL:
-                    //Perfect deal
-                    reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    reply.setContent(Double.toString(sellEnergy.reserveEnergy(energy)));
-                    break;
-                case SellEnergy.LESSTHAN_DEAL:
-                    //lessThan deal
-                    reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                    reply.setContent(Double.toString(sellEnergy.reserveEnergy(energy)));
-                    break;
-                case SellEnergy.NO_DEAL:
-                    //no deal
-                    reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
-                    break;
+            if (msg.getContent() != null) {
+                EnergyOffer receivedOffer = EnergyOffer.deserialize(msg.getContent());
+                ACLMessage reply = msg.createReply();
+                double energy = receivedOffer.getSellingEnergy();
+                switch (sellEnergy.compareDeal(energy)) {
+                    case SellEnergy.PERFECT_DEAL:
+                        //Perfect deal
+                        System.out.println("accept");
+                        reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(energy)));
+                        break;
+                    case SellEnergy.LESSTHAN_DEAL:
+                        //lessThan deal
+                        System.out.println("partly");
+                        reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
+                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(energy)));
+                        break;
+                    case SellEnergy.NO_DEAL:
+                        //no deal
+                        System.out.println("refuse");
+                        reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
+                        break;
+                }
+                myAgent.send(reply);
             }
-            myAgent.send(reply);
         } else {
             block();
         }

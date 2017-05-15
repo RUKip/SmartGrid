@@ -28,7 +28,7 @@ public class TransactionHandlerBuyer extends Behaviour{
     private void sendOffer() {
         ACLMessage offer = new ACLMessage(ACLMessage.PROPOSE);
         offer.addReceiver(currentOffer.getAgent());
-        offer.setContent(Double.toString(energyToBeBought));//TODO: Add later here also the currentOffer
+        offer.setContent(currentOffer.energyOffer.serialize());//TODO: Add later here also the currentOffer
         offer.setConversationId(BuySellComConstants.TRANSACTION);
         offer.setReplyWith("transaction"+System.currentTimeMillis()); // Unique value
         myAgent.send(offer);
