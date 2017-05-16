@@ -57,7 +57,7 @@ public class Initializer {
         //for house/agent 9717KH6
         List<JSON_Array_Group> allTypes2 = new ArrayList<>();
         List<WindMill> windMillList2 = new ArrayList<>();
-        windMillList.add(new WindMill(weather));
+        windMillList2.add(new WindMill(weather));
         JSON_Array_Group<EnergyProducer> windMillGroup2 = new JSON_Array_Group<>(ConstantsJSON.WINMILL_LIST_NAME, windMillList);
         allTypes2.add(windMillGroup2);
         agentEPList.add(new JSON_Array_Group<>("9717KH6", allTypes2));

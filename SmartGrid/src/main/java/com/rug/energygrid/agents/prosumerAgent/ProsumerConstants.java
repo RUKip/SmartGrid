@@ -5,4 +5,5 @@ package com.rug.energygrid.agents.prosumerAgent;
  */
 public class ProsumerConstants {
     public static final String PROSUMER_SD = "prosumerSd";
+    public static final double PROSUMER_PRICE = 0.19;
 }

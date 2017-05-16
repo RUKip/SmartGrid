@@ -30,7 +30,7 @@ public class RemoteEnergyOffer {
 
     public RemoteEnergyOffer remaining(double energyToBeBought) {
         if (energyOffer.getSellingEnergy() > energyToBeBought) {
-            EnergyOffer decreasedEnergyOffer = new EnergyOffer(0.0, energyOffer.getSellingEnergy()-energyToBeBought);
+            EnergyOffer decreasedEnergyOffer = new EnergyOffer(energyOffer.getPrice(), energyOffer.getSellingEnergy()-energyToBeBought);
             return new RemoteEnergyOffer(agent, decreasedEnergyOffer);
         }
         return null;
