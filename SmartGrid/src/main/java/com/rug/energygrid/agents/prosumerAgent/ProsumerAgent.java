@@ -2,6 +2,7 @@ package com.rug.energygrid.agents.prosumerAgent;
 
 import com.rug.energygrid.JSON.JSON_Deserializer;
 import com.rug.energygrid.agents.time.StaticTest;
+import com.rug.energygrid.agents.time.TimerComConstants;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
@@ -12,6 +13,7 @@ import com.rug.energygrid.energyProducers.EnergyProducer;
 import com.rug.energygrid.logging.LocalLogger;
 import com.rug.energygrid.weather.ExampleDataSet_KNI;
 import com.rug.energygrid.weather.Weather;
+import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.util.Logger;
 
 
@@ -36,6 +38,7 @@ public class ProsumerAgent extends TimedAgent {
     //TODO: add Adjustable Energy Producer list
     private List<EnergyConsumer> energyConsumers;
     private Weather usedWeather = new ExampleDataSet_KNI();
+    private ServiceDescription sd; //The serviceDescription of an Agent
 
     @Override
     protected void setup() {
@@ -48,6 +51,7 @@ public class ProsumerAgent extends TimedAgent {
 
         energyConsumers = new ArrayList<>(); //TODO: add this to JSON
         energyConsumers.add(new GeneralEnergyConsumer());
+        addToYellowPages();
     }
 
     //Used when a behaviour sold or bought energy, the real energy left in the system has to be updated.
@@ -76,6 +80,7 @@ public class ProsumerAgent extends TimedAgent {
     public void takeDown() {
         buyEnergy.takeDown();
         sellEnergy.takeDown();
+        removeService(sd);
     }
 
     public synchronized void addCurEnergy(double energy) {
@@ -122,5 +127,13 @@ public class ProsumerAgent extends TimedAgent {
             e.setWeather(usedWeather);
         }
         //routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables); TODO: commented out since it gave errors.
+    }
+
+    private void addToYellowPages() {
+        // Register the agent as a Timed instance
+        sd = new ServiceDescription();
+        sd.setType(ProsumerConstants.PROSUMER_SD);
+        sd.setName("prosumerAgent");
+        addService(sd);
     }
 }
