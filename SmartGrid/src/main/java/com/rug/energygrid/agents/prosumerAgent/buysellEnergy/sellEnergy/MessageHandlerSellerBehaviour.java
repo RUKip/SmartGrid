@@ -32,19 +32,18 @@ public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
             if (msg.getContent() != null) {
                 EnergyOffer receivedOffer = EnergyOffer.deserialize(msg.getContent());
                 ACLMessage reply = msg.createReply();
-                double energy = receivedOffer.getSellingEnergy();
-                switch (sellEnergy.compareDeal(energy)) {
+                switch (sellEnergy.compareDeal(receivedOffer)) {
                     case SellEnergy.PERFECT_DEAL:
                         //Perfect deal
                         System.out.println("accept");
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(energy)));
+                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(receivedOffer.getSellingEnergy())));
                         break;
                     case SellEnergy.LESSTHAN_DEAL:
                         //lessThan deal
                         System.out.println("partly");
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(energy)));
+                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(receivedOffer.getSellingEnergy())));
                         break;
                     case SellEnergy.NO_DEAL:
                         //no deal
