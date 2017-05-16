@@ -19,6 +19,10 @@ public class RemoteEnergyOffer {
         return energyOffer.getSellingEnergy();
     }
 
+    public double getPrice() {
+        return energyOffer.getPrice();
+    }
+
     //Calculates what is the max energy that can be sold to this buyer
     public double calcEnergyToBeBought(double neededEnergy) {
         return energyOffer.getSellingEnergy() <= neededEnergy ? energyOffer.getSellingEnergy() : neededEnergy;
@@ -26,7 +30,7 @@ public class RemoteEnergyOffer {
 
     public RemoteEnergyOffer remaining(double energyToBeBought) {
         if (energyOffer.getSellingEnergy() > energyToBeBought) {
-            EnergyOffer decreasedEnergyOffer = new EnergyOffer(energyOffer.getSellingEnergy()-energyToBeBought);
+            EnergyOffer decreasedEnergyOffer = new EnergyOffer(0.0, energyOffer.getSellingEnergy()-energyToBeBought);
             return new RemoteEnergyOffer(agent, decreasedEnergyOffer);
         }
         return null;

@@ -2,7 +2,7 @@ package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.comparisonAlgorithms.GreedyComp;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.comparisonAlgorithms.GreedyEnergy;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class BuyEnergy {
 
     //TODO: add the new behaviours
     public BuyEnergy(ProsumerAgent prosumerAgent) {
-        this.pq = new CustomPriorityQueue(new GreedyComp()); //TODO: add a nice place to set/choose the Comperator
+        this.pq = new CustomPriorityQueue(new GreedyEnergy()); //TODO: add a nice place to set/choose the Comperator
         this.prosumerAgent = prosumerAgent;
         messageHandler = new MessageHandlerBuyerBehaviour(prosumerAgent, this);
         prosumerAgent.addBehaviour(messageHandler);
