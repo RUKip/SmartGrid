@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
+import com.rug.energygrid.agents.prosumerAgent.ProsumerConstants;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
@@ -13,22 +14,23 @@ import jade.lang.acl.ACLMessage;
  */
 public class SellEnergy {
     public static final int PERFECT_DEAL = 0, LESSTHAN_DEAL = 1, NO_DEAL = 2;
-    ProsumerAgent prosumerAgent;
+    private ProsumerAgent prosumerAgent;
+    private double localEnergyPrice = ProsumerConstants.PROSUMER_PRICE;
 
     public SellEnergy(ProsumerAgent prosumerAgent) {
         this.prosumerAgent = prosumerAgent;
         prosumerAgent.addBehaviour(new MessageHandlerSellerBehaviour(prosumerAgent, this));
     }
 
-    public int compareDeal(double energyOffer) {
+    public int compareDeal(EnergyOffer energyOffer) {
         //There was no offer or no energy is left
         //TODO: IMPLEMENTATION FOR OFFER CHECKING SHOULD BE ADDED AT false LATER
-        if (false || prosumerAgent.getCurEnergy() <= 0) {
+        if (energyOffer.getPrice() != localEnergyPrice || prosumerAgent.getCurEnergy() <= 0) {
             return NO_DEAL;
         }
 
         //There is an offer
-        if (prosumerAgent.getCurEnergy() >= energyOffer) {
+        if (prosumerAgent.getCurEnergy() >= energyOffer.getSellingEnergy()) {
             return PERFECT_DEAL;
         } else {
             return LESSTHAN_DEAL;
@@ -36,8 +38,8 @@ public class SellEnergy {
     }
 
     //reserves min(energyOffer, currentEnergy) at the agent and returns this value.
-    public double reserveEnergy(double energyOffer) {
-        double soldEnergy = Math.min(prosumerAgent.getCurEnergy(), energyOffer);
+    public double reserveEnergy(double energy) {
+        double soldEnergy = Math.min(prosumerAgent.getCurEnergy(), energy);
         prosumerAgent.subtractCurEnergy(soldEnergy);
         return soldEnergy;
     }
@@ -45,7 +47,7 @@ public class SellEnergy {
     public void sellSurplussEnergy() {
         double energy = prosumerAgent.getCurEnergy();
         if (energy > 0) {
-            EnergyOffer offer = new EnergyOffer(energy);
+            EnergyOffer offer = new EnergyOffer(localEnergyPrice, energy);
             System.out.println("selling: "+ offer.getSellingEnergy());
             broadCastOffer(offer);
         }
