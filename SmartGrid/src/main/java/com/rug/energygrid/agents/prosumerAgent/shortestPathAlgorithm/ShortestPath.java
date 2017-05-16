@@ -1,6 +1,8 @@
 package com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
+import com.rug.energygrid.logging.LocalLogger;
+import jade.util.Logger;
 
 import java.util.*;
 
@@ -9,6 +11,8 @@ import java.util.*;
  */
 public class ShortestPath {
 
+
+    private static Logger logger = LocalLogger.getLogger();
 
     private HashMap<String, Node> createGraph(List<Cable> cables){
         HashMap<String, Node> graph = new HashMap(); //this is the graph of each agent and there connected cost
@@ -20,6 +24,10 @@ public class ShortestPath {
         }
 
         for(Cable c : cables){
+            if(graph.get(c.getOriginNode()) == null){
+                logger.warning("ai caramba, cable contains an non existing agent/node");
+                continue;
+            }
             Node node = graph.get(c.getOriginNode());
             node.addConnection(graph.get(node.getName()), c.getCost());
             graph.put(c.getOriginNode(), node);

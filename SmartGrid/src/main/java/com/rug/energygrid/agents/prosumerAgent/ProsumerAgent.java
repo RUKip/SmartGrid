@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.rug.energygrid.JSON.JSON_Deserializer;
+import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
 import com.rug.energygrid.agents.time.StaticTest;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
@@ -121,6 +122,6 @@ public class ProsumerAgent extends TimedAgent {
         for(EnergyProducer e : energyProducers){
             e.setWeather(usedWeather);
         }
-        //routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables); TODO: commented out since it gave errors.
+        routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
     }
 }
