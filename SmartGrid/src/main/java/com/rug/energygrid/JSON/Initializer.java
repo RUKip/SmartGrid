@@ -11,6 +11,7 @@ import com.rug.energygrid.weather.Weather;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class Initializer {
       this.agentEPList = new ArrayList();
       this.cableList = new ArrayList();
       this.weather = new ExampleDataSet_KNI();
+      initAgents();
       initAllCables();
       initEnergyProducers();
 
@@ -63,6 +65,32 @@ public class Initializer {
         agentEPList.add(new JSON_Array_Group<>("9717KH6", allTypes2));
     }
 
+    //add agents here
+    private void initAgents(){
+        List<String> prosumerAgents = new ArrayList<>(); //TODO: store this list in the JSON file aswell
+        prosumerAgents.add("9471KN24");
+        prosumerAgents.add("9717KH6");
+        prosumerAgents.add("9733AB50");
+        prosumerAgents.add("1111HJ60b");
+        prosumerAgents.add("8748NJ373");
+
+        try{
+            PrintWriter writer = new PrintWriter(ConstantsJSON.JSON_AGENT_FILE_LOCATION, "UTF-8");
+            writer.println("agents=\\");
+            for(int i=0; i<prosumerAgents.size(); i++){
+                writer.println(prosumerAgents.get(i)+":"+ConstantsJSON.PROSUMER_AGENT_CLASS+"();\\");
+            }
+            writer.println(ConstantsJSON.GLOBAL_TIMER_NAME+":"+ConstantsJSON.GLOBAL_TIMER_AGENT_CLASS+"("+globalTimerArgs+")");
+            writer.println("port="+ConstantsJSON.PORT_NR);
+            writer.println("host="+ConstantsJSON.HOST);
+            writer.println("main="+ConstantsJSON.MAIN);
+            writer.println("no-display="+ConstantsJSON.NO_DISPLAY);
+            writer.close();
+        } catch (IOException e) {
+            // do something
+        }
+    }
+
     //serializes
     public void build(){
 
@@ -71,7 +99,7 @@ public class Initializer {
         listOfGroups.add(new JSON_Array_Group(ConstantsJSON.EP_LIST_NAME, agentEPList));
 
         Gson g = new GsonBuilder().setPrettyPrinting().create();
-        try (FileWriter writer = new FileWriter(ConstantsJSON.JSON_FILE_LOCATION)) {
+        try (FileWriter writer = new FileWriter(ConstantsJSON.JSON_GRID_FILE_LOCATION)) {
             g.toJson(listOfGroups, writer);
 
         } catch (IOException e) {

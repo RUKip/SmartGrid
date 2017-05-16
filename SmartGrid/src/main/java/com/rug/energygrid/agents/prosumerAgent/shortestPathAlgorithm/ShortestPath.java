@@ -6,9 +6,6 @@ import jade.util.Logger;
 
 import java.util.*;
 
-/**
- * Created by Ruben on 11-May-17.
- */
 public class ShortestPath {
 
 

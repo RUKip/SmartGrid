@@ -29,7 +29,7 @@ public class JSON_Grid_Deserializer {
     private void deserialize() {
         Gson gson = new Gson();
 
-        try (FileReader reader = new FileReader(ConstantsJSON.JSON_FILE_LOCATION)) {
+        try (FileReader reader = new FileReader(ConstantsJSON.JSON_GRID_FILE_LOCATION)) {
 
             JsonReader jsonReader = new JsonReader(reader);
             List<JSON_Array_Group> groups = gson.fromJson(jsonReader, new TypeToken<List<JSON_Array_Group>>(){}.getType());
