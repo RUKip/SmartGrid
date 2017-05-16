@@ -17,12 +17,12 @@ import java.util.List;
 /**
  * Created by Ruben on 09-May-17.
  */
-public class JSON_Deserializer {
+public class JSON_Grid_Deserializer {
 
     private JSON_Array_Group cableGroup;
     private JSON_Array_Group energyProducerGroup;
 
-    public JSON_Deserializer(){
+    public JSON_Grid_Deserializer(){
         deserialize();
     }
 

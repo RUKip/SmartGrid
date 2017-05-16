@@ -1,9 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.rug.energygrid.JSON.JSON_Deserializer;
+import com.rug.energygrid.JSON.JSON_Grid_Deserializer;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
-import com.rug.energygrid.agents.time.StaticTest;
-import com.rug.energygrid.agents.time.TimerComConstants;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
@@ -121,7 +119,7 @@ public class ProsumerAgent extends TimedAgent {
 
     //TODO: parse JSON value of costs and nodes then implement dijkstra search algorithm to put right values into routingTable
     private void parseJSON(){
-        JSON_Deserializer deserializer = new JSON_Deserializer();
+        JSON_Grid_Deserializer deserializer = new JSON_Grid_Deserializer();
         allCables = deserializer.getCables();
         energyProducers = deserializer.getEnergyProducers(this.getLocalName());
         for(EnergyProducer e : energyProducers){

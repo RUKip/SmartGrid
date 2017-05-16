@@ -15,7 +15,7 @@ public class ShortestPath {
     private static Logger logger = LocalLogger.getLogger();
 
     private HashMap<String, Node> createGraph(List<Cable> cables){
-        HashMap<String, Node> graph = new HashMap(); //this is the graph of each agent and there connected cost
+        HashMap<String, Node> graph = new HashMap<String, Node>(); //this is the graph of each agent and there connected cost
 
         //TODO: here get all AID's of the agents(the local names) and initialize the routingtable
         List<String> prosumerAgents = new ArrayList<>(); //TODO: fill agents here
@@ -59,6 +59,11 @@ public class ShortestPath {
 
         for(Map.Entry<String, Node> entry : graph.entrySet()) {
             unvisitedNodes.add(entry.getValue());
+        }
+
+        if(graph.isEmpty()){
+            logger.warning("There no node in the graph at all, for the shortest path we need at least one node");
+            return null;
         }
 
         //We use Dijkstra's algorithm, because its one of the faster path algorithm which has a reasonable understandable implementation, also we want shortest path to all.

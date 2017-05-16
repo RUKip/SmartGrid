@@ -82,7 +82,7 @@ public class Initializer {
 //
 //
 //        //below is for Testing purposes TODO: remove if done testing
-//        JSON_Deserializer deserializer = new JSON_Deserializer();
+//        JSON_Grid_Deserializer deserializer = new JSON_Grid_Deserializer();
 //        System.out.println("The cables are:");
 //        List<Cable> cables = deserializer.getCables();
 //        for(Cable c : deserializer.getCables()) {
