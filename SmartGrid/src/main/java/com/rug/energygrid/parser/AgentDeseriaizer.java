@@ -38,7 +38,6 @@ public class AgentDeseriaizer {
                 if(matcher.find()){
                     String agent = matcher.group();
                     agentList.add(agent);
-                    logger.info("found agent: " + agent); //TODO: remove debug
                 }
             }
         } catch (IOException e) {

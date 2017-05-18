@@ -27,13 +27,14 @@ public class ShortestPath {
                 logger.warning("ai caramba, cable contains an non existing agent/node");
                 continue;
             }
-            Node node = graph.get(c.getOriginNode());
-            node.addConnection(graph.get(node.getName()), c.getCost());
-            graph.put(c.getOriginNode(), node);
+            Node node1 = graph.get(c.getOriginNode());
+            Node node2 = graph.get(c.getConnectedNode());
 
-            node = graph.get(c.getConnectedNode());
-            node.addConnection(graph.get(node.getName()), c.getCost());
-            graph.put(c.getConnectedNode(), node);
+            node1.addConnection(graph.get(node2.getName()), c.getCost());
+            graph.put(c.getOriginNode(), node1);
+
+            node2.addConnection(graph.get(node1.getName()), c.getCost());
+            graph.put(c.getConnectedNode(), node2);
         }
 
         return graph;
@@ -57,7 +58,11 @@ public class ShortestPath {
         }); //TODO: smallest node should be on top
 
         for(Map.Entry<String, Node> entry : graph.entrySet()) {
-            unvisitedNodes.add(entry.getValue());
+            if(!entry.getValue().getName().equals(startingNode)){
+                unvisitedNodes.add(entry.getValue());
+            }else{
+                //logger.info("I did not insert agent: " + entry.getValue().getName()); //TODO: remove debug
+            }
         }
 
         if(graph.isEmpty()){
@@ -70,6 +75,7 @@ public class ShortestPath {
         Node sNode = graph.get(startingNode);
         sNode.setCost(0.0);
         graph.put(startingNode, sNode);
+        unvisitedNodes.add(sNode);
 
         //step 2, setting current node will be the first poll because cost is 0.0
         Node currentNode;
@@ -80,13 +86,15 @@ public class ShortestPath {
         while((currentNode = unvisitedNodes.poll()) != null) {
             currentNode.setVisited(true);       //here the current node is visited
             graph.put(currentNode.getName(), currentNode);
-            logger.info("Set currentNode to: " + currentNode.getName()); //TODO: remove this debug
+            //logger.info("Set currentNode to: " + currentNode.getName()); //it seems to arrive at this point     TODO: remove this debug
             for (Connection c : currentNode.getConnections()) {
-                //logger.info("Current connection cost is: " + c.getCost()); //TODO: remove this debug
+                //logger.info("Current connection cost is: " + c.getConnectionCost()); //TODO: remove this debug
+                //logger.info("Current node" + currentNode.getName() + " is connected to: " + c.getConnectedNode().getName()); //TODO: remove debug
                 if(c.getConnectedNode() == null) continue;
                 Node n = graph.get(c.getConnectedNode().getName());
+                //logger.info("currentNode cost is: " + currentNode.getCost() + " and other node cost: " + n.getCost()); //TODO: remove this debug
                 if ((!n.getVisited()) && (n.getCost() > currentNode.getCost() + c.getConnectionCost())) {
-                    //logger.info("Found a smaller cost for node: " + n.getName() + " new cost= " + (currentNode.getCost()+c.getConnectionCost()); //TODO: remove this debug
+                    //logger.info("Found a smaller cost for node: " + n.getName() + " new cost= " + (currentNode.getCost()+c.getConnectionCost())); //TODO: remove this debug
                     n.setCost(currentNode.getCost() + c.getConnectionCost());
                     unvisitedNodes.add(n); //duplicates can be added but once visited all are visited an thus never become the new current node or updated.
                 }
@@ -98,7 +106,7 @@ public class ShortestPath {
         HashMap<String,Double> finalGraph = new HashMap<>();
         for(Map.Entry<String, Node> entry : graph.entrySet()){
             finalGraph.put(entry.getKey(), entry.getValue().getCost());
-            logger.info("For one Agent this is the: " + entry.getKey() + entry.getValue().getCost());//TODO: remove this debug
+            //logger.info("For one Agent to" +  entry.getKey() + " this is the final cost: " + entry.getValue().getCost());//TODO: remove this debug
         }
         return finalGraph;
     }
