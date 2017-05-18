@@ -32,7 +32,6 @@ public class TransactionHandlerBuyer extends Behaviour{
         offer.setConversationId(BuySellComConstants.TRANSACTION);
         offer.setReplyWith("transaction"+System.currentTimeMillis()); // Unique value
         myAgent.send(offer);
-        System.out.println("sending a energyrequest");
         // Prepare the template to get proposals
         mt = MessageTemplate.and(MessageTemplate.MatchConversationId(offer.getConversationId()),
                                  MessageTemplate.MatchInReplyTo(offer.getReplyWith()));
@@ -41,17 +40,14 @@ public class TransactionHandlerBuyer extends Behaviour{
     public void action() {
         ACLMessage msg = myAgent.receive(mt);
         if (msg != null) {
-            System.out.println("got a deal or no-deal Message: "+msg.getContent());
             if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
                 double boughtEnergy = Double.parseDouble(msg.getContent());
                 if (boughtEnergy < energyToBeBought) {
                     buyEnergy.boughtLessEnergy(energyToBeBought - boughtEnergy);
                 }
-                System.out.println("bought: "+boughtEnergy+" wanted: "+energyToBeBought+" from: "+myAgent.getLocalName()+" to: "+currentOffer.getAgent().getLocalName());
-
+                buyEnergy.processPayment(msg.getSender(), currentOffer.getPrice(), boughtEnergy);
             } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
                 buyEnergy.boughtLessEnergy(energyToBeBought);
-                System.out.println("No deal, energy wanted: "+ energyToBeBought);
             }
             finished = true;
         } else {

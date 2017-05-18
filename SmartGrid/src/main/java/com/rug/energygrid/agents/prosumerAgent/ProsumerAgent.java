@@ -29,7 +29,7 @@ import java.util.List;
 public class ProsumerAgent extends TimedAgent {
     private static final Logger logger = LocalLogger.getLogger();
     private double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
-    private double realEnergy = 0; //This is the real amount of energy (if for example energy is sold it will be subtracted from this.
+    private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative)
     private BuyEnergy buyEnergy;
     private SellEnergy sellEnergy;
     private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, TODO: check if this is unique as identifier
@@ -54,12 +54,6 @@ public class ProsumerAgent extends TimedAgent {
         addToYellowPages();
     }
 
-    //Used when a behaviour sold or bought energy, the real energy left in the system has to be updated.
-    public void updateRealEnergy(double energy) {
-        //Is negated since if you sell energy the realenergy goes down.
-        realEnergy -= energy;
-    }
-
     @Override
     public void timedEvent(Instant end, Duration passedTime) {
         double newEnergy = 0;
@@ -72,10 +66,11 @@ public class ProsumerAgent extends TimedAgent {
         }
 
         addCurEnergy(newEnergy);
-        System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
+        //System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
         //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
     }
 
+    //This method is ran when the agent shuts down
     @Override
     public void takeDown() {
         buyEnergy.takeDown();
@@ -93,12 +88,15 @@ public class ProsumerAgent extends TimedAgent {
     }
 
     public synchronized void subtractCurEnergy(double energy) {
-        curEnergy -= energy;
-        if (curEnergy > 0) {
-            sellEnergy.sellSurplussEnergy();
-        } else {
-            buyEnergy.refillEnergy();
-        }
+        addCurEnergy(energy*-1);
+    }
+
+    public void addMoney(double amount) {
+        moneyBalance += amount;
+    }
+
+    public void subtractMoney(double amount) {
+        moneyBalance -= amount;
     }
 
     public synchronized double getCurEnergy() {

@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
+import com.rug.energygrid.logging.LocalLogger;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.domain.DFService;
@@ -9,11 +10,14 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.util.Logger;
 
 /**
  * Created by thijs on 2-5-17.
  */
 public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
+    private static final int MAX_MESSAGE_QUEUE_SIZE = 10;
+    private static final Logger logger = LocalLogger.getLogger();
     MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION),
                                                         MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
     SellEnergy sellEnergy;
@@ -25,29 +29,27 @@ public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
 
     @Override
     public void action() {
-        System.out.println(myAgent.getAID().getName()+ " runnninnng " + myAgent.getCurQueueSize());
+        if (myAgent.getCurQueueSize() > MAX_MESSAGE_QUEUE_SIZE) {
+            logger.severe("Queue size is larger than MAX, probably seller can't keep up");
+            System.exit(-1);
+        }
         ACLMessage msg = myAgent.receive(mtTransaction);
         if (msg != null) {
-            System.out.println("got a Message: "+msg.getContent());
             if (msg.getContent() != null) {
                 EnergyOffer receivedOffer = EnergyOffer.deserialize(msg.getContent());
                 ACLMessage reply = msg.createReply();
                 switch (sellEnergy.compareDeal(receivedOffer)) {
                     case SellEnergy.PERFECT_DEAL:
                         //Perfect deal
-                        System.out.println("accept");
-                        reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(receivedOffer.getSellingEnergy())));
-                        break;
                     case SellEnergy.LESSTHAN_DEAL:
                         //lessThan deal
-                        System.out.println("partly");
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                        reply.setContent(Double.toString(sellEnergy.reserveEnergy(receivedOffer.getSellingEnergy())));
+                        double sellingEnergy = sellEnergy.reserveEnergy(receivedOffer.getSellingEnergy());
+                        reply.setContent(Double.toString(sellingEnergy));
+                        sellEnergy.processPayment(receivedOffer.getPrice(), sellingEnergy);
                         break;
                     case SellEnergy.NO_DEAL:
                         //no deal
-                        System.out.println("refuse");
                         reply.setPerformative(ACLMessage.REJECT_PROPOSAL);
                         break;
                 }
