@@ -2,6 +2,7 @@ package com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.logging.LocalLogger;
+import com.rug.energygrid.parser.AgentDeseriaizer;
 import jade.util.Logger;
 
 import java.util.*;
@@ -9,13 +10,14 @@ import java.util.*;
 public class ShortestPath {
 
 
-    private static Logger logger = LocalLogger.getLogger();
+    public static Logger logger = LocalLogger.getLogger();
+    private AgentDeseriaizer agentDeseriaizer = new AgentDeseriaizer();
 
     private HashMap<String, Node> createGraph(List<Cable> cables){
         HashMap<String, Node> graph = new HashMap<String, Node>(); //this is the graph of each agent and there connected cost
 
         //TODO: here get all AID's of the agents(the local names) and initialize the routingtable
-        List<String> prosumerAgents = new ArrayList<>(); //TODO: fill agents here
+        List<String> prosumerAgents = agentDeseriaizer.getAgentList();
         for(String agent : prosumerAgents){
             graph.put(agent, new Node(agent));
         }
@@ -78,10 +80,13 @@ public class ShortestPath {
         while((currentNode = unvisitedNodes.poll()) != null) {
             currentNode.setVisited(true);       //here the current node is visited
             graph.put(currentNode.getName(), currentNode);
+            logger.info("Set currentNode to: " + currentNode.getName()); //TODO: remove this debug
             for (Connection c : currentNode.getConnections()) {
+                //logger.info("Current connection cost is: " + c.getCost()); //TODO: remove this debug
                 if(c.getConnectedNode() == null) continue;
                 Node n = graph.get(c.getConnectedNode().getName());
                 if ((!n.getVisited()) && (n.getCost() > currentNode.getCost() + c.getConnectionCost())) {
+                    //logger.info("Found a smaller cost for node: " + n.getName() + " new cost= " + (currentNode.getCost()+c.getConnectionCost()); //TODO: remove this debug
                     n.setCost(currentNode.getCost() + c.getConnectionCost());
                     unvisitedNodes.add(n); //duplicates can be added but once visited all are visited an thus never become the new current node or updated.
                 }
@@ -93,6 +98,7 @@ public class ShortestPath {
         HashMap<String,Double> finalGraph = new HashMap<>();
         for(Map.Entry<String, Node> entry : graph.entrySet()){
             finalGraph.put(entry.getKey(), entry.getValue().getCost());
+            logger.info("For one Agent this is the: " + entry.getKey() + entry.getValue().getCost());//TODO: remove this debug
         }
         return finalGraph;
     }

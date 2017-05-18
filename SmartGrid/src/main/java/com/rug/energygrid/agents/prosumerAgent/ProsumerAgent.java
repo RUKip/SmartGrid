@@ -1,6 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.rug.energygrid.JSON.JSON_Grid_Deserializer;
+import com.rug.energygrid.parser.JSON_Grid_Deserializer;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
@@ -46,9 +46,9 @@ public class ProsumerAgent extends TimedAgent {
         logger.info("name: "+getAID().getName()+" is alive!"); //TODO: make log statement
         buyEnergy = new BuyEnergy(this);
         sellEnergy = new SellEnergy(this);
-        parseJSON(); //TODO: if no JSON file exists then run initializer
+        parseJSON(); //TODO: if no parser file exists then run initializer
 
-        energyConsumers = new ArrayList<>(); //TODO: add this to JSON
+        energyConsumers = new ArrayList<>(); //TODO: add this to parser
         energyConsumers.add(new GeneralEnergyConsumer());
         addToYellowPages();
     }
@@ -117,7 +117,7 @@ public class ProsumerAgent extends TimedAgent {
         if(shortestPath<Double.MAX_VALUE) routingTable.put(node, shortestPath);
     }
 
-    //TODO: parse JSON value of costs and nodes then implement dijkstra search algorithm to put right values into routingTable
+    //TODO: parse parser value of costs and nodes then implement dijkstra search algorithm to put right values into routingTable
     private void parseJSON(){
         JSON_Grid_Deserializer deserializer = new JSON_Grid_Deserializer();
         allCables = deserializer.getCables();

@@ -1,4 +1,4 @@
-package com.rug.energygrid.JSON;
+package com.rug.energygrid.parser;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -29,16 +29,16 @@ public class JSON_Grid_Deserializer {
     private void deserialize() {
         Gson gson = new Gson();
 
-        try (FileReader reader = new FileReader(ConstantsJSON.JSON_GRID_FILE_LOCATION)) {
+        try (FileReader reader = new FileReader(ConstantsParser.JSON_GRID_FILE_LOCATION)) {
 
             JsonReader jsonReader = new JsonReader(reader);
             List<JSON_Array_Group> groups = gson.fromJson(jsonReader, new TypeToken<List<JSON_Array_Group>>(){}.getType());
             for(JSON_Array_Group group : groups) {
                switch (group.getName()) {
-                   case ConstantsJSON.CABLE_LIST_NAME:
+                   case ConstantsParser.CABLE_LIST_NAME:
                        cableGroup = group;
                        break;
-                   case ConstantsJSON.EP_LIST_NAME:
+                   case ConstantsParser.EP_LIST_NAME:
                        energyProducerGroup = group;
                        break;
                }
@@ -67,11 +67,11 @@ public class JSON_Grid_Deserializer {
             List<JSON_Array_Group> energyGroups = gson.fromJson(agentGroup.getGroup().toString(), new TypeToken<List<JSON_Array_Group>>() {}.getType());
             for(JSON_Array_Group energyGroup : energyGroups) {
                 switch (energyGroup.getName()){
-                    case ConstantsJSON.SOLARPANEL_LIST_NAME:
+                    case ConstantsParser.SOLARPANEL_LIST_NAME:
                         List<SolarPanel> solarPanels = gson.fromJson(energyGroup.getGroup().toString(), new TypeToken<List<SolarPanel>>() {}.getType());
                         energyProducers.addAll(solarPanels);
                         break;
-                    case ConstantsJSON.WINMILL_LIST_NAME:
+                    case ConstantsParser.WINMILL_LIST_NAME:
                         List<WindMill> windMills = gson.fromJson(energyGroup.getGroup().toString(), new TypeToken<List<WindMill>>() {}.getType());
                         energyProducers.addAll(windMills);
                         break;
