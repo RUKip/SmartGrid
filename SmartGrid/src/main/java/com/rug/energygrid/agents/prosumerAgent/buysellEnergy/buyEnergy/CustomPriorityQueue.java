@@ -42,12 +42,12 @@ public class CustomPriorityQueue {
         if (energyToBeBought == realOffer.getSellingEnergy()) {
             return realOffer;
         } else {
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought)));
-            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought));
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getEnergyLoss()));
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getEnergyLoss()));
+            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought), realOffer.getEnergyLoss());
         }
     }
 
-    //TODO: check if this removes it the right way because of equals override
     private void checkDuplicate(RemoteEnergyOffer e1) {
         for (int pos = 0; pos < queue.size(); pos++) {
             if (e1.equals(queue.get(pos))) {

@@ -7,11 +7,11 @@ import java.util.Comparator;
 /**
  * Created by Ruben on 02-May-17.
  */
-//stupid Algorithm meant for testing, purposes (TODO: more usefull would be take agent location or something and take shortest path)
+//stupid Algorithm meant for testing purposes, will take the most offering energy offer
 public class GreedyEnergy implements Comparator<RemoteEnergyOffer> {
 
     @Override
     public int compare(RemoteEnergyOffer me, RemoteEnergyOffer others) {
-        return (int) (others.getSellingEnergy()-me.getSellingEnergy());
+        return (int) ((others.getSellingEnergy() - others.getEnergyLoss())-(me.getSellingEnergy() - me.getEnergyLoss()));
     }
 }

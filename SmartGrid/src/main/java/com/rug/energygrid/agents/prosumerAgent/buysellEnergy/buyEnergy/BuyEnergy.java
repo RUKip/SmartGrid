@@ -79,4 +79,8 @@ public class BuyEnergy {
         //TODO:Give generating csv a better place so it is only called once
         gatherData.createOutput();
     }
+
+    public ProsumerAgent getProsumerAgent(){
+        return this.prosumerAgent;
+    }
 }

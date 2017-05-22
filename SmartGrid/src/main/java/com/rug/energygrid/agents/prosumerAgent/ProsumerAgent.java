@@ -125,6 +125,10 @@ public class ProsumerAgent extends TimedAgent {
         routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
     }
 
+    public double getRoutingValueTo(String agent){
+        return this.routingTable.get(agent);
+    }
+
     private void addToYellowPages() {
         // Register the agent as a Timed instance
         sd = new ServiceDescription();
