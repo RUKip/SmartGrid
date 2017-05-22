@@ -15,7 +15,7 @@ import java.util.List;
  * Created by thijs on 28-4-17.
  */
 public class BuyEnergy {
-    GatherData gatherData = GatherData.GATHER_DEAL_DATA;
+    private GatherData gatherData = GatherData.GATHER_DATA;
 
     private List<RemoteEnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
     private CustomPriorityQueue pq;
@@ -76,8 +76,6 @@ public class BuyEnergy {
     //This method is called when the agent shuts down.
     public void takeDown() {
         prosumerAgent.removeService(sd);
-        //TODO:Give generating csv a better place so it is only called once
-        gatherData.createOutput();
     }
 
     public ProsumerAgent getProsumerAgent(){
