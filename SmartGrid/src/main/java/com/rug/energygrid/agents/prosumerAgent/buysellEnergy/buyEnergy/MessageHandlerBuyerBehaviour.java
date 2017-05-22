@@ -29,7 +29,6 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
         ACLMessage message = myAgent.receive(mt);
         if (message != null) {
             // Reply received
-            System.out.println("got an RemoteEnergyOffer: "+message.getContent());
             if (message.getPerformative() == ACLMessage.PROPOSE) {
                 // This is an offer
                 EnergyOffer energyOffer = EnergyOffer.deserialize(message.getContent());

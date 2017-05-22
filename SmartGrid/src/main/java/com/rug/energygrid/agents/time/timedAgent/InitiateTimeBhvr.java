@@ -42,7 +42,6 @@ public class InitiateTimeBhvr extends Behaviour{
         ACLMessage timeMessage = myAgent.receive(mt);
         if (timeMessage != null) {
             // Reply received
-            System.out.println("got an timedMessage: "+timeMessage.getContent());
             TimerComConstants.TimeMessageValues tmv = TimerComConstants.timeMessageDeserialize(timeMessage.getContent());
             try {
                 checkStartTime(tmv.startTime);
@@ -59,7 +58,7 @@ public class InitiateTimeBhvr extends Behaviour{
 
     private void InitiateSimulationTimeBehaviour(Instant startTime, Instant startSimulationTime, Instant endSimulationTime, int speedup) {
         SimulationTimeBhvr stb = new SimulationTimeBhvr(timedAgent, startTime, startSimulationTime, endSimulationTime, speedup);
-        timedAgent.addBehaviour(stb);
+        timedAgent.addSimulationTimeBhvr(stb);
     }
 
     //Check if the current time is before the start time.

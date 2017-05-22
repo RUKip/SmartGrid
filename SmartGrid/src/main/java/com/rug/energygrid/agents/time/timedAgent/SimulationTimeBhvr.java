@@ -1,6 +1,8 @@
 package com.rug.energygrid.agents.time.timedAgent;
 
+import com.rug.energygrid.logging.LocalLogger;
 import jade.core.behaviours.Behaviour;
+import jade.util.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -9,6 +11,8 @@ import java.time.Instant;
  * Created by s2752077 on 5/4/17.
  */
 public class SimulationTimeBhvr extends Behaviour {
+    private static final Logger logger = LocalLogger.getLogger();
+
     private TimedAgent timedAgent;
     private Instant startSimulationTime;
     private Instant endSimulationTime;
@@ -18,7 +22,7 @@ public class SimulationTimeBhvr extends Behaviour {
 
     private Instant simulationTime;
 
-    private Duration minimalStepsize = Duration.ofMillis(25);
+    private Duration minimalStepsize = Duration.ofMillis(20);
 
 
     public SimulationTimeBhvr(TimedAgent timedAgent, Instant startTime, Instant startSimulationTime, Instant endSimulationTime, long speedup) {
@@ -51,11 +55,15 @@ public class SimulationTimeBhvr extends Behaviour {
     //The whole simulation is finished. so the agent can stop.
     public boolean done() {
         if (!simulationTime.isBefore(endSimulationTime)) {
-            System.out.println("Simulation done, shutting down");
+            logger.info(myAgent.getAID().getName()+" Simulation done, shutting down");
             timedAgent.doDelete();
             return true;
         } else {
             return false;
         }
+    }
+
+    public Instant getSimulationTime() {
+        return simulationTime;
     }
 }

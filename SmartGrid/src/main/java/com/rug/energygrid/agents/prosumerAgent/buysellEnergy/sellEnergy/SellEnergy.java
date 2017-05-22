@@ -3,6 +3,7 @@ package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerConstants;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
+import jade.core.AID;
 import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -24,7 +25,6 @@ public class SellEnergy {
 
     public int compareDeal(EnergyOffer energyOffer) {
         //There was no offer or no energy is left
-        //TODO: IMPLEMENTATION FOR OFFER CHECKING SHOULD BE ADDED AT false LATER
         if (energyOffer.getPrice() != localEnergyPrice || prosumerAgent.getCurEnergy() <= 0) {
             return NO_DEAL;
         }
@@ -39,7 +39,7 @@ public class SellEnergy {
 
     //reserves min(energyOffer, currentEnergy) at the agent and returns this value.
     public double reserveEnergy(double energy) {
-        double soldEnergy = Math.min(prosumerAgent.getCurEnergy(), energy);
+        double soldEnergy = Math.min(energy, prosumerAgent.getCurEnergy());
         prosumerAgent.subtractCurEnergy(soldEnergy);
         return soldEnergy;
     }
@@ -48,7 +48,6 @@ public class SellEnergy {
         double energy = prosumerAgent.getCurEnergy();
         if (energy > 0) {
             EnergyOffer offer = new EnergyOffer(localEnergyPrice, energy);
-            System.out.println("selling: "+ offer.getSellingEnergy());
             broadCastOffer(offer);
         }
     }
@@ -64,7 +63,6 @@ public class SellEnergy {
         energyOffer.setContent(offer.serialize());
         try {
             DFAgentDescription[] result = DFService.search(prosumerAgent, template);
-            System.out.println("message send to: "+result.length);
             for (int i = 0; i < result.length; ++i) {
                 //To make sure that you don't send offers to yourself
                 if (!result[i].getName().equals(prosumerAgent.getAID()))
@@ -80,5 +78,15 @@ public class SellEnergy {
     //This method is called when the agent shutsdown.
     public void takeDown() {
         //nothing needs to happen.
+    }
+
+    //updates the local selling price and notifies all buyers.
+    private void setLocalEnergyPrice(double localEnergyPrice) {
+        this.localEnergyPrice = localEnergyPrice;
+        sellSurplussEnergy();
+    }
+
+    public void processPayment(double price, double amountEnergy) {
+        prosumerAgent.addMoney(price*amountEnergy);
     }
 }
