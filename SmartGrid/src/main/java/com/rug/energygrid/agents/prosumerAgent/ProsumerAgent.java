@@ -1,5 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
+import com.rug.energygrid.FinishedChecker;
+import com.rug.energygrid.gatherData.GatherData;
 import com.rug.energygrid.parser.JSON_Grid_Deserializer;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
@@ -27,6 +29,7 @@ import java.util.List;
  */
 public class ProsumerAgent extends TimedAgent {
     private static final Logger logger = LocalLogger.getLogger();
+    private GatherData gatherData = GatherData.GATHER_DATA;
     private double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
     private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative)
     private BuyEnergy buyEnergy;
@@ -42,6 +45,7 @@ public class ProsumerAgent extends TimedAgent {
     @Override
     protected void setup() {
         super.setup();
+        FinishedChecker.agentAdded();
         //logger = LocalLogger.getLogger();
         logger.info("name: "+getAID().getName()+" is alive!");
         buyEnergy = new BuyEnergy(this);
@@ -64,6 +68,7 @@ public class ProsumerAgent extends TimedAgent {
             newEnergy -= ec.consumeEnergy(end, passedTime);
         }
 
+        gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
         //System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
         //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
@@ -75,6 +80,7 @@ public class ProsumerAgent extends TimedAgent {
         buyEnergy.takeDown();
         sellEnergy.takeDown();
         removeService(sd);
+        FinishedChecker.agentRemoved();
     }
 
     public synchronized void addCurEnergy(double energy) {

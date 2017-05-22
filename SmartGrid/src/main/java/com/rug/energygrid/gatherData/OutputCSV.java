@@ -42,8 +42,9 @@ public class OutputCSV extends OutputData{
     @Override
     public void output(GatherData gatherData) {
         File file = createFile(fileName);
-        orderDeals(gatherData);
-        writeDeals(file);
+        PrintWriter writer = createWriter(file);
+        writeDeals(writer, gatherData);
+        writeProductions(writer, gatherData);
         System.out.println("Done with writing deals");
     }
 
@@ -60,19 +61,39 @@ public class OutputCSV extends OutputData{
         return csvFile;
     }
 
-    private void writeDeals(File csvFile) {
+    private PrintWriter createWriter(File file) {
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter(csvFile);
+            writer = new PrintWriter(file);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        return writer;
+    }
 
+    private void writeDeals(PrintWriter writer, GatherData gatherData) {
+        orderDeals(gatherData);
         for (List<GatherData.TimedEnergyDeal> agentDeals: sellers.values()) {
             writer.write("Seller: "+agentDeals.get(0).seller+"\n");
             writer.write(addSeperators("Time", "Seller", "Buyer", "price", "amountEnergy")+"\n");
             for (GatherData.TimedEnergyDeal ted : agentDeals) {
-                writer.write(addSeperators(formatter.format(ted.time), ted.seller != null ? ted.seller.getLocalName() : "BigGuy", ted.buyer.getLocalName(), Double.toString(ted.price), Double.toString(ted.energyAmount)) + "\n");
+                writer.write(addSeperators(formatter.format(ted.time),
+                        ted.seller != null ? ted.seller.getLocalName() : "BigGuy",
+                        ted.buyer.getLocalName(),
+                        Double.toString(ted.price),
+                        Double.toString(ted.energyAmount)) + "\n");
+            }
+            writer.write("\n");
+        }
+    }
+
+    private void writeProductions(PrintWriter writer, GatherData gatherData) {
+        System.out.println(gatherData.getProductions().size());
+        for (List<GatherData.TimedProduction> perAgentProductions: gatherData.getProductions().values()) {
+            writer.write("Agent: "+perAgentProductions.get(0).producer.getLocalName()+"\n");
+            writer.write(addSeperators("Time", "amount")+"\n");
+            for (GatherData.TimedProduction tp : perAgentProductions) {
+                writer.write(addSeperators(formatter.format(tp.time),Double.toString(tp.amount))+"\n");
             }
             writer.write("\n");
         }
