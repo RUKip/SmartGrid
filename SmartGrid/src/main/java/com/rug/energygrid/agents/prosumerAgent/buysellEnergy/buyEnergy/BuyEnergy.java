@@ -1,7 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
 import com.rug.energygrid.agents.bigGuy.BigGuyAgent;
-import com.rug.energygrid.agents.prosumerAgent.GatherDealData;
+import com.rug.energygrid.gatherData.GatherData;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.comparisonAlgorithms.GreedyEnergy;
@@ -15,7 +15,7 @@ import java.util.List;
  * Created by thijs on 28-4-17.
  */
 public class BuyEnergy {
-    GatherDealData gatherDealData = GatherDealData.GATHER_DEAL_DATA;
+    GatherData gatherData = GatherData.GATHER_DEAL_DATA;
 
     private List<RemoteEnergyOffer> sellers = new ArrayList<>(); // The agent who provides the best offer //TODO: will be removed
     private CustomPriorityQueue pq;
@@ -57,10 +57,10 @@ public class BuyEnergy {
         }
     }
 
-    //Only the buyer stores the payments also in the GatherDealData
+    //Only the buyer stores the payments also in the GatherData
     public void processPayment(AID seller, double price, double amountEnergy) {
         prosumerAgent.subtractMoney(price*amountEnergy);
-        gatherDealData.addDeal(prosumerAgent.getCurrentTime(), seller, prosumerAgent.getAID(), price, amountEnergy);
+        gatherData.addDeal(prosumerAgent.getCurrentTime(), seller, prosumerAgent.getAID(), price, amountEnergy);
     }
 
     public synchronized void addEnergyOffer(RemoteEnergyOffer energyOffer) {
@@ -77,6 +77,6 @@ public class BuyEnergy {
     public void takeDown() {
         prosumerAgent.removeService(sd);
         //TODO:Give generating csv a better place so it is only called once
-        gatherDealData.createCSVFile("test.csv");
+        gatherData.createOutput();
     }
 }

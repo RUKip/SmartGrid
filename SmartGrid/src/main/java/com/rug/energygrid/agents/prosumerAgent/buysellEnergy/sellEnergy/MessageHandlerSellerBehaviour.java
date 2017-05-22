@@ -16,7 +16,7 @@ import jade.util.Logger;
  * Created by thijs on 2-5-17.
  */
 public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
-    private static final int MAX_MESSAGE_QUEUE_SIZE = 10;
+    private static final int MAX_MESSAGE_QUEUE_SIZE = 25;
     private static final Logger logger = LocalLogger.getLogger();
     MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION),
                                                         MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
