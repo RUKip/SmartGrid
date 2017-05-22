@@ -27,8 +27,8 @@ public class ConstantsParser {
     public static final String ACCEPTED_AGENT_NAME = "[0-9][0-9][0-9][0-9][A-Z][A-Z][0-9]+[a-z]?";
 
     public static final String GLOBAL_TIMER_NAME = "globalTimer";
-    public static final String GLOBAL_TIMER_START = "1975-01-01T10:15:30.00Z"; //simulation start time
-    public static final String GLOBAL_TIMER_END = "1975-02-02T10:15:30.00Z";   //simulation end time
+    public static final String GLOBAL_TIMER_START = "1995-01-01T10:15:30.00Z"; //simulation start time
+    public static final String GLOBAL_TIMER_END = "1995-02-02T10:15:30.00Z";   //simulation end time
     public static final int GLOBAL_TIMER_SPEEDUP = 345600;
 
 }

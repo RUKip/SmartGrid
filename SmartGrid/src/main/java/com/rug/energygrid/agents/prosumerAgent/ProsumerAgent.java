@@ -61,6 +61,7 @@ public class ProsumerAgent extends TimedAgent {
     public void timedEvent(Instant end, Duration passedTime) {
         double newEnergy = 0;
         for (EnergyProducer ep : energyProducers) {
+            //System.out.println(this.getLocalName() + " generates " + ep.generateMaxEnergy(end, passedTime) + " with ep: " + ep.toString());
             newEnergy += ep.generateMaxEnergy(end, passedTime);
         }
 

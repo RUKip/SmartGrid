@@ -15,7 +15,12 @@ public class SolarPanel extends WeatherDependantEP{
 
     private static Logger logger = LocalLogger.getLogger();
 
-    private double surfaceArea, solarRadiation, efficiency,peakOutput,qualityFactor;//Quality factor is another loss of solar energy between 0.5 an 0.7
+    //Most of the values have to be set in the UI, now the data is preset to what we got from the paper (see Windmill)
+    private double surfaceArea = 1.65;
+    private double solarRadiation = 40; //Warning: Just a random day in Groningen May 1, 2017 data found on https://www.wunderground.com/personal-weather-station/dashboard?ID=IGRONING36
+    private double efficiency = 0.192;
+    private double peakOutput = 315;
+    private double qualityFactor = 0.75; //Quality factor is another loss of solar energy between 0.5 an 0.9
 
     public SolarPanel(Weather weather) {
         super(weather);
@@ -23,8 +28,13 @@ public class SolarPanel extends WeatherDependantEP{
 
     @Override
     public double generateMaxEnergy(Instant end, Duration duration) {
+        try {
+            solarRadiation = weather.getSunIrradiation(end);
+        } catch (Weather.TimeOutOfBoundsException e) {
+            e.printStackTrace();
+        }
         double p1 = surfaceArea*solarRadiation*efficiency*qualityFactor;
-        double watt = Math.max(p1, peakOutput);
+        double watt = Math.min(p1, peakOutput);
         double power = watt*(duration.getSeconds()*60);
         return power;
     }
@@ -52,8 +62,8 @@ public class SolarPanel extends WeatherDependantEP{
     }
 
     private void setQualityFactor(double q){
-        if(q<0.5 || q>0.7){
-            logger.warning("A solar panel quality was set to: "+q+" min is 0.5 and max is 0.7");
+        if(q<0.5 || q>0.9){
+            logger.warning("A solar panel quality was set to: "+q+" min is 0.5 and max is 0.9");
             return;
         }
         this.qualityFactor = q;
