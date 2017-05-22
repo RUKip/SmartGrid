@@ -18,12 +18,12 @@ public class ExampleDataSet_KNI extends Weather {
     }
 
     //These methods change depending on constant set or API
-    public Double getWindSpeed(Instant time) {
+    protected Double getImpWindSpeed(Instant time) {
         int iTime = convertToIntOfDataSet(time);
         return dataSet.get(iTime).get(WIND_SPEED_POS);
     }
 
-    public Double getSunIrradiation(Instant time) {
+    protected Double getImpSunIrradiation(Instant time) {
         int iTime = convertToIntOfDataSet(time);
         return dataSet.get(iTime).get(SOLAR_IRRIDIANCE_POS);
     }
@@ -33,6 +33,15 @@ public class ExampleDataSet_KNI extends Weather {
         LocalDateTime ldt = LocalDateTime.ofInstant(time, ZoneId.systemDefault());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         return Integer.valueOf(ldt.format(formatter));
+    }
+
+    @Override
+    protected void checkTime(Instant time) throws TimeOutOfBoundsException {
+        Instant beginTime = Instant.parse("1951-01-01T10:00:00.00Z");
+        Instant endTime = Instant.parse("2017-04-25T10:15:30.00Z");
+        if(time.isAfter(endTime) || time.isBefore(beginTime)){
+            throw new TimeOutOfBoundsException();
+        }
     }
 
     //These are the values that have to be set depending on your dataset indexing

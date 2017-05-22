@@ -1,4 +1,4 @@
-package com.rug.energygrid.JSON;
+package com.rug.energygrid.parser;
 
 /**
  * Created by Ruben on 08-May-17.

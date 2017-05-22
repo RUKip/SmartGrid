@@ -1,32 +1,40 @@
 package com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
+import com.rug.energygrid.logging.LocalLogger;
+import com.rug.energygrid.parser.AgentDeseriaizer;
+import jade.util.Logger;
 
 import java.util.*;
 
-/**
- * Created by Ruben on 11-May-17.
- */
 public class ShortestPath {
 
 
+    public static Logger logger = LocalLogger.getLogger();
+    private AgentDeseriaizer agentDeseriaizer = new AgentDeseriaizer();
+
     private HashMap<String, Node> createGraph(List<Cable> cables){
-        HashMap<String, Node> graph = new HashMap(); //this is the graph of each agent and there connected cost
+        HashMap<String, Node> graph = new HashMap<String, Node>(); //this is the graph of each agent and there connected cost
 
         //TODO: here get all AID's of the agents(the local names) and initialize the routingtable
-        List<String> prosumerAgents = new ArrayList<>(); //TODO: fill agents here
+        List<String> prosumerAgents = agentDeseriaizer.getAgentList();
         for(String agent : prosumerAgents){
             graph.put(agent, new Node(agent));
         }
 
         for(Cable c : cables){
-            Node node = graph.get(c.getOriginNode());
-            node.addConnection(graph.get(node.getName()), c.getCost());
-            graph.put(c.getOriginNode(), node);
+            if(graph.get(c.getOriginNode()) == null){
+                logger.warning("ai caramba, cable contains an non existing agent/node");
+                continue;
+            }
+            Node node1 = graph.get(c.getOriginNode());
+            Node node2 = graph.get(c.getConnectedNode());
 
-            node = graph.get(c.getConnectedNode());
-            node.addConnection(graph.get(node.getName()), c.getCost());
-            graph.put(c.getConnectedNode(), node);
+            node1.addConnection(graph.get(node2.getName()), c.getCost());
+            graph.put(c.getOriginNode(), node1);
+
+            node2.addConnection(graph.get(node1.getName()), c.getCost());
+            graph.put(c.getConnectedNode(), node2);
         }
 
         return graph;
@@ -50,7 +58,16 @@ public class ShortestPath {
         }); //TODO: smallest node should be on top
 
         for(Map.Entry<String, Node> entry : graph.entrySet()) {
-            unvisitedNodes.add(entry.getValue());
+            if(!entry.getValue().getName().equals(startingNode)){
+                unvisitedNodes.add(entry.getValue());
+            }else{
+                //logger.info("I did not insert agent: " + entry.getValue().getName()); //TODO: remove debug
+            }
+        }
+
+        if(graph.isEmpty()){
+            logger.warning("There no node in the graph at all, for the shortest path we need at least one node");
+            return null;
         }
 
         //We use Dijkstra's algorithm, because its one of the faster path algorithm which has a reasonable understandable implementation, also we want shortest path to all.
@@ -58,6 +75,7 @@ public class ShortestPath {
         Node sNode = graph.get(startingNode);
         sNode.setCost(0.0);
         graph.put(startingNode, sNode);
+        unvisitedNodes.add(sNode);
 
         //step 2, setting current node will be the first poll because cost is 0.0
         Node currentNode;
@@ -83,6 +101,7 @@ public class ShortestPath {
         HashMap<String,Double> finalGraph = new HashMap<>();
         for(Map.Entry<String, Node> entry : graph.entrySet()){
             finalGraph.put(entry.getKey(), entry.getValue().getCost());
+            //logger.info("For one Agent to" +  entry.getKey() + " this is the final cost: " + entry.getValue().getCost());//TODO: remove this debug
         }
         return finalGraph;
     }

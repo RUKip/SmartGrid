@@ -1,8 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
-import com.rug.energygrid.JSON.JSON_Deserializer;
-import com.rug.energygrid.agents.time.StaticTest;
-import com.rug.energygrid.agents.time.TimerComConstants;
+import com.rug.energygrid.parser.JSON_Grid_Deserializer;
+import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
 import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
@@ -44,12 +43,12 @@ public class ProsumerAgent extends TimedAgent {
     protected void setup() {
         super.setup();
         //logger = LocalLogger.getLogger();
-        logger.info("name: "+getAID().getName()+" is alive!"); //TODO: make log statement
+        logger.info("name: "+getAID().getName()+" is alive!");
         buyEnergy = new BuyEnergy(this);
         sellEnergy = new SellEnergy(this);
-        parseJSON(); //TODO: if no JSON file exists then run initializer
+        parseJSON(); //TODO: if no parser file exists then run initializer
 
-        energyConsumers = new ArrayList<>(); //TODO: add this to JSON
+        energyConsumers = new ArrayList<>(); //TODO: add this to parser
         energyConsumers.add(new GeneralEnergyConsumer());
         addToYellowPages();
     }
@@ -116,15 +115,14 @@ public class ProsumerAgent extends TimedAgent {
         if(shortestPath<Double.MAX_VALUE) routingTable.put(node, shortestPath);
     }
 
-    //TODO: parse JSON value of costs and nodes then implement dijkstra search algorithm to put right values into routingTable
     private void parseJSON(){
-        JSON_Deserializer deserializer = new JSON_Deserializer();
+        JSON_Grid_Deserializer deserializer = new JSON_Grid_Deserializer();
         allCables = deserializer.getCables();
         energyProducers = deserializer.getEnergyProducers(this.getLocalName());
         for(EnergyProducer e : energyProducers){
             e.setWeather(usedWeather);
         }
-        //routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables); TODO: commented out since it gave errors.
+        routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
     }
 
     private void addToYellowPages() {

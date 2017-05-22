@@ -1,5 +1,7 @@
 package com.rug.energygrid.weather;
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -29,8 +31,22 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
     public abstract int getWindSpeedPos();
     public abstract int getSolarIrrPos();
 
-    public abstract Double getWindSpeed(Instant time);       //in m/s
-    public abstract Double getSunIrradiation(Instant time);  //J/M
+    public Double getWindSpeed(Instant time) throws TimeOutOfBoundsException {
+        checkTime(time);
+        return getImpWindSpeed(time);
+    }       //in m/s
+
+    public Double getSunIrradiation(Instant time) throws TimeOutOfBoundsException {
+        checkTime(time);
+        return getImpSunIrradiation(time);
+    }       //in m/s
+
+
+    protected abstract Double getImpWindSpeed(Instant time);
+    protected abstract Double getImpSunIrradiation(Instant time) throws TimeOutOfBoundsException;  //J/M
+
+    public class TimeOutOfBoundsException extends Exception{}
+
 
     //when using data set has to be implemented
     protected abstract int convertToIntOfDataSet(Instant time);
@@ -80,4 +96,6 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
         }
         return dataSet;
     }
+
+    protected abstract void checkTime(Instant time) throws TimeOutOfBoundsException;
 }
