@@ -1,11 +1,10 @@
 package com.rug.energygrid.logging;
 
-import jade.core.Agent;
 import jade.util.Logger;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 
@@ -14,14 +13,16 @@ import java.util.logging.SimpleFormatter;
  */
 public class LocalLogger {
     public static Logger logger;
-    public static final String folderName = "logs";
-    public static final Instant name = Instant.now();
+    public static final String FOLDER_NAME = "logs";
+    public static final Instant NAME = Instant.now();
 
     private synchronized static void initializeLogger() {
         logger = jade.util.Logger.getMyLogger("logger");
         // This block configure the logger with handler and formatter
         try {
-            FileHandler fh = new FileHandler(folderName+"/"+name+".log");
+            File logsFolder = new File(FOLDER_NAME);
+            logsFolder.mkdir();
+            FileHandler fh = new FileHandler(FOLDER_NAME +"/"+ NAME +".log");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

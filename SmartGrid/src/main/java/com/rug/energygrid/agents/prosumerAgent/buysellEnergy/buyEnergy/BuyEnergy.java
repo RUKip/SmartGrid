@@ -53,6 +53,7 @@ public class BuyEnergy {
                 double energy = prosumerAgent.getCurEnergy()*-1;
                 prosumerAgent.addCurEnergy(energy);
                 processPayment(null, BigGuyAgent.CONSTANTPRICE, energy);*/
+                break;
             }
         }
     }

@@ -47,7 +47,7 @@ public class ProsumerAgent extends TimedAgent {
         super.setup();
         FinishedChecker.agentAdded();
         //logger = LocalLogger.getLogger();
-        logger.info("name: "+getAID().getName()+" is alive!");
+        logger.info("NAME: "+getAID().getName()+" is alive!");
         buyEnergy = new BuyEnergy(this);
         sellEnergy = new SellEnergy(this);
         parseJSON(); //TODO: if no parser file exists then run initializer
