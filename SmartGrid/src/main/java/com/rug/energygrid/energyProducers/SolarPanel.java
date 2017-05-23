@@ -35,7 +35,7 @@ public class SolarPanel extends WeatherDependantEP{
         }
         double p1 = surfaceArea*solarRadiation*efficiency*qualityFactor;
         double watt = Math.min(p1, peakOutput);
-        double power = watt*(duration.getSeconds()*60);
+        double power = watt*(duration.getSeconds()+Math.pow(10,-9)*duration.getNano());
         return power;
     }
 

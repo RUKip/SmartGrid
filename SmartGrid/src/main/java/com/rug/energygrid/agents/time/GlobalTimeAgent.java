@@ -44,7 +44,6 @@ public class GlobalTimeAgent extends Agent {
         ACLMessage timeMessage = new ACLMessage(ACLMessage.INFORM);
         try {
             DFAgentDescription[] result = DFService.search(this, template);
-            logger.info("Amount of timed agents: "+result.length);
             for (int i = 0; i < result.length; ++i) {
                 timeMessage.addReceiver(result[i].getName());
             }
