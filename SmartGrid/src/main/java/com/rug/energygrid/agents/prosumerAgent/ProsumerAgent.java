@@ -61,8 +61,12 @@ public class ProsumerAgent extends TimedAgent {
     public void timedEvent(Instant end, Duration passedTime) {
         double newEnergy = 0;
         for (EnergyProducer ep : energyProducers) {
-            //System.out.println(this.getLocalName() + " generates " + ep.generateMaxEnergy(end, passedTime) + " with ep: " + ep.toString());
-            newEnergy += ep.generateMaxEnergy(end, passedTime);
+            try{
+                newEnergy += ep.generateMaxEnergy(end, passedTime);
+            }catch (NullPointerException e){
+                e.printStackTrace();
+                logger.warning("The weather data was Null, probably one of the elements in your data set is missing");
+            }
         }
         for (EnergyConsumer ec : energyConsumers) {
             newEnergy -= ec.consumeEnergy(end, passedTime);
