@@ -11,5 +11,7 @@ MTPs-Main-Container.txt
 
 logs/*
 
+src/main/resources/*
+
 test.csv
 output.csv

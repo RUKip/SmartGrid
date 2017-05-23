@@ -34,7 +34,7 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
                 EnergyOffer energyOffer = EnergyOffer.deserialize(message.getContent());
 
                 //Store the RemoteEnergyOffer in the priorityQueue
-                buyEnergy.addEnergyOffer(new RemoteEnergyOffer(message.getSender(), energyOffer));
+                buyEnergy.addEnergyOffer(new RemoteEnergyOffer(message.getSender(), energyOffer, buyEnergy.getProsumerAgent().getRoutingValueTo(message.getSender().getLocalName())));
             }
         }
         else {

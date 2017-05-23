@@ -4,6 +4,7 @@ import com.rug.energygrid.logging.LocalLogger;
 import com.rug.energygrid.weather.Weather;
 import jade.util.Logger;
 
+import java.awt.*;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -21,6 +22,7 @@ public class WindMill extends WeatherDependantEP{
         super(weather);
     }
 
+    //TODO: this always generates max thus has constant output
     @Override
     public double generateMaxEnergy(Instant end, Duration duration) {
 
@@ -30,9 +32,13 @@ public class WindMill extends WeatherDependantEP{
         } catch (Weather.TimeOutOfBoundsException e) {
             e.printStackTrace();
         }
+        //System.out.println("need for windspeed: " + windSpeed);
         double p1 = 0.5*areaBlades*airDensity*(Math.pow(windSpeed,3))*efficiency;
+        //System.out.println("P1: " + p1);
         double watt = Math.min(p1, maxPower);
+        System.out.println("Wat?: " + watt);
         double power = watt*(duration.toMinutes()*60);
+        //System.out.println("Power: " + power);
         return power;
     }
 

@@ -77,4 +77,8 @@ public class BuyEnergy {
     public void takeDown() {
         prosumerAgent.removeService(sd);
     }
+
+    public ProsumerAgent getProsumerAgent(){
+        return this.prosumerAgent;
+    }
 }

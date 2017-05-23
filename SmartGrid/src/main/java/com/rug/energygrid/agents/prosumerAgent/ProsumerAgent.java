@@ -61,6 +61,7 @@ public class ProsumerAgent extends TimedAgent {
     public void timedEvent(Instant end, Duration passedTime) {
         double newEnergy = 0;
         for (EnergyProducer ep : energyProducers) {
+            //System.out.println(this.getLocalName() + " generates " + ep.generateMaxEnergy(end, passedTime) + " with ep: " + ep.toString());
             newEnergy += ep.generateMaxEnergy(end, passedTime);
         }
 
@@ -129,6 +130,10 @@ public class ProsumerAgent extends TimedAgent {
             e.setWeather(usedWeather);
         }
         routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
+    }
+
+    public double getRoutingValueTo(String agent){
+        return this.routingTable.get(agent);
     }
 
     private void addToYellowPages() {
