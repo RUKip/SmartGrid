@@ -37,7 +37,7 @@ public class WindMill extends WeatherDependantEP{
         //System.out.println("P1: " + p1);
         double watt = Math.min(p1, maxPower);
         System.out.println("Wat?: " + watt);
-        double power = watt*(duration.toMinutes()*60);
+        double power = watt*(duration.getSeconds()+Math.pow(10,-9)*duration.getNano());
         //System.out.println("Power: " + power);
         return power;
     }

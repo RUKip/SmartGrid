@@ -64,13 +64,14 @@ public class ProsumerAgent extends TimedAgent {
             //System.out.println(this.getLocalName() + " generates " + ep.generateMaxEnergy(end, passedTime) + " with ep: " + ep.toString());
             newEnergy += ep.generateMaxEnergy(end, passedTime);
         }
-
+        System.out.println("plus: "+newEnergy);
         for (EnergyConsumer ec : energyConsumers) {
             newEnergy -= ec.consumeEnergy(end, passedTime);
         }
 
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
+        System.out.println("produced: "+newEnergy);
         //System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
         //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
     }

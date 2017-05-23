@@ -20,7 +20,7 @@ public class ExampleDataSet_KNI extends Weather {
     //These methods change depending on constant set or API
     protected Double getImpWindSpeed(Instant time) {
         int iTime = convertToIntOfDataSet(time);
-        return dataSet.get(iTime).get(WIND_SPEED_POS);
+        return dataSet.get(iTime).get(WIND_SPEED_POS)*(0.1);
     }
 
     protected Double getImpSunIrradiation(Instant time) {
