@@ -32,7 +32,7 @@ public class OutputCSV extends OutputData{
             if (sellers.containsKey(ted.seller)) {
                 sellers.get(ted.seller).add(ted);
             } else {
-                List<GatherData.TimedEnergyDeal> list = new ArrayList<GatherData.TimedEnergyDeal>();
+                List<GatherData.TimedEnergyDeal> list = new ArrayList<>();
                 list.add(ted);
                 sellers.put(ted.seller, list);
             }
@@ -46,6 +46,7 @@ public class OutputCSV extends OutputData{
         writeDeals(writer, gatherData);
         writeProductions(writer, gatherData);
         System.out.println("Done with writing deals");
+        writer.close();
     }
 
     public File createFile(String name) {
@@ -77,11 +78,17 @@ public class OutputCSV extends OutputData{
             writer.write("Seller: "+agentDeals.get(0).seller+"\n");
             writer.write(addSeperators("Time", "Seller", "Buyer", "price", "amountEnergy")+"\n");
             for (GatherData.TimedEnergyDeal ted : agentDeals) {
-                writer.write(addSeperators(formatter.format(ted.time),
-                        ted.seller != null ? ted.seller.getLocalName() : "BigGuy",
-                        ted.buyer.getLocalName(),
-                        Double.toString(ted.price),
-                        Double.toString(ted.energyAmount)) + "\n");
+                try {
+                    writer.write(addSeperators(formatter.format(ted.time),
+                            ted.seller != null ? ted.seller.getLocalName() : "BigGuy",
+                            ted.buyer.getLocalName(),
+                            Double.toString(ted.price),
+                            Double.toString(ted.energyAmount)) + "\n");
+                } catch (NullPointerException e) {
+                    System.out.println("" + ted.time + (ted.seller != null ? ted.seller.getLocalName() : "BigGuy") + ted.buyer + ted.price + ted.energyAmount);
+                    e.printStackTrace();
+                    System.exit(-1);
+                }
             }
             writer.write("\n");
         }
@@ -90,6 +97,7 @@ public class OutputCSV extends OutputData{
     private void writeProductions(PrintWriter writer, GatherData gatherData) {
         System.out.println(gatherData.getProductions().size());
         for (List<GatherData.TimedProduction> perAgentProductions: gatherData.getProductions().values()) {
+            System.out.println("Agent: "+perAgentProductions.get(0).producer.getLocalName());
             writer.write("Agent: "+perAgentProductions.get(0).producer.getLocalName()+"\n");
             writer.write(addSeperators("Time", "amount")+"\n");
             for (GatherData.TimedProduction tp : perAgentProductions) {

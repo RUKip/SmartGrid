@@ -8,11 +8,11 @@ import com.rug.energygrid.gatherData.GatherData;
 public class FinishedChecker {
     private static int counter = 0;
 
-    public static void agentAdded() {
+    public static synchronized void agentAdded() {
         counter++;
     }
 
-    public static void agentRemoved() {
+    public static synchronized void agentRemoved() {
         counter--;
         if (counter < 1) {
             System.out.println("Counter is 0 simulation is finished");
