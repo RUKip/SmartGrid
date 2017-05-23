@@ -9,12 +9,12 @@ import jade.core.AID;
 public class RemoteEnergyOffer {
     private AID agent;
     EnergyOffer energyOffer;
-    private double energyLoss;
+    private double cableResistance;
 
-    public RemoteEnergyOffer(AID agent, EnergyOffer energyOffer, double energyLoss) {
+    public RemoteEnergyOffer(AID agent, EnergyOffer energyOffer, double cableResistance) {
         this.agent = agent;
         this.energyOffer = energyOffer;
-        this.energyLoss = energyLoss;
+        this.cableResistance = cableResistance;
     }
 
     public double getSellingEnergy(){
@@ -25,9 +25,10 @@ public class RemoteEnergyOffer {
         return energyOffer.getPrice();
     }
 
-    public double getEnergyLoss(){return this.energyLoss;}
+    public double getCableResistance(){return this.cableResistance;}
 
     //Calculates what is the max energy that can be sold to this buyer
+    //TODO: add the energy loss for resistance.
     public double calcEnergyToBeBought(double neededEnergy) {
         return energyOffer.getSellingEnergy() <= neededEnergy ? energyOffer.getSellingEnergy() : neededEnergy;
     }
@@ -35,7 +36,7 @@ public class RemoteEnergyOffer {
     public RemoteEnergyOffer remaining(double energyToBeBought) {
         if (energyOffer.getSellingEnergy() > energyToBeBought) {
             EnergyOffer decreasedEnergyOffer = new EnergyOffer(energyOffer.getPrice(), energyOffer.getSellingEnergy()-energyToBeBought);
-            return new RemoteEnergyOffer(agent, decreasedEnergyOffer, energyLoss);
+            return new RemoteEnergyOffer(agent, decreasedEnergyOffer, cableResistance);
         }
         return null;
     }

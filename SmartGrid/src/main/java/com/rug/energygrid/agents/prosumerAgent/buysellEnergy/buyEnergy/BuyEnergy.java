@@ -49,10 +49,10 @@ public class BuyEnergy {
                 prosumerAgent.addCurEnergy(energyToBeBought);
                 prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, energyToBeBought, energyOffer));
             } else {
-                //TODO: add buying energy from the 'big guys' with a real agent
+                /*//TODO: add buying energy from the 'big guys' with a real agent
                 double energy = prosumerAgent.getCurEnergy()*-1;
                 prosumerAgent.addCurEnergy(energy);
-                processPayment(null, BigGuyAgent.CONSTANTPRICE, energy);
+                processPayment(null, BigGuyAgent.CONSTANTPRICE, energy);*/
             }
         }
     }

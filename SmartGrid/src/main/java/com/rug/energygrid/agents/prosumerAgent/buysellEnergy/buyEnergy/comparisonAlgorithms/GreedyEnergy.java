@@ -12,6 +12,6 @@ public class GreedyEnergy implements Comparator<RemoteEnergyOffer> {
 
     @Override
     public int compare(RemoteEnergyOffer me, RemoteEnergyOffer others) {
-        return (int) ((others.getSellingEnergy() - others.getEnergyLoss())-(me.getSellingEnergy() - me.getEnergyLoss()));
+        return (int) ((others.getSellingEnergy() - others.getCableResistance())-(me.getSellingEnergy() - me.getCableResistance()));
     }
 }

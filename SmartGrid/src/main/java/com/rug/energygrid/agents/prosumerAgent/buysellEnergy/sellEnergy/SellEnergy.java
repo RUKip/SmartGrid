@@ -81,7 +81,7 @@ public class SellEnergy {
     }
 
     //updates the local selling price and notifies all buyers.
-    private void setLocalEnergyPrice(double localEnergyPrice) {
+    public void setLocalEnergyPrice(double localEnergyPrice) {
         this.localEnergyPrice = localEnergyPrice;
         sellSurplussEnergy();
     }

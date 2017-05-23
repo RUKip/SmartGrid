@@ -42,9 +42,9 @@ public class CustomPriorityQueue {
         if (energyToBeBought == realOffer.getSellingEnergy()) {
             return realOffer;
         } else {
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getEnergyLoss()));
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getEnergyLoss()));
-            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought), realOffer.getEnergyLoss());
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableResistance()));
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableResistance()));
+            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought), realOffer.getCableResistance());
         }
     }
 

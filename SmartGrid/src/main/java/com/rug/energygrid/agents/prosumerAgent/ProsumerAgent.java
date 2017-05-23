@@ -30,10 +30,10 @@ import java.util.List;
 public class ProsumerAgent extends TimedAgent {
     private static final Logger logger = LocalLogger.getLogger();
     private GatherData gatherData = GatherData.GATHER_DATA;
-    private double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
+    protected double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
     private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative)
-    private BuyEnergy buyEnergy;
-    private SellEnergy sellEnergy;
+    protected BuyEnergy buyEnergy;
+    protected SellEnergy sellEnergy;
     private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, TODO: check if this is unique as identifier
     private List<Cable> allCables;
     private List<EnergyProducer> energyProducers; //TODO: change To maxEnergy producers
