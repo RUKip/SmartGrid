@@ -42,7 +42,6 @@ public class SimulationTimeBhvr extends Behaviour {
             Duration realPassedTime = Duration.between(prevStep, curStep);
             if (realPassedTime.compareTo(minimalStepsize) > 0) {
                 Duration passedTime = Duration.between(prevStep, curStep).multipliedBy(speedup);
-                System.out.println("real: "+realPassedTime+" simulated: "+passedTime);
                 simulationTime = simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
                 //System.out.println("simulating: "+startSimulationTime +", "+ simulationTime +", "+ endSimulationTime+ " - "+ passedTime);
                 timedAgent.timedEvent(simulationTime, passedTime);

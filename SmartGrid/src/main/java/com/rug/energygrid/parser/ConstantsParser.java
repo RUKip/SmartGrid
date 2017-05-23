@@ -29,6 +29,6 @@ public class ConstantsParser {
     public static final String GLOBAL_TIMER_NAME = "globalTimer";
 
     public static final String GLOBAL_TIMER_START = "1975-01-01T10:15:30.00Z"; //simulation start time
-    public static final String GLOBAL_TIMER_END = "1975-01-01T10:16:30.00Z";   //simulation end time
-    public static final int GLOBAL_TIMER_SPEEDUP = 10;//345600;
+    public static final String GLOBAL_TIMER_END = "1975-02-01T10:15:30.00Z";   //simulation end time
+    public static final int GLOBAL_TIMER_SPEEDUP = 345600;
 }

@@ -95,9 +95,7 @@ public class OutputCSV extends OutputData{
     }
 
     private void writeProductions(PrintWriter writer, GatherData gatherData) {
-        System.out.println(gatherData.getProductions().size());
         for (List<GatherData.TimedProduction> perAgentProductions: gatherData.getProductions().values()) {
-            System.out.println("Agent: "+perAgentProductions.get(0).producer.getLocalName());
             writer.write("Agent: "+perAgentProductions.get(0).producer.getLocalName()+"\n");
             writer.write(addSeperators("Time", "amount")+"\n");
             for (GatherData.TimedProduction tp : perAgentProductions) {

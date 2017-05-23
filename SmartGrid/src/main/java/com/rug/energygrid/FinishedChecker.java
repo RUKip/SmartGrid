@@ -15,7 +15,6 @@ public class FinishedChecker {
     public static synchronized void agentRemoved() {
         counter--;
         if (counter < 1) {
-            System.out.println("Counter is 0 simulation is finished");
             GatherData.GATHER_DATA.createOutput();
             System.exit(-1);
         }
