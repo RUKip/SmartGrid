@@ -9,6 +9,9 @@ public class Cable {
     private String originNode, connectedNode;
     private double length, resistance;
 
+    private static final double INDUCTION_PER_METER = 2.6;
+    private static final double SPEED_OF_LIGHT = 3*Math.pow(10,8);
+
     public Cable(String originNode, String connectedNode, double length, double resistance){
         this.originNode = originNode;
         this.connectedNode = connectedNode;
@@ -24,7 +27,8 @@ public class Cable {
         return this.connectedNode;
     }
 
-    public double getCost(){ //TODO: probably needs to be extended
-        return (length*resistance);
+    //This is the cost, the total amount of energy lost is this number times the energy
+    public double getCost(){
+        return Math.pow((Math.E),(resistance*-length)/(INDUCTION_PER_METER*SPEED_OF_LIGHT));
     }
 }

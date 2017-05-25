@@ -3,18 +3,16 @@ package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.EnergyOffer;
 import jade.core.AID;
 
-/**
- * Created by Ruben on 01-May-17.
- */
 public class RemoteEnergyOffer {
     private AID agent;
     EnergyOffer energyOffer;
-    private double cableResistance;
+    private double cableEnergyLoss;
 
-    public RemoteEnergyOffer(AID agent, EnergyOffer energyOffer, double cableResistance) {
+    //TODO: fix this cableEnergyLoss
+    public RemoteEnergyOffer(AID agent, EnergyOffer energyOffer, double cableEnergyLoss) {
         this.agent = agent;
         this.energyOffer = energyOffer;
-        this.cableResistance = cableResistance;
+        this.cableEnergyLoss = cableEnergyLoss;
     }
 
     public double getSellingEnergy(){
@@ -25,18 +23,18 @@ public class RemoteEnergyOffer {
         return energyOffer.getPrice();
     }
 
-    public double getCableResistance(){return this.cableResistance;}
+    public double getCableEnergyLoss(){return this.cableEnergyLoss;}
 
     //Calculates what is the max energy that can be sold to this buyer
-    //TODO: add the energy loss for resistance.
     public double calcEnergyToBeBought(double neededEnergy) {
-        return energyOffer.getSellingEnergy() <= neededEnergy ? energyOffer.getSellingEnergy() : neededEnergy;
+        double energyWithoutLoss = neededEnergy/cableEnergyLoss; //Here the amount of energy lost is calculated, see cable.getCost() and http://large.stanford.edu/courses/2010/ph240/harting1/
+        return energyOffer.getSellingEnergy() <= energyWithoutLoss ? energyOffer.getSellingEnergy() : energyWithoutLoss;
     }
 
     public RemoteEnergyOffer remaining(double energyToBeBought) {
         if (energyOffer.getSellingEnergy() > energyToBeBought) {
             EnergyOffer decreasedEnergyOffer = new EnergyOffer(energyOffer.getPrice(), energyOffer.getSellingEnergy()-energyToBeBought);
-            return new RemoteEnergyOffer(agent, decreasedEnergyOffer, cableResistance);
+            return new RemoteEnergyOffer(agent, decreasedEnergyOffer, cableEnergyLoss);
         }
         return null;
     }

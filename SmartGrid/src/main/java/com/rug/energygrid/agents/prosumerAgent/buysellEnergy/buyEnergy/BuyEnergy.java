@@ -47,7 +47,7 @@ public class BuyEnergy {
             if (!pq.isEmpty()) {
                 RemoteEnergyOffer energyOffer = pq.pop(prosumerAgent.getCurEnergy() * -1);
                 double energyToBeBought = energyOffer.calcEnergyToBeBought(prosumerAgent.getCurEnergy() * -1);
-                prosumerAgent.addCurEnergy(energyToBeBought);
+                prosumerAgent.addCurEnergy(energyToBeBought); //TODO: shouldnt this needed energy? (and energytobebought should be subtracted from seller)
                 prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, energyToBeBought, energyOffer));
             } else {
                 /*//TODO: add buying energy from the 'big guys' with a real agent

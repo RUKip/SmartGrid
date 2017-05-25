@@ -8,9 +8,9 @@ public class MinLostEnergy implements Comparator<RemoteEnergyOffer> {
 
     @Override
     public int compare(RemoteEnergyOffer o1, RemoteEnergyOffer o2) {
-        if(o1.getCableResistance() < o2.getCableResistance()){
+        if(o1.getCableEnergyLoss() < o2.getCableEnergyLoss()){
             return -1;
-        }else if(o1.getCableResistance() > o2.getCableResistance()){
+        }else if(o1.getCableEnergyLoss() > o2.getCableEnergyLoss()){
             return 1;
         }else{
             return 0;
