@@ -38,7 +38,6 @@ public class AgentDeseriaizer {
                 if(matcher.find()){
                     String agent = matcher.group();
                     agentList.add(agent);
-                    System.out.println("added agent: " + agent);
                 }
             }
         } catch (IOException e) {

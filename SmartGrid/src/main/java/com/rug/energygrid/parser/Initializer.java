@@ -50,11 +50,12 @@ public class Initializer {
         cableList.add(new Cable("9733AB50", "BigGuyEssent", 1230, 0.2));
     }
 
-    //Add Energyproducers here
+    //Add Energyproducers here (and set settings here ex. windmill.setArea(area))
     private void initEnergyProducers(){
-        //for house/agent 9471KN24
+        //for house/agent 9471KN24 (the mixed(solar and wind) house)
         List<JSON_Array_Group> allTypes = new ArrayList<>();
         List<SolarPanel> solarPanelList = new ArrayList<>();
+        solarPanelList.add(new SolarPanel(weather));
         solarPanelList.add(new SolarPanel(weather));
         solarPanelList.add(new SolarPanel(weather));
         JSON_Array_Group<EnergyProducer> solarpanelGroup = new JSON_Array_Group<>(ConstantsParser.SOLARPANEL_LIST_NAME, solarPanelList);
@@ -65,13 +66,27 @@ public class Initializer {
         allTypes.add(solarpanelGroup);
         agentEPList.add(new JSON_Array_Group<>("9471KN24", allTypes)); //TODO: maybe we should put the names of the Agents somewhere that case we can use them everywhere
 
-        //for house/agent 9717KH6
+        //for house/agent 9717KH6 (the windmill house)
         List<JSON_Array_Group> allTypes2 = new ArrayList<>();
         List<WindMill> windMillList2 = new ArrayList<>();
         windMillList2.add(new WindMill(weather));
-        JSON_Array_Group<EnergyProducer> windMillGroup2 = new JSON_Array_Group<>(ConstantsParser.WINMILL_LIST_NAME, windMillList);
+        windMillList2.add(new WindMill(weather));
+        windMillList2.add(new WindMill(weather));
+        JSON_Array_Group<EnergyProducer> windMillGroup2 = new JSON_Array_Group<>(ConstantsParser.WINMILL_LIST_NAME, windMillList2);
         allTypes2.add(windMillGroup2);
         agentEPList.add(new JSON_Array_Group<>("9717KH6", allTypes2));
+
+        //for house/agent 8748NJ373 (the solar panel house)
+        List<JSON_Array_Group> allTypes3 = new ArrayList<>();
+        List<SolarPanel> solarPanelList3 = new ArrayList<>();
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        JSON_Array_Group<EnergyProducer> solarpanelGroup3 = new JSON_Array_Group<>(ConstantsParser.SOLARPANEL_LIST_NAME, solarPanelList3);
+        allTypes3.add(solarpanelGroup3);
+        agentEPList.add(new JSON_Array_Group<>("8748NJ373", allTypes3));
     }
 
     //add Agents here

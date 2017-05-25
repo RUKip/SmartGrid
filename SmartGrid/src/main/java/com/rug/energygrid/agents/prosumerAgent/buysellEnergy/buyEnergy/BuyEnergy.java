@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
 import com.rug.energygrid.agents.bigGuy.BigGuyAgent;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.comparisonAlgorithms.GreedyPrice;
 import com.rug.energygrid.gatherData.GatherData;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
@@ -25,7 +26,7 @@ public class BuyEnergy {
 
     //TODO: add the new behaviours
     public BuyEnergy(ProsumerAgent prosumerAgent) {
-        this.pq = new CustomPriorityQueue(new GreedyEnergy()); //TODO: add a nice place to set/choose the Comperator
+        this.pq = new CustomPriorityQueue(new GreedyPrice()); //TODO: add a nice place to set/choose the Comperator
         this.prosumerAgent = prosumerAgent;
         messageHandler = new MessageHandlerBuyerBehaviour(prosumerAgent, this);
         prosumerAgent.addBehaviour(messageHandler);
