@@ -23,10 +23,9 @@ public class Initializer {
     public static Logger logger = LocalLogger.getLogger();
 
     private Weather weather;
-    private List<JSON_Array_Group<JSON_Array_Group<EnergyProducer>>> agentEPList; //TODO: extend
-    //private List<List<EnergyConsumer>> energyConsumerList; TODO: implement if we are going to use it
+    private List<JSON_Array_Group<JSON_Array_Group<EnergyProducer>>> agentEPList;
     private List<Cable> cableList;
-    private List<AgentArg> prosumerAgents;
+    private List<String> prosumerAgents, bigGuyAgents;
 
     public Initializer(){
       this.agentEPList = new ArrayList();
@@ -38,19 +37,25 @@ public class Initializer {
 
     }
 
+    ////INIT Starts here (you can add/change stuff here)
+
     //Add cables here
     private void initAllCables(){
         cableList.add(new Cable("1111HJ60b", "8748NJ373", 42, 0.3));
         cableList.add(new Cable("9733AB50", "1111HJ60b", 27, 0.7));
         cableList.add(new Cable("9717KH6", "9733AB50", 30, 0.2));
         cableList.add(new Cable("9471KN24", "9717KH6", 8, 0.2));
+        cableList.add(new Cable("1111HJ60b", "BigGuyEssent", 1200, 0.2));
+        cableList.add(new Cable("9717KH6", "BigGuyEssent", 1040, 0.2));
+        cableList.add(new Cable("9733AB50", "BigGuyEssent", 1230, 0.2));
     }
 
-    //Add Energyproducers here
+    //Add Energyproducers here (and set settings here ex. windmill.setArea(area))
     private void initEnergyProducers(){
-        //for house/agent 9471KN24
+        //for house/agent 9471KN24 (the mixed(solar and wind) house)
         List<JSON_Array_Group> allTypes = new ArrayList<>();
         List<SolarPanel> solarPanelList = new ArrayList<>();
+        solarPanelList.add(new SolarPanel(weather));
         solarPanelList.add(new SolarPanel(weather));
         solarPanelList.add(new SolarPanel(weather));
         JSON_Array_Group<EnergyProducer> solarpanelGroup = new JSON_Array_Group<>(ConstantsParser.SOLARPANEL_LIST_NAME, solarPanelList);
@@ -61,24 +66,45 @@ public class Initializer {
         allTypes.add(solarpanelGroup);
         agentEPList.add(new JSON_Array_Group<>("9471KN24", allTypes)); //TODO: maybe we should put the names of the Agents somewhere that case we can use them everywhere
 
-        //for house/agent 9717KH6
+        //for house/agent 9717KH6 (the windmill house)
         List<JSON_Array_Group> allTypes2 = new ArrayList<>();
         List<WindMill> windMillList2 = new ArrayList<>();
         windMillList2.add(new WindMill(weather));
-        JSON_Array_Group<EnergyProducer> windMillGroup2 = new JSON_Array_Group<>(ConstantsParser.WINMILL_LIST_NAME, windMillList);
+        windMillList2.add(new WindMill(weather));
+        windMillList2.add(new WindMill(weather));
+        JSON_Array_Group<EnergyProducer> windMillGroup2 = new JSON_Array_Group<>(ConstantsParser.WINMILL_LIST_NAME, windMillList2);
         allTypes2.add(windMillGroup2);
         agentEPList.add(new JSON_Array_Group<>("9717KH6", allTypes2));
+
+        //for house/agent 8748NJ373 (the solar panel house)
+        List<JSON_Array_Group> allTypes3 = new ArrayList<>();
+        List<SolarPanel> solarPanelList3 = new ArrayList<>();
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        solarPanelList3.add(new SolarPanel(weather));
+        JSON_Array_Group<EnergyProducer> solarpanelGroup3 = new JSON_Array_Group<>(ConstantsParser.SOLARPANEL_LIST_NAME, solarPanelList3);
+        allTypes3.add(solarpanelGroup3);
+        agentEPList.add(new JSON_Array_Group<>("8748NJ373", allTypes3));
     }
 
-    //add agents here
+    //add Agents here
     private void initAgents(){
+        //normal houses
         prosumerAgents = new ArrayList<>(); //TODO: store this list in the parser file aswell
-        prosumerAgents.add(new AgentArg("9471KN24", -8));
-        prosumerAgents.add(new AgentArg("9717KH6", 282));
-        prosumerAgents.add(new AgentArg("9733AB50",-32));
-        prosumerAgents.add(new AgentArg("1111HJ60b",12));
-        prosumerAgents.add(new AgentArg("8748NJ373",18));
+        prosumerAgents.add("9471KN24");
+        prosumerAgents.add("9717KH6");
+        prosumerAgents.add("9733AB50");
+        prosumerAgents.add("1111HJ60b");
+        prosumerAgents.add("8748NJ373");
+
+        //big guy agents
+        bigGuyAgents = new ArrayList<>();
+        bigGuyAgents.add("BigGuyEssent");
     }
+
+    /////INIT stops here
 
     //serializes
     public void build(){
@@ -99,8 +125,12 @@ public class Initializer {
             PrintWriter writer = new PrintWriter(ConstantsParser.JSON_AGENT_FILE_LOCATION, "UTF-8");
             writer.println("agents=\\");
             for(int i=0; i<prosumerAgents.size(); i++){
-                AgentArg agent = prosumerAgents.get(i);
-                writer.println(agent.getAgentName()+":"+ ConstantsParser.PROSUMER_AGENT_CLASS+"("+agent.getArg()+");\\");
+                String agent = prosumerAgents.get(i);
+                writer.println(agent+":"+ ConstantsParser.PROSUMER_AGENT_CLASS+"();\\");
+            }
+            for(int i=0; i<bigGuyAgents.size(); i++){
+                String bigGuy = bigGuyAgents.get(i);
+                writer.println(bigGuy+":"+ConstantsParser.BIGGUY_AGENT_CLASS+"();\\");
             }
             writer.println(ConstantsParser.GLOBAL_TIMER_NAME+":"+ ConstantsParser.GLOBAL_TIMER_AGENT_CLASS+"("+ ConstantsParser.GLOBAL_TIMER_START+","+ ConstantsParser.GLOBAL_TIMER_END+","+ ConstantsParser.GLOBAL_TIMER_SPEEDUP+")");
             writer.println("port="+ ConstantsParser.PORT_NR);
@@ -113,23 +143,5 @@ public class Initializer {
             logger.warning("Initializer can't write agents to file.");
         }
 
-    }
-
-    private class AgentArg {
-        private int arg;
-        private String agentName;
-
-        public AgentArg(String name, int argument){
-            this.agentName = name;
-            this.arg = argument;
-        }
-
-        public int getArg(){
-            return this.arg;
-        }
-
-        public String getAgentName(){
-            return this.agentName;
-        }
     }
 }

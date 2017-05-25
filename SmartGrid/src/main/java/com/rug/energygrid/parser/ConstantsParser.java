@@ -22,9 +22,10 @@ public class ConstantsParser {
     public static final boolean NO_DISPLAY = true;
 
     public static final String PROSUMER_AGENT_CLASS = "com.rug.energygrid.agents.prosumerAgent.ProsumerAgent";
+    public static final String BIGGUY_AGENT_CLASS = "com.rug.energygrid.agents.bigGuyAgent.BigGuyAgent";
     public static final String GLOBAL_TIMER_AGENT_CLASS = "com.rug.energygrid.agents.time.GlobalTimeAgent";
 
-    public static final String ACCEPTED_AGENT_NAME = "[0-9][0-9][0-9][0-9][A-Z][A-Z][0-9]+[a-z]?";
+    public static final String ACCEPTED_AGENT_NAME = "(BigGuy[A-Za-z]*)|([0-9][0-9][0-9][0-9][A-Z][A-Z][0-9]+[a-z]?)";
 
     public static final String GLOBAL_TIMER_NAME = "globalTimer";
 

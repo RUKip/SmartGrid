@@ -14,7 +14,7 @@ public class WindMill extends WeatherDependantEP{
 
 
     private double airDensity = 1.225;  //airDensity = 1.225; Default because representive of normal airDensity Groningen
-    private double areaBlades = (Math.pow((5.5/2),2)*Math.PI); //Default is 5.5 radius because of a smaller wind turbine, The Britwind(Evance)R9000 (same as paper)
+    private double areaBlades = (Math.pow((1.7/2),2)*Math.PI); //Default is  radius because of a smaller wind turbine, Honeywell Windgate RT6500
     private double maxPower = 5700; //The maximum power output of The R9000 is 5700
     private double efficiency = 0.35; //The power efficiency of The R9000 is about 0.35
 
