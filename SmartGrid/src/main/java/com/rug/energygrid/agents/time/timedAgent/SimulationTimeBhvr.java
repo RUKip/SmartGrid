@@ -44,7 +44,7 @@ public class SimulationTimeBhvr extends Behaviour {
                 Duration passedTime = Duration.between(prevStep, curStep).multipliedBy(speedup);
                 simulationTime = simulationTime.plus(passedTime); //TODO: if this shows pileup problems than change to distcrete calculation using the starttime of the program.
                 //System.out.println("simulating: "+startSimulationTime +", "+ simulationTime +", "+ endSimulationTime+ " - "+ passedTime);
-                timedAgent.timedEvent(simulationTime, passedTime);
+                timedAgent.localTimedEvent(simulationTime, passedTime);
                 prevStep = curStep;
             }
         }

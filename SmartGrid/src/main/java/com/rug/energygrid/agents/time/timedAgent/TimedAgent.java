@@ -20,6 +20,7 @@ public abstract class TimedAgent extends Agent {
     private Logger logger = LocalLogger.getLogger();
     private DFAgentDescription dfd = new DFAgentDescription();
     private SimulationTimeBhvr simulationTimeBhvr;
+    protected Instant curTime; //contains the latest time update.
 
     @Override
     protected void setup() {
@@ -82,6 +83,12 @@ public abstract class TimedAgent extends Agent {
         }
     }
 
-    //This method is called by the SimulationTimeBhvr
+    //This method is performs everything that has to happen when SimulationTimeBhvr does an time instance.
+    public void localTimedEvent(Instant end, Duration duration) {
+        curTime = end;
+        timedEvent(end, duration);
+    }
+
+    //This method should be implemented by children that want timed events
     public abstract void timedEvent(Instant end, Duration duration);
 }

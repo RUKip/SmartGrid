@@ -17,7 +17,7 @@ import java.util.List;
 public class GatherData {
     //Singleton pattern
     public static final String OUTPUT_FILE_NAME = "output.csv";
-    public static final GatherData GATHER_DATA = new GatherData(new OutputCSV(OUTPUT_FILE_NAME));
+    public static final GatherData GATHER_DATA = new GatherData(new OutputR(OUTPUT_FILE_NAME));
 
     List<TimedEnergyDeal> deals = new ArrayList<>();
     HashMap<AID, List<TimedProduction>> productions = new HashMap<>();

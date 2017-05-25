@@ -20,9 +20,7 @@ import jade.util.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by thijs on 28-4-17.
@@ -41,6 +39,7 @@ public class ProsumerAgent extends TimedAgent {
     private List<EnergyConsumer> energyConsumers;
     private Weather usedWeather = new ExampleDataSet_KNI();
     private ServiceDescription sd; //The serviceDescription of an Agent
+    private Queue<GenEntry> generationQueue = new ArrayDeque<>();
 
     @Override
     protected void setup() {
@@ -74,6 +73,7 @@ public class ProsumerAgent extends TimedAgent {
 
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
+        checkGenTable(end);
         //System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
         //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
     }
@@ -88,16 +88,21 @@ public class ProsumerAgent extends TimedAgent {
     }
 
     public synchronized void addCurEnergy(double energy) {
+        updateGenTable(energy);
+        addCurEnergyWithoutTable(energy);
+    }
+
+    public synchronized void subtractCurEnergy(double energy) {
+        addCurEnergy(energy*-1);
+    }
+
+    private void addCurEnergyWithoutTable(double energy) {
         curEnergy += energy;
         if (curEnergy > 0) {
             sellEnergy.sellSurplussEnergy();
         } else {
             buyEnergy.refillEnergy();
         }
-    }
-
-    public synchronized void subtractCurEnergy(double energy) {
-        addCurEnergy(energy*-1);
     }
 
     public void addMoney(double amount) {
@@ -145,5 +150,45 @@ public class ProsumerAgent extends TimedAgent {
         sd.setType(ProsumerConstants.PROSUMER_SD);
         sd.setName("prosumerAgent");
         addService(sd);
+    }
+
+    private void checkGenTable(Instant end) {
+        Instant deadline = end.minus(ProsumerConstants.ENERGY_MAX_KEEP_TIME);
+        double energyChange = 0;
+        while (!generationQueue.isEmpty() && generationQueue.peek().genTime.isAfter(deadline)) {
+            GenEntry curEntry = generationQueue.remove();
+            energyChange += curEntry.energy;
+        }
+        System.out.println("have to buy/sell: " + energyChange + " at the big guy");
+        addCurEnergyWithoutTable(energyChange);
+    }
+
+    private void updateGenTable(double energy) {
+        // Add to the gen table if it was a positive production.
+        if (energy > 0) {
+            generationQueue.add(new GenEntry(curTime, energy));
+            return;
+        }
+        // energy is here negative since it is consuming.
+        while (!generationQueue.isEmpty() && generationQueue.peek().energy <= energy*-1) {
+            energy += generationQueue.remove().energy;
+        }
+        if (!generationQueue.isEmpty()) {
+            generationQueue.peek().energy += energy;
+        }
+    }
+
+    private class GenEntry {
+        public Instant genTime;
+        public double energy;
+
+        public GenEntry(Instant genTime, double energy) {
+            this.genTime = genTime;
+            this.energy = energy;
+        }
+
+        public boolean equalSign(double otherEnergy) {
+            return (energy < 0 && otherEnergy < 0) || (energy > 0 && otherEnergy > 0);
+        }
     }
 }
