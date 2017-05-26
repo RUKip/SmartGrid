@@ -17,7 +17,7 @@ import java.util.List;
 public class GatherData {
     //Singleton pattern
     public static final String OUTPUT_FILE_NAME = "output.csv";
-    public static final GatherData GATHER_DATA = new GatherData(new OutputR(OUTPUT_FILE_NAME));
+    public static final GatherData GATHER_DATA = new GatherData(new OutputR());
 
     List<TimedEnergyDeal> deals = new ArrayList<>();
     HashMap<AID, List<TimedProduction>> productions = new HashMap<>();
@@ -44,6 +44,15 @@ public class GatherData {
 
     public void createOutput() {
         output.output(this);
+    }
+
+    //TODO: currently returns all the agents that have produced something, this might not be enough
+    public List<AID> getAgents() {
+        List<AID> agents = new ArrayList<>();
+        for (List<TimedProduction> productions : productions.values()) {
+            agents.add(productions.get(0).producer);
+        }
+        return agents;
     }
 
     public class TimedEnergyDeal {
