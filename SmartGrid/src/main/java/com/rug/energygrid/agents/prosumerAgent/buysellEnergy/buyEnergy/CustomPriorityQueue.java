@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Ruben on 02-May-17.
- */
 public class CustomPriorityQueue {
 
     private List<RemoteEnergyOffer> queue;
@@ -42,9 +39,9 @@ public class CustomPriorityQueue {
         if (energyToBeBought == realOffer.getSellingEnergy()) {
             return realOffer;
         } else {
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableResistance()));
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableResistance()));
-            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought), realOffer.getCableResistance());
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableEnergyLoss()));
+            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableEnergyLoss()));
+            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought), realOffer.getCableEnergyLoss());
         }
     }
 
