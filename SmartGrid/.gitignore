@@ -16,4 +16,4 @@ logs/*
 src/main/resources/*
 
 test.csv
-output.csv
+output/*

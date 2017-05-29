@@ -97,10 +97,12 @@ public class ProsumerAgent extends TimedAgent {
     }
 
     private void addCurEnergyWithoutTable(double energy) {
+        System.out.println("before: "+ curEnergy);
         curEnergy += energy;
+        System.out.println("cur energy after adding "+ energy+"  : "+curEnergy);
         if (curEnergy > 0) {
             sellEnergy.sellSurplussEnergy();
-        } else {
+        } else if (curEnergy < 0){
             buyEnergy.refillEnergy();
         }
     }
