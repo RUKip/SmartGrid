@@ -159,7 +159,6 @@ public class ProsumerAgent extends TimedAgent {
             GenEntry curEntry = generationQueue.remove();
             energyChange += curEntry.energy;
         }
-        System.out.println("have to buy/sell: " + energyChange + " at the big guy");
         addCurEnergyWithoutTable(energyChange);
     }
 

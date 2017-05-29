@@ -42,6 +42,8 @@ public class Initializer {
     //Add cables here
     private void initAllCables(){
         cableList.add(new Cable("1111HJ60b", "8748NJ373", 42, 0.3));
+        cableList.add(new Cable("1111HJ60b", "9717KH6", 62, 0.3));
+        cableList.add(new Cable("8748NJ373", "9717KH6", 12, 0.3));
         cableList.add(new Cable("9733AB50", "1111HJ60b", 27, 0.7));
         cableList.add(new Cable("9717KH6", "9733AB50", 30, 0.2));
         cableList.add(new Cable("9471KN24", "9717KH6", 8, 0.2));
