@@ -116,6 +116,7 @@ public class ProsumerAgent extends TimedAgent {
     }
 
     public synchronized double getCurEnergy() {
+        System.out.println("curhier" +curEnergy);
         return curEnergy;
     }
 
