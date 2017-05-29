@@ -18,15 +18,13 @@ import java.util.function.BiConsumer;
  * Created by thijs on 22-5-17.
  */
 public class OutputR extends OutputData{
-    private String fileName;
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone( ZoneId.systemDefault() );
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone( ZoneId.systemDefault() );
 
-    HashMap<AID, List<GatherData.TimedEnergyDeal>> sellers = new HashMap<>();
+    private static final String OUTPUT_FILE_NAME = "output";
+    private static final String PRODUCTION_FILE_NAME = "production.csv";
 
-    public OutputR(String fileName) {
-        this.fileName = fileName;
-    }
+    HashMap<AID, List<GatherData.TimedEnergyDeal>> sellers = new HashMap<>();
 
     private void orderDeals(GatherData gatherData) {
         for (GatherData.TimedEnergyDeal ted: gatherData.getDeals()) {
@@ -42,7 +40,18 @@ public class OutputR extends OutputData{
 
     @Override
     public void output(GatherData gatherData) {
-        File file = createFile(fileName);
+        File outputFolder = new File(OUTPUT_FILE_NAME);
+        outputFolder.mkdir();
+        orderDeals(gatherData);
+        for (AID agent : gatherData.getAgents()) {
+            File localFolder = new File(outputFolder, agent.getLocalName());
+            localFolder.mkdir();
+            storeAgentData(agent, localFolder, gatherData);
+        }
+
+
+
+        /*File file = createFile(fileName);
         File production = createFile("production.csv");
         PrintWriter writer = createWriter(file);
         writeDeals(writer, gatherData);
@@ -50,11 +59,25 @@ public class OutputR extends OutputData{
         writeProductions(writerProduction, gatherData);
         System.out.println("Done with writing deals");
         writer.close();
-        writerProduction.close();
+        writerProduction.close();*/
     }
 
-    public File createFile(String name) {
-        File csvFile = new File(name);
+    private void storeAgentData(AID agent, File localFolder, GatherData gatherData) {
+        storeProduction(agent, localFolder, gatherData);
+    }
+
+    private void storeProduction(AID agent, File localFolder, GatherData gatherData) {
+        File productionFile = createFile(localFolder, PRODUCTION_FILE_NAME);
+        PrintWriter writer = createWriter(productionFile);
+        writer.write(addSeperators("Date","Time", "amount") + "\n");
+        for (GatherData.TimedProduction tp : gatherData.getProductions().get(agent)) {
+            writer.write(addSeperators(dateFormatter.format(tp.time), timeFormatter.format(tp.time),Double.toString(tp.amount))+"\n");
+        }
+        writer.close();
+    }
+
+    public File createFile(File parentFolder, String name) {
+        File csvFile = new File(parentFolder, name);
         try {
             if (!csvFile.exists()) {
                 csvFile.createNewFile();
