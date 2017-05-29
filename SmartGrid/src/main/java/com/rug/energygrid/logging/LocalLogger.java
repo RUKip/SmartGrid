@@ -22,7 +22,7 @@ public class LocalLogger {
         try {
             File logsFolder = new File(FOLDER_NAME);
             logsFolder.mkdir();
-            FileHandler fh = new FileHandler(FOLDER_NAME +"/"+ NAME +".log");
+            FileHandler fh = new FileHandler(FOLDER_NAME + File.separator + NAME +".log");
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);

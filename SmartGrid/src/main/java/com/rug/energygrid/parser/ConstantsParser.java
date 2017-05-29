@@ -1,5 +1,6 @@
 package com.rug.energygrid.parser;
 
+import java.io.File;
 import java.util.regex.Pattern;
 
 /**
@@ -7,8 +8,8 @@ import java.util.regex.Pattern;
  */
 public class ConstantsParser {
 
-    public static final String JSON_GRID_FILE_LOCATION = "src/main/resources/grid.json"; // use C:\\grid.json in windows, linus uses /home/etc..
-    public static final String JSON_AGENT_FILE_LOCATION = "src/main/resources/jade-agent-container.properties";
+    public static final String JSON_GRID_FILE_LOCATION = "src" + File.separator + "main" + File.separator + "resources" +File.separator+ "grid.json"; // use C:\\grid.json in windows, linus uses /home/etc..
+    public static final String JSON_AGENT_FILE_LOCATION = "src" + File.separator+ "main" + File.separator + "resources" + File.separator + "jade-agent-container.properties";
 
     public static final String CABLE_LIST_NAME = "Cables";
     public static final String EP_LIST_NAME = "EnergyProducers";
