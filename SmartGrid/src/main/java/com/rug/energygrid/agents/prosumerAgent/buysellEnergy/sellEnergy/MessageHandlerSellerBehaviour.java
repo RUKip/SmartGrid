@@ -44,7 +44,7 @@ public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
                     case SellEnergy.LESSTHAN_DEAL:
                         //lessThan deal
                         reply.setPerformative(ACLMessage.ACCEPT_PROPOSAL);
-                        double sellingEnergy = sellEnergy.reserveEnergy(receivedOffer.getSellingEnergy());
+                        double sellingEnergy = sellEnergy.reserveEnergy(receivedOffer.getEnergy());
                         reply.setContent(Double.toString(sellingEnergy));
                         sellEnergy.processPayment(receivedOffer.getPrice(), sellingEnergy);
                         break;

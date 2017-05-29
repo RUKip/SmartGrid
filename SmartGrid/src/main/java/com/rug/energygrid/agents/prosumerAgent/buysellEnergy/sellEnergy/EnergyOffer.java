@@ -7,28 +7,28 @@ import java.io.Serializable;
  */
 public class EnergyOffer {
     protected double price; // in euros
-    protected double sellingEnergy;
+    protected double energy;
 
-    public EnergyOffer(double price, double sellingEnergy) {
+    public EnergyOffer(double price, double energy) {
         this.price = price;
-        this.sellingEnergy = sellingEnergy;
+        this.energy = energy;
     }
 
     public double getPrice() {
         return price;
     }
 
-    public double getSellingEnergy(){
-        return sellingEnergy;
+    public double getEnergy(){
+        return energy;
     }
 
     public void subtractSellingEnergy(double energy) {
-        this.sellingEnergy -= energy;
+        this.energy -= energy;
     }
 
     //To send the offer.
     public String serialize() {
-        return Double.toString(price)+"_"+Double.toString(sellingEnergy);
+        return Double.toString(price)+"_"+Double.toString(energy);
     }
 
     //To receive the offer.

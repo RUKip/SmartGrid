@@ -19,8 +19,8 @@ public class RemoteEnergyOffer {
         this.cableEnergyLoss = Math.pow((Math.E),(-1*this.cableTotalResistance)/(INDUCTION_PER_METER*SPEED_OF_LIGHT));
     }
 
-    public double getSellingEnergy(){
-        return energyOffer.getSellingEnergy();
+    public double getEnergy(){
+        return energyOffer.getEnergy();
     }
 
     public double getPrice() {
@@ -34,20 +34,20 @@ public class RemoteEnergyOffer {
     //Calculates what is the max energy that can be sold to this buyer
     public double calcEnergyToBeBought(double neededEnergy) {
         double energyLossIncluded = neededEnergy/cableEnergyLoss; //Here the amount of energy lost is calculated, see cable.getCost() and http://large.stanford.edu/courses/2010/ph240/harting1/
-        return energyOffer.getSellingEnergy() <= energyLossIncluded ? (energyOffer.getSellingEnergy()) : energyLossIncluded;
+        return energyOffer.getEnergy() <= energyLossIncluded ? (energyOffer.getEnergy()) : energyLossIncluded;
     }
 
-    public double calcEnergyLeft(double neededEnergy){
-        double energyLossIncluded = neededEnergy/cableEnergyLoss;
-        return energyOffer.getSellingEnergy() <= energyLossIncluded ? (energyOffer.getSellingEnergy()*cableEnergyLoss) : neededEnergy;
+    public double getEnergyLeft() {
+        return getEnergy()*cableEnergyLoss;
     }
 
-    public RemoteEnergyOffer remaining(double energyToBeBought) {
-        if (energyOffer.getSellingEnergy() > energyToBeBought) {
-            EnergyOffer decreasedEnergyOffer = new EnergyOffer(energyOffer.getPrice(), energyOffer.getSellingEnergy()-energyToBeBought);
-            return new RemoteEnergyOffer(agent, decreasedEnergyOffer, cableTotalResistance);
+    public MaxAndRemaining getMaxAndRemaining(double neededEnergy) {
+        RemoteEnergyOffer max = new RemoteEnergyOffer(agent, new EnergyOffer(this.getPrice(), calcEnergyToBeBought(neededEnergy)), this.getCableTotalResistance());
+        RemoteEnergyOffer remaining = null;
+        if (max.getEnergy() < this.getEnergy()){
+            remaining = new RemoteEnergyOffer(agent, new EnergyOffer(this.getPrice(), this.getEnergy() - max.getEnergy()), this.getCableTotalResistance());
         }
-        return null;
+        return new MaxAndRemaining(max, remaining);
     }
 
     public AID getAgent() {
@@ -61,5 +61,15 @@ public class RemoteEnergyOffer {
 
     public boolean equals(RemoteEnergyOffer o){
         return (o.getAgent().equals(this.getAgent()));
+    }
+
+    public class MaxAndRemaining {
+        public RemoteEnergyOffer max;
+        public RemoteEnergyOffer remaining;
+
+        public MaxAndRemaining(RemoteEnergyOffer max, RemoteEnergyOffer remaining) {
+            this.max = max;
+            this.remaining = remaining;
+        }
     }
 }

@@ -32,17 +32,8 @@ public class CustomPriorityQueue {
     }
 
     //Tries to get curEnergy from the first element
-    public RemoteEnergyOffer pop(double curEnergy) {
-        RemoteEnergyOffer realOffer = queue.remove(0);
-        double energyToBeBought = Math.min(realOffer.getSellingEnergy(), curEnergy);
-        //If the whole offer is used up remove it, otherwise update it.
-        if (energyToBeBought == realOffer.getSellingEnergy()) {
-            return realOffer;
-        } else {
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableTotalResistance()));
-            this.add(new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(),realOffer.getSellingEnergy()-energyToBeBought),realOffer.getCableTotalResistance()));
-            return new RemoteEnergyOffer(realOffer.getAgent(), new EnergyOffer(realOffer.getPrice(), energyToBeBought), realOffer.getCableTotalResistance());
-        }
+    public RemoteEnergyOffer pop() {
+        return queue.remove(0);
     }
 
     private void checkDuplicate(RemoteEnergyOffer e1) {
@@ -55,6 +46,9 @@ public class CustomPriorityQueue {
     }
 
     public void add(RemoteEnergyOffer e1) {
+        if (e1 == null) {
+            return;
+        }
         checkDuplicate(e1);
         for (int pos = 0; pos < queue.size(); pos++) {
             if (comparator.compare(e1, queue.get(pos)) < 0) {
@@ -75,6 +69,12 @@ public class CustomPriorityQueue {
 
     public int getSize() {
         return queue.size();
+    }
+
+    public void print() {
+        for (RemoteEnergyOffer offer : queue) {
+            System.out.println("energy:" + offer.getEnergy()+"agent: "+offer.getAgent());
+        }
     }
 
 }

@@ -11,15 +11,13 @@ import jade.lang.acl.MessageTemplate;
  */
 public class TransactionHandlerBuyer extends Behaviour{
     BuyEnergy buyEnergy;
-    double energyToBeBought;
     RemoteEnergyOffer currentOffer;
     private MessageTemplate mt; // The template to receive replies
     private boolean finished = false;
 
-    public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, double energyToBeBought, RemoteEnergyOffer currentOffer) {
+    public TransactionHandlerBuyer(Agent parent, BuyEnergy buyEnergy, RemoteEnergyOffer currentOffer) {
         super(parent);
         this.buyEnergy = buyEnergy;
-        this.energyToBeBought = energyToBeBought;
         this.currentOffer = currentOffer;
 
         sendOffer();
@@ -42,12 +40,12 @@ public class TransactionHandlerBuyer extends Behaviour{
         if (msg != null) {
             if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
                 double boughtEnergy = Double.parseDouble(msg.getContent());
-                if (boughtEnergy < energyToBeBought) {
-                    buyEnergy.boughtLessEnergy(energyToBeBought - boughtEnergy);
+                if (boughtEnergy < currentOffer.getEnergy()) {
+                    buyEnergy.boughtLessEnergy(currentOffer.getEnergyLeft() - boughtEnergy*currentOffer.getCableEnergyLoss());
                 }
                 buyEnergy.processPayment(msg.getSender(), currentOffer.getPrice(), boughtEnergy);
             } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
-                buyEnergy.boughtLessEnergy(energyToBeBought);
+                buyEnergy.boughtLessEnergy(currentOffer.getEnergyLeft());
             }
             finished = true;
         } else {

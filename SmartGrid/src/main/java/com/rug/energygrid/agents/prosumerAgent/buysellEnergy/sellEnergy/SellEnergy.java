@@ -30,7 +30,7 @@ public class SellEnergy {
         }
 
         //There is an offer
-        if (prosumerAgent.getCurEnergy() >= energyOffer.getSellingEnergy()) {
+        if (prosumerAgent.getCurEnergy() >= energyOffer.getEnergy()) {
             return PERFECT_DEAL;
         } else {
             return LESSTHAN_DEAL;

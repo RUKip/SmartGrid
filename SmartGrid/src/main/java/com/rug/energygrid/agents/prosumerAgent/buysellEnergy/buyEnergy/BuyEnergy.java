@@ -45,10 +45,18 @@ public class BuyEnergy {
     public void refillEnergy() {
         while (prosumerAgent.getCurEnergy() < 0) {
             if (!pq.isEmpty()) {
-                RemoteEnergyOffer energyOffer = pq.pop(prosumerAgent.getCurEnergy() * -1);
+                System.out.println("I am :"+ prosumerAgent.getAID().getLocalName());
+                pq.print();
+                RemoteEnergyOffer energyOffer = pq.pop();
                 double neededEnergy = prosumerAgent.getCurEnergy() * -1;
-                prosumerAgent.addCurEnergy(energyOffer.calcEnergyLeft(neededEnergy)); //TODO: shouldnt this needed energy? (and energytobebought should be subtracted from seller)
-                prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, energyOffer.calcEnergyToBeBought(neededEnergy), energyOffer));
+                RemoteEnergyOffer.MaxAndRemaining maxAndRemaining = energyOffer.getMaxAndRemaining(neededEnergy);
+                RemoteEnergyOffer max = maxAndRemaining.max;
+                pq.add(maxAndRemaining.remaining);
+
+                System.out.println("offer: " +energyOffer.getEnergy()+ "seller: "+energyOffer.getAgent().getLocalName()+ " need: "+neededEnergy+ " bought: "+ max.getEnergy()+" to be gained: "+ max.getEnergyLeft());
+
+                prosumerAgent.addCurEnergy(max.getEnergyLeft()); //TODO: shouldnt this needed energy? (and energytobebought should be subtracted from seller)
+                prosumerAgent.addBehaviour(new TransactionHandlerBuyer(prosumerAgent, this, max));
             } else {
                 /*//TODO: add buying energy from the 'big guys' with a real agent
                 double energy = prosumerAgent.getCurEnergy()*-1;
