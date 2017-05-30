@@ -10,9 +10,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.logging.FileHandler;
 import java.util.logging.SimpleFormatter;
 
-/**
- * Created by thijs on 12-5-17.
- */
 public class LocalLogger {
     public static Logger logger;
     public static final String FOLDER_NAME = "logs";

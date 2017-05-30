@@ -1,7 +1,8 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.EnergyOffer;
+import com.rug.energygrid.logging.LocalLogger;
 import jade.core.AID;
+import jade.util.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,6 +10,7 @@ import java.util.List;
 
 public class CustomPriorityQueue {
 
+    private static final Logger logger = LocalLogger.getLogger();
     private List<RemoteEnergyOffer> queue;
     private int size = 0;
     private Comparator comparator;
@@ -16,6 +18,7 @@ public class CustomPriorityQueue {
     public CustomPriorityQueue(Comparator c) {
         this.queue = new ArrayList();
         this.comparator = c;
+        logger.info("Local priority queue created");
     }
 
     public void remove(RemoteEnergyOffer e) {

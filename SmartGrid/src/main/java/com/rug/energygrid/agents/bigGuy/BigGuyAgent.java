@@ -8,10 +8,6 @@ import jade.core.Agent;
 import java.time.Duration;
 import java.time.Instant;
 
-/**
- * Created by thijs on 16-5-17.
- */
-
 //currently not used
 public class BigGuyAgent extends ProsumerAgent {
     public static final double CONSTANTPRICE = 0.22;     // source http://www.energiesite.nl/begrippen/kwh-prijs/

@@ -2,9 +2,6 @@ package com.rug.energygrid.agents.time;
 
 import java.time.Instant;
 
-/**
- * Created by thijs on 9-5-17.
- */
 public class TimerComConstants {
     public static final int YELLOW_PAGES_REGISTER_WAIT_TIME = 1000;
     public static final int START_SIMULATION_WAIT_TIME = 1000;

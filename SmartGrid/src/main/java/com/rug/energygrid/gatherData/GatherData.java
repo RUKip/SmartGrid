@@ -11,12 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by thijs on 18-5-17.
- */
 public class GatherData {
     //Singleton pattern
-    public static final String OUTPUT_FILE_NAME = "output.csv";
     public static final GatherData GATHER_DATA = new GatherData(new OutputR());
 
     List<TimedEnergyDeal> deals = new ArrayList<>();

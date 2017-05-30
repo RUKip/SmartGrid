@@ -16,7 +16,6 @@ public class ShortestPath {
     private HashMap<String, Node> createGraph(List<Cable> cables){
         HashMap<String, Node> graph = new HashMap<String, Node>(); //this is the graph of each agent and there connected cost
 
-        //TODO: here get all AID's of the agents(the local names) and initialize the routingtable
         List<String> prosumerAgents = agentDeseriaizer.getAgentList();
         for(String agent : prosumerAgents){
             graph.put(agent, new Node(agent));
@@ -40,7 +39,6 @@ public class ShortestPath {
         return graph;
     }
 
-    //TODO: check for speed improvements
     //fills the routingTable
     public HashMap<String, Double> calcShortestPath(String startingNode, List<Cable> cables){
         HashMap<String, Node> graph = createGraph(cables);
@@ -55,13 +53,11 @@ public class ShortestPath {
                     return 0;
                 }
             }
-        }); //TODO: smallest node should be on top
+        });
 
         for(Map.Entry<String, Node> entry : graph.entrySet()) {
             if(!entry.getValue().getName().equals(startingNode)){
                 unvisitedNodes.add(entry.getValue());
-            }else{
-                //logger.info("I did not insert agent: " + entry.getValue().getName()); //TODO: remove debug
             }
         }
 
@@ -82,7 +78,6 @@ public class ShortestPath {
 
         //step 3 calculate the shortest distance compared to all the neighbours(start of loop)
 
-        //TODO: test
         while((currentNode = unvisitedNodes.poll()) != null) {
             currentNode.setVisited(true);       //here the current node is visited
             graph.put(currentNode.getName(), currentNode);
@@ -101,7 +96,6 @@ public class ShortestPath {
         HashMap<String,Double> finalGraph = new HashMap<>();
         for(Map.Entry<String, Node> entry : graph.entrySet()){
             finalGraph.put(entry.getKey(), entry.getValue().getCost());
-            //logger.info("For one Agent to" +  entry.getKey() + " this is the final cost: " + entry.getValue().getCost());//TODO: remove this debug
         }
         return finalGraph;
     }
@@ -112,16 +106,16 @@ public class ShortestPath {
         private boolean visited = false;
         private List<Connection> connected = new ArrayList<>();
 
-        public Node(String n){
+        Node(String n){
             cost = Double.MAX_VALUE;
             name = n;
         }
 
-        public boolean getVisited(){
+        boolean getVisited(){
             return visited;
         }
 
-        public void setVisited(boolean b){
+        void setVisited(boolean b){
             this.visited = b;
         }
 
@@ -129,19 +123,19 @@ public class ShortestPath {
             return this.name;
         }
 
-        public Double getCost(){
+        Double getCost(){
             return cost;
         }
 
-        public void setCost(Double c){
+        void setCost(Double c){
             cost = c;
         }
 
-        public void addConnection(Node node, Double cost){
+        void addConnection(Node node, Double cost){
             connected.add(new Connection(node, cost));
         }
 
-        public List<Connection> getConnections(){
+        List<Connection> getConnections(){
             return this.connected;
         }
     }
@@ -150,15 +144,15 @@ public class ShortestPath {
         private Node connectedTo;
         private Double connectionCost;
 
-        public Connection(Node node, Double cost){
+        Connection(Node node, Double cost){
             this.connectedTo = node;
             this.connectionCost = cost;
         }
 
-        public Node getConnectedNode(){
+        Node getConnectedNode(){
             return connectedTo;
         }
-        public Double getConnectionCost(){
+        Double getConnectionCost(){
             return connectionCost;
         }
     }

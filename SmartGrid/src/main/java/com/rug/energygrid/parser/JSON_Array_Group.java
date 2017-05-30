@@ -2,9 +2,6 @@ package com.rug.energygrid.parser;
 
 import java.util.List;
 
-/**
- * Created by Ruben on 08-May-17.
- */
 public class JSON_Array_Group<T> {
         private String name;
         private List<T> list;

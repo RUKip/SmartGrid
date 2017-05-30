@@ -50,6 +50,7 @@ public class Initializer {
         cableList.add(new Cable("1111HJ60b", "BigGuyEssent", 1200, 0.2));
         cableList.add(new Cable("9717KH6", "BigGuyEssent", 1040, 0.2));
         cableList.add(new Cable("9733AB50", "BigGuyEssent", 1230, 0.2));
+        logger.info("Initialized all cables");
     }
 
     //Add Energyproducers here (and set settings here ex. windmill.setArea(area))
@@ -89,6 +90,7 @@ public class Initializer {
         JSON_Array_Group<EnergyProducer> solarpanelGroup3 = new JSON_Array_Group<>(ConstantsParser.SOLARPANEL_LIST_NAME, solarPanelList3);
         allTypes3.add(solarpanelGroup3);
         agentEPList.add(new JSON_Array_Group<>("8748NJ373", allTypes3));
+        logger.info("Initialized all energy producers");
     }
 
     //add Agents here
@@ -104,6 +106,8 @@ public class Initializer {
         //big guy agents
         bigGuyAgents = new ArrayList<>();
         bigGuyAgents.add("BigGuyEssent");
+
+        logger.info("Initialized all agents");
     }
 
     /////INIT stops here
@@ -121,6 +125,7 @@ public class Initializer {
 
         } catch (IOException e) {
             e.printStackTrace();
+            logger.warning("Initializer can't write energy producers and cables to file");
         }
 
         try{
