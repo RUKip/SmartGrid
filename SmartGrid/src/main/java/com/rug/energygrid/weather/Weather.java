@@ -1,5 +1,7 @@
 package com.rug.energygrid.weather;
 
+import com.rug.energygrid.logging.LocalLogger;
+import jade.util.Logger;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.BufferedReader;
@@ -10,14 +12,14 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Ruben on 26-Apr-17.
- */
 public abstract class Weather { //TODO: extend with max, min and adjustable
 
     protected static int TIME_POS;
     protected static int WIND_SPEED_POS;
     protected static int SOLAR_IRRIDIANCE_POS;
+
+    private static final Logger logger = LocalLogger.getLogger();
+
 
     protected Map<Integer, Map<Integer, Double>> dataSet;
 
@@ -34,24 +36,21 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
     public Double getWindSpeed(Instant time) throws TimeOutOfBoundsException {
         checkTime(time);
         return getImpWindSpeed(time);
-    }       //in m/s
+    }       // in m/s
 
     public Double getSunIrradiation(Instant time) throws TimeOutOfBoundsException {
         checkTime(time);
         return getImpSunIrradiation(time);
-    }       //in m/s
-
+    }       // in m/s
 
     protected abstract Double getImpWindSpeed(Instant time);
-    protected abstract Double getImpSunIrradiation(Instant time) throws TimeOutOfBoundsException;  //J/M
+    protected abstract Double getImpSunIrradiation(Instant time) throws TimeOutOfBoundsException;  // j/m
 
     public class TimeOutOfBoundsException extends Exception{}
-
 
     //when using data set has to be implemented
     protected abstract int convertToIntOfDataSet(Instant time);
 
-    //TODO: finish
     protected Map<Integer, Map<Integer, Double>> readDataSet(String fileName, String seperator, String... cleanStrings){
         BufferedReader br = null;
         int nrElements;
@@ -60,7 +59,7 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
             br = new BufferedReader(new FileReader(fileName));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            //TODO: Log data file not found here
+            logger.warning("Could not read weather data set, file: " + fileName + " was not found");
         }
         try {
             String line = br.readLine();
@@ -74,7 +73,6 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
                 Integer key = Integer.parseInt(rowEntry[TIME_POS]);
                 nrElements = rowEntry.length;
 
-                //TODO: now parses/stores every entry, we could also only read required onces
                 for (int i = 0; i < nrElements; i++) {
                     if(i!=TIME_POS){
                         if(rowEntry[i].equals("")){
@@ -92,8 +90,9 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
 
         }catch(IOException e){
             e.printStackTrace();
-            //TODO: Log IOException
+            logger.warning("An error occurred when parsing the file: " + fileName);
         }
+        logger.info("Done parsing weather data set: " + fileName);
         return dataSet;
     }
 

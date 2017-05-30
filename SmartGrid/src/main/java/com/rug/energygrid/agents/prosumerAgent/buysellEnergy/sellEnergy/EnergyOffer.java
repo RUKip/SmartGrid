@@ -1,10 +1,5 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
-import java.io.Serializable;
-
-/**
- * Created by thijs on 10-5-17.
- */
 public class EnergyOffer {
     protected double price; // in euros
     protected double energy;

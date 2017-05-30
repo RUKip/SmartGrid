@@ -1,6 +1,8 @@
 package com.rug.energygrid.gatherData;
 
+import com.rug.energygrid.logging.LocalLogger;
 import jade.core.AID;
+import jade.util.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -14,11 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-/**
- * Created by thijs on 22-5-17.
- */
 public class OutputCSV extends OutputData{
     private String fileName;
+    private static final Logger logger = LocalLogger.getLogger();
+    private static final char DEFAULT_SEPARATOR = ',';
+
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").withZone( ZoneId.systemDefault() );
 
     HashMap<AID, List<GatherData.TimedEnergyDeal>> sellers = new HashMap<>();
@@ -46,6 +48,7 @@ public class OutputCSV extends OutputData{
         writeDeals(writer, gatherData);
         writeProductions(writer, gatherData);
         System.out.println("Done with writing deals");
+        logger.info("Done with writing deals");
         writer.close();
     }
 
@@ -85,6 +88,7 @@ public class OutputCSV extends OutputData{
                             Double.toString(ted.price),
                             Double.toString(ted.energyAmount)) + "\n");
                 } catch (NullPointerException e) {
+                    logger.info("Our deal had an error writing");
                     System.out.println("" + ted.time + (ted.seller != null ? ted.seller.getLocalName() : "BigGuy") + ted.buyer + ted.price + ted.energyAmount);
                     e.printStackTrace();
                     System.exit(-1);
@@ -105,7 +109,6 @@ public class OutputCSV extends OutputData{
         }
     }
 
-    private static final char DEFAULT_SEPARATOR = ',';
 
     private String addSeperators(String ... fields) {
         String seperated = "";

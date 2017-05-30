@@ -1,8 +1,5 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy;
 
-/**
- * Created by Ruben on 08-May-17.
- */
 //TODO: simple version without details like maxcurrent etc.
 public class Cable {
 

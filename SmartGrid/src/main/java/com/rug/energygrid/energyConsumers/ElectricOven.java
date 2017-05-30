@@ -2,9 +2,7 @@ package com.rug.energygrid.energyConsumers;
 
 import java.time.LocalTime;
 
-/**
- * Created by thijs on 8-5-17.
- */
+//example of a energy consumer can be used to add to a prosumer
 public class ElectricOven extends TemporalEC {
 
     @Override

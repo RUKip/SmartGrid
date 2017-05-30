@@ -12,9 +12,6 @@ import jade.util.Logger;
 import java.time.Duration;
 import java.time.Instant;
 
-/**
- * Created by thijs on 9-5-17.
- */
 public class GlobalTimeAgent extends Agent {
     private static final Logger logger = LocalLogger.getLogger();
 

@@ -7,6 +7,8 @@ import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.energyProducers.EnergyProducer;
 import com.rug.energygrid.energyProducers.SolarPanel;
 import com.rug.energygrid.energyProducers.WindMill;
+import com.rug.energygrid.logging.LocalLogger;
+import jade.util.Logger;
 
 
 import java.io.FileReader;
@@ -21,6 +23,8 @@ public class JSON_Grid_Deserializer {
 
     private JSON_Array_Group cableGroup;
     private JSON_Array_Group energyProducerGroup;
+    private static final Logger logger = LocalLogger.getLogger();
+
 
     public JSON_Grid_Deserializer(){
         deserialize();
@@ -45,6 +49,7 @@ public class JSON_Grid_Deserializer {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            logger.warning("There was a problem in the deserialization of the grid");
         }
     }
 

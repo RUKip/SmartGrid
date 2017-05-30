@@ -6,9 +6,6 @@ import jade.core.behaviours.Behaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-/**
- * Created by thijs on 2-5-17.
- */
 public class TransactionHandlerBuyer extends Behaviour{
     BuyEnergy buyEnergy;
     RemoteEnergyOffer currentOffer;

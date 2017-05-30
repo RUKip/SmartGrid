@@ -11,13 +11,9 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-/**
- * Created by thijs on 2-5-17.
- */
 public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
     private MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
     private BuyEnergy buyEnergy;
-    private ServiceDescription sd;
 
     public MessageHandlerBuyerBehaviour(Agent myAgent, BuyEnergy buyEnergy) {
         super(myAgent);

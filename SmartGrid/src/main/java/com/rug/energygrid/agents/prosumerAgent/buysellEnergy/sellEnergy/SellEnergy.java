@@ -10,9 +10,6 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 
-/**
- * Created by thijs on 2-5-17.
- */
 public class SellEnergy {
     public static final int PERFECT_DEAL = 0, LESSTHAN_DEAL = 1, NO_DEAL = 2;
     private ProsumerAgent prosumerAgent;

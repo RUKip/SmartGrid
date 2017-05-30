@@ -22,20 +22,17 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
-/**
- * Created by thijs on 28-4-17.
- */
 public class ProsumerAgent extends TimedAgent {
     private static final Logger logger = LocalLogger.getLogger();
     private GatherData gatherData = GatherData.GATHER_DATA;
     protected double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
-    private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative)
+    private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative) TODO: implement
     protected BuyEnergy buyEnergy;
     protected SellEnergy sellEnergy;
-    private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, TODO: check if this is unique as identifier
+    private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
     private List<Cable> allCables;
-    private List<EnergyProducer> energyProducers; //TODO: change To maxEnergy producers
-    //TODO: add Adjustable Energy Producer list
+    private List<EnergyProducer> energyProducers;
+    //TODO: add Adjustable Energy Producer list, (generators etc)
     private List<EnergyConsumer> energyConsumers;
     private Weather usedWeather = new ExampleDataSet_KNI();
     private ServiceDescription sd; //The serviceDescription of an Agent
@@ -45,8 +42,6 @@ public class ProsumerAgent extends TimedAgent {
     protected void setup() {
         super.setup();
         FinishedChecker.agentAdded();
-        //logger = LocalLogger.getLogger();
-        logger.info("NAME: "+getAID().getName()+" is alive!");
         buyEnergy = new BuyEnergy(this);
         sellEnergy = new SellEnergy(this);
         parseJSON(); //TODO: if no parser file exists then run initializer
@@ -54,6 +49,7 @@ public class ProsumerAgent extends TimedAgent {
         energyConsumers = new ArrayList<>(); //TODO: add this to parser
         energyConsumers.add(new GeneralEnergyConsumer());
         addToYellowPages();
+        logger.info("NAME: "+getAID().getName()+" is alive!");
     }
 
     @Override
@@ -75,8 +71,6 @@ public class ProsumerAgent extends TimedAgent {
         addCurEnergy(newEnergy);
         checkGenTable(end);
         gatherData.addEnergyStatus(this.getAID(), end, curEnergy);
-        //System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
-        //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
     }
 
     //This method is ran when the agent shuts down
@@ -98,9 +92,7 @@ public class ProsumerAgent extends TimedAgent {
     }
 
     private void addCurEnergyWithoutTable(double energy) {
-        System.out.println("before: "+ curEnergy);
         curEnergy += energy;
-        System.out.println("cur energy after adding "+ energy+"  : "+curEnergy);
         if (curEnergy > 0) {
             sellEnergy.sellSurplussEnergy();
         } else if (curEnergy < 0){
@@ -117,7 +109,6 @@ public class ProsumerAgent extends TimedAgent {
     }
 
     public synchronized double getCurEnergy() {
-        System.out.println("curhier" +curEnergy);
         return curEnergy;
     }
 
@@ -163,7 +154,6 @@ public class ProsumerAgent extends TimedAgent {
             GenEntry curEntry = generationQueue.remove();
             energyChange += curEntry.energy;
         }
-        System.out.println("have to buy/sell: " + energyChange + " at the big guy");
         addCurEnergyWithoutTable(energyChange);
     }
 

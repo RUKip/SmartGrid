@@ -1,8 +1,5 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy;
 
-/**
- * Created by thijs on 28-4-17.
- */
 public class BuySellComConstants {
     public static final String BUYTYPE = "energy-selling";
 
