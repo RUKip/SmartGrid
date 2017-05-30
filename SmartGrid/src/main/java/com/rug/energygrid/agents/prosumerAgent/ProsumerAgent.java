@@ -74,6 +74,7 @@ public class ProsumerAgent extends TimedAgent {
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
         checkGenTable(end);
+        gatherData.addEnergyStatus(this.getAID(), end, curEnergy);
         //System.out.println("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
         //logger.info("agent: "+this.getAID().getName()+" produced: "+newEnergy+" curEnergy: "+curEnergy);
     }

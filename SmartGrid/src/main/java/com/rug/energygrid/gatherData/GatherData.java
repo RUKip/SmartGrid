@@ -21,6 +21,7 @@ public class GatherData {
 
     List<TimedEnergyDeal> deals = new ArrayList<>();
     HashMap<AID, List<TimedProduction>> productions = new HashMap<>();
+    HashMap<AID, List<TimedProduction>> energyStatus = new HashMap<>();
     OutputData output;
 
     public GatherData(OutputData output) {
@@ -36,11 +37,17 @@ public class GatherData {
         productions.get(producer).add(new TimedProduction(producer, time, amount));
     }
 
+    public synchronized void addEnergyStatus(AID producer, Instant time, double amount) {
+        energyStatus.putIfAbsent(producer, new ArrayList<TimedProduction>());
+        energyStatus.get(producer).add(new TimedProduction(producer, time, amount));
+    }
+
     public List<TimedEnergyDeal> getDeals() {
         return deals;
     }
 
     public HashMap<AID, List<TimedProduction>> getProductions() { return productions; }
+    public HashMap<AID, List<TimedProduction>> getEnergyStatus() { return productions; }
 
     public void createOutput() {
         output.output(this);

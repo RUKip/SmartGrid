@@ -23,6 +23,7 @@ public class OutputR extends OutputData{
 
     private static final String OUTPUT_FILE_NAME = "output";
     private static final String PRODUCTION_FILE_NAME = "production.csv";
+    private static final String ENERGYSTATUS_FILE_NAME = "energyStatus.csv";
 
     HashMap<AID, List<GatherData.TimedEnergyDeal>> sellers = new HashMap<>();
 
@@ -48,7 +49,7 @@ public class OutputR extends OutputData{
             localFolder.mkdir();
             storeAgentData(agent, localFolder, gatherData);
         }
-
+        System.out.println("Done with writing deals");
 
 
         /*File file = createFile(fileName);
@@ -64,6 +65,7 @@ public class OutputR extends OutputData{
 
     private void storeAgentData(AID agent, File localFolder, GatherData gatherData) {
         storeProduction(agent, localFolder, gatherData);
+        storeEnergyStatus(agent, localFolder, gatherData);
     }
 
     private void storeProduction(AID agent, File localFolder, GatherData gatherData) {
@@ -71,6 +73,16 @@ public class OutputR extends OutputData{
         PrintWriter writer = createWriter(productionFile);
         writer.write(addSeperators("Date","Time", "amount") + "\n");
         for (GatherData.TimedProduction tp : gatherData.getProductions().get(agent)) {
+            writer.write(addSeperators(dateFormatter.format(tp.time), timeFormatter.format(tp.time),Double.toString(tp.amount))+"\n");
+        }
+        writer.close();
+    }
+
+    private void storeEnergyStatus(AID agent, File localFolder, GatherData gatherData) {
+        File energyStatusFile = createFile(localFolder, ENERGYSTATUS_FILE_NAME);
+        PrintWriter writer = createWriter(energyStatusFile);
+        writer.write(addSeperators("Date","Time", "amount") + "\n");
+        for (GatherData.TimedProduction tp : gatherData.getEnergyStatus().get(agent)) {
             writer.write(addSeperators(dateFormatter.format(tp.time), timeFormatter.format(tp.time),Double.toString(tp.amount))+"\n");
         }
         writer.close();
