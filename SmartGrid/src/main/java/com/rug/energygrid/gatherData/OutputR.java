@@ -1,6 +1,8 @@
 package com.rug.energygrid.gatherData;
 
+import com.rug.energygrid.logging.LocalLogger;
 import jade.core.AID;
+import jade.util.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,6 +20,7 @@ import java.util.function.BiConsumer;
  * Created by thijs on 22-5-17.
  */
 public class OutputR extends OutputData{
+    Logger logger = LocalLogger.getLogger();
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone( ZoneId.systemDefault() );
     DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss").withZone( ZoneId.systemDefault() );
 
@@ -38,9 +41,10 @@ public class OutputR extends OutputData{
         for (AID agent : gatherData.getAgents()) {
             File localFolder = new File(outputFolder, agent.getLocalName());
             localFolder.mkdir();
-            storeAgentData(agent, localFolder, gatherData);
+            String agentResult = storeAgentData(agent, localFolder, gatherData);
+            logger.info(agent.getLocalName()+ " " + agentResult);
         }
-        System.out.println("Done with writing deals");
+        logger.info("Done with writing deals");
 
 
         /*File file = createFile(fileName);
@@ -54,20 +58,24 @@ public class OutputR extends OutputData{
         writerProduction.close();*/
     }
 
-    private void storeAgentData(AID agent, File localFolder, GatherData gatherData) {
-        storeProduction(agent, localFolder, gatherData);
+    private String storeAgentData(AID agent, File localFolder, GatherData gatherData) {
+        double productionAmount = storeProduction(agent, localFolder, gatherData);
         storeEnergyStatus(agent, localFolder, gatherData);
-        storeDeals(agent, localFolder, gatherData);
+        String dealStrings = storeDeals(agent, localFolder, gatherData);
+        return "produced: " + productionAmount + " "+ dealStrings;
     }
 
-    private void storeProduction(AID agent, File localFolder, GatherData gatherData) {
+    private double storeProduction(AID agent, File localFolder, GatherData gatherData) {
+        double totalAmount = 0;
         File productionFile = createFile(localFolder, PRODUCTION_FILE_NAME);
         PrintWriter writer = createWriter(productionFile);
         writer.write(addSeperators("Date","Time", "amount") + "\n");
         for (GatherData.TimedProduction tp : gatherData.getProductions().get(agent)) {
             writer.write(addSeperators(dateFormatter.format(tp.time), timeFormatter.format(tp.time),Double.toString(tp.amount))+"\n");
+            totalAmount += tp.amount;
         }
         writer.close();
+        return totalAmount;
     }
 
     private void storeEnergyStatus(AID agent, File localFolder, GatherData gatherData) {
@@ -103,7 +111,8 @@ public class OutputR extends OutputData{
         }
     }
 
-    private void storeSellerDeals(AID agent, File localFolder, GatherData gatherData) {
+    private double storeSellerDeals(AID agent, File localFolder, GatherData gatherData) {
+        double amount = 0;
         File sellerDeals = createFile(localFolder, SELLERDEALS_FILE_NAME);
         PrintWriter writer = createWriter(sellerDeals);
         writer.write(addSeperators("Date", "Time", "Buyer", "price", "amount")+"\n");
@@ -113,11 +122,14 @@ public class OutputR extends OutputData{
                     ted.buyer.getLocalName(),
                     Double.toString(ted.price),
                     Double.toString(ted.energyAmount)) + "\n");
+            amount += ted.energyAmount;
         }
         writer.close();
+        return amount;
     }
 
-    private void storeBuyerDeals(AID agent, File localFolder, GatherData gatherData) {
+    private double storeBuyerDeals(AID agent, File localFolder, GatherData gatherData) {
+        double amount = 0;
         File buyerDeals = createFile(localFolder, BUYERDEALS_FILE_NAME);
         PrintWriter writer = createWriter(buyerDeals);
         writer.write(addSeperators("Date", "Time", "Seller", "price", "amount")+"\n");
@@ -127,14 +139,17 @@ public class OutputR extends OutputData{
                     ted.seller.getLocalName(),
                     Double.toString(ted.price),
                     Double.toString(ted.energyAmount)) + "\n");
+            amount += ted.energyAmount;
         }
         writer.close();
+        return amount;
     }
 
-    private void storeDeals(AID agent, File localFolder, GatherData gatherData) {
+    private String storeDeals(AID agent, File localFolder, GatherData gatherData) {
         orderDeals(gatherData);
-        storeSellerDeals(agent, localFolder, gatherData);
-        storeBuyerDeals(agent, localFolder, gatherData);
+        double sellAmount = storeSellerDeals(agent, localFolder, gatherData);
+        double buyAmount = storeBuyerDeals(agent, localFolder, gatherData);
+        return "Sold: " +sellAmount+ " bought: " + buyAmount;
     }
 
     public File createFile(File parentFolder, String name) {
