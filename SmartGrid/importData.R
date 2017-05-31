@@ -1,5 +1,3 @@
-library("chron")
-
 setCorrectDate <- function(dataSet) {
   #add the dataTime colom
   dataSet$Date <- sapply(dataSet$Date, as.character)
@@ -18,13 +16,39 @@ readCSV <- function(filename) {
   return(correctDate)
 }
 
-findMinMax <- function(filename) {
-  
+initializeMinMax <- function() {
+  minAmount <<- 0
+  maxAmount <<- 0
+  minTime <<- NULL
+  maxTime <<- NULL
+}
+
+updateMinMax <- function(dataset) {
+  for (curAmount in dataset$amount) {
+    if (curAmount < minAmount) {
+      minAmount <<- curAmount
+    } else if (curAmount > maxAmount) {
+      maxAmount <<- curAmount
+    }
+  }
+  for (curTime in dataset$DateTime){
+    if (is.null(minTime)) {
+      minTime <<- curTime
+    } else if (curTime < minTime) {
+      minTime <<- curTime
+    } 
+    
+    if (is.null(maxTime)) {
+      maxTime <<- curTime
+    } else if (curTime > maxTime) {
+      maxTime <<- curTime
+    }
+  }
 }
 
 addProductionPlot <- function(productionData) {
-  points(productionData$DateTime, productionData$amount, col="red")
-  lines(productionData$DateTime, productionData$amount, col="red")
+  points(productionData$DateTime, productionData$amount, col="yellow")
+  lines(productionData$DateTime, productionData$amount, col="yellow")
 }
 
 addEnergyStatus <- function(energyStatusData) {
@@ -37,34 +61,48 @@ addSellerDeals <- function(sellerDealsData) {
   lines(sellerDealsData$DateTime, sellerDealsData$amount, col="green")
 }
 
-library("chron")
-setwd("/media/HDD-Thijs/Schooldocumenten/2016-2017/BachalorProject/bachelorproject/bachelorproject/SmartGrid/output")
-minAmount <- 0
-maxAmount <- 0
-minTime <- 0
-maxTime <- 0
-
-#read data
-dataHolder <- data.frame(row.names = list.dirs(recursive = FALSE, full.names = FALSE))
-for (folder in list.dirs(recursive = FALSE, full.names = FALSE)) {
-  print(paste0(folder))
-  dataHolder$production <- readCSV(paste0(folder,"/production.csv"))
-  dataHolder$energyStatus <- readCSV(paste0(folder,"/energyStatus.csv"))
-  dataHolder$sellerDeals <- readCSV(paste0(folder,"/sellerDeals.csv"))
+addBuyerDeals <- function(buyerDealsData) {
+  points(buyerDealsData$DateTime, buyerDealsData$amount, col="red")
+  lines(buyerDealsData$DateTime, buyerDealsData$amount, col="red")
 }
+
+setPlotDimensions <- function() {
+  #read data
+  initializeMinMax()
+  for (folder in list.dirs(recursive = FALSE, full.names = FALSE)) {
+    #TODO: find a way to store the data.
+    production <- readCSV(paste0(folder,"/production.csv"))
+    energyStatus <- readCSV(paste0(folder,"/energyStatus.csv"))
+    sellerDeals <- readCSV(paste0(folder,"/sellerDeals.csv"))
+    buyerDeals <- readCSV(paste0(folder,"/buyerDeals.csv"))
+    updateMinMax(production)
+    updateMinMax(energyStatus)
+    updateMinMax(sellerDeals)
+    updateMinMax(buyerDeals)
+  }
+}
+
 #plot data
-for (folder in list.dirs(recursive = FALSE, full.names = FALSE)) {
-  print(paste0(folder))
-  production <- readCSV(paste0(folder,"/production.csv"))
-  energyStatus <- readCSV(paste0(folder,"/energyStatus.csv"))
-  sellerDeals <- readCSV(paste0(folder,"/sellerDeals.csv"))
-  pdf(paste0(folder,".pdf"))
-  plot(c(-90,90), c(-8,8), main = folder, type = 'n', xlab="Time",ylab="Energy (Joule)")
-  addProductionPlot(production)
-  addEnergyStatus(energyStatus)
-  addSellerDeals(sellerDeals)
-  #plot(production$DateTime, production$amount, main=folder)
-  #lines(production$DateTime, production$amount)
-  dev.off()
-  print(paste(minY, maxY, minX, maxX))
+plotData <- function() {
+  setPlotDimensions()
+  for (folder in list.dirs(recursive = FALSE, full.names = FALSE)) {
+    print(paste0(folder))
+    production <- readCSV(paste0(folder,"/production.csv"))
+    energyStatus <- readCSV(paste0(folder,"/energyStatus.csv"))
+    sellerDeals <- readCSV(paste0(folder,"/sellerDeals.csv"))
+    buyerDeals <- readCSV(paste0(folder,"/buyerDeals.csv"))
+    pdf(paste0(folder,".pdf"))
+    plot(c(minTime,maxTime), c(minAmount,maxAmount), main = folder, type = 'n', xlab="Time",ylab="Energy (Joule)")
+    addProductionPlot(production)
+    addEnergyStatus(energyStatus)
+    addSellerDeals(sellerDeals)
+    addBuyerDeals(buyerDeals)
+    dev.off()
+  }
+}
+
+start <- function() {
+  library("chron")
+  setwd("/media/HDD-Thijs/Schooldocumenten/2016-2017/BachalorProject/bachelorproject/bachelorproject/SmartGrid/output")
+  plotData()
 }

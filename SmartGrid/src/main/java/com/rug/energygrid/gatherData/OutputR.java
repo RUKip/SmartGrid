@@ -25,8 +25,10 @@ public class OutputR extends OutputData{
     private static final String PRODUCTION_FILE_NAME = "production.csv";
     private static final String ENERGYSTATUS_FILE_NAME = "energyStatus.csv";
     private static final String SELLERDEALS_FILE_NAME = "sellerDeals.csv";
+    private static final String BUYERDEALS_FILE_NAME = "buyerDeals.csv";
 
     HashMap<AID, List<GatherData.TimedEnergyDeal>> sellers = new HashMap<>();
+    HashMap<AID, List<GatherData.TimedEnergyDeal>> buyers = new HashMap<>();
 
     @Override
     public void output(GatherData gatherData) {
@@ -55,7 +57,7 @@ public class OutputR extends OutputData{
     private void storeAgentData(AID agent, File localFolder, GatherData gatherData) {
         storeProduction(agent, localFolder, gatherData);
         storeEnergyStatus(agent, localFolder, gatherData);
-        storeSellerDeals(agent, localFolder, gatherData);
+        storeDeals(agent, localFolder, gatherData);
     }
 
     private void storeProduction(AID agent, File localFolder, GatherData gatherData) {
@@ -88,10 +90,20 @@ public class OutputR extends OutputData{
                 sellers.put(ted.seller, list);
             }
         }
+
+
+        for (GatherData.TimedEnergyDeal ted: gatherData.getDeals()) {
+            if (sellers.containsKey(ted.buyer)) {
+                buyers.get(ted.buyer).add(ted);
+            } else {
+                List<GatherData.TimedEnergyDeal> list = new ArrayList<>();
+                list.add(ted);
+                buyers.put(ted.buyer, list);
+            }
+        }
     }
 
     private void storeSellerDeals(AID agent, File localFolder, GatherData gatherData) {
-        orderDeals(gatherData);
         File sellerDeals = createFile(localFolder, SELLERDEALS_FILE_NAME);
         PrintWriter writer = createWriter(sellerDeals);
         writer.write(addSeperators("Date", "Time", "Buyer", "price", "amount")+"\n");
@@ -103,6 +115,26 @@ public class OutputR extends OutputData{
                     Double.toString(ted.energyAmount)) + "\n");
         }
         writer.close();
+    }
+
+    private void storeBuyerDeals(AID agent, File localFolder, GatherData gatherData) {
+        File buyerDeals = createFile(localFolder, BUYERDEALS_FILE_NAME);
+        PrintWriter writer = createWriter(buyerDeals);
+        writer.write(addSeperators("Date", "Time", "Seller", "price", "amount")+"\n");
+        for (GatherData.TimedEnergyDeal ted : buyers.get(agent)) {
+            writer.write(addSeperators(dateFormatter.format(ted.time),
+                    timeFormatter.format(ted.time),
+                    ted.seller.getLocalName(),
+                    Double.toString(ted.price),
+                    Double.toString(ted.energyAmount)) + "\n");
+        }
+        writer.close();
+    }
+
+    private void storeDeals(AID agent, File localFolder, GatherData gatherData) {
+        orderDeals(gatherData);
+        storeSellerDeals(agent, localFolder, gatherData);
+        storeBuyerDeals(agent, localFolder, gatherData);
     }
 
     public File createFile(File parentFolder, String name) {
