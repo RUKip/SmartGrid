@@ -125,7 +125,7 @@ public class ProsumerAgent extends TimedAgent {
         if(shortestPath<Double.MAX_VALUE) routingTable.put(node, shortestPath);
     }
 
-    private void parseJSON(){
+    public void parseJSON(){
         JSON_Grid_Deserializer deserializer = new JSON_Grid_Deserializer();
         allCables = deserializer.getCables();
         energyProducers = deserializer.getEnergyProducers(this.getLocalName());

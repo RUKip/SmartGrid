@@ -1,5 +1,6 @@
 package com.rug.energygrid.agents.time;
 
+import com.rug.energygrid.UI.SettingsPage;
 import com.rug.energygrid.logging.LocalLogger;
 import jade.core.Agent;
 import jade.domain.DFService;
@@ -28,14 +29,15 @@ public class GlobalTimeAgent extends Agent {
 
         //wait untill all other agents registerd in the yellow pages.
         this.doWait(TimerComConstants.YELLOW_PAGES_REGISTER_WAIT_TIME);
-        sendGlobalTime();
+
+        SettingsPage sPage = new SettingsPage(this);
     }
 
     //Send the starting time to all the time dependant agents.
-    private void sendGlobalTime() {
+    public void sendGlobalTime() {
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
-        sd.setType(TimerComConstants.TIMER_SD);
+            sd.setType(TimerComConstants.TIMER_SD);
         template.addServices(sd);
 
         ACLMessage timeMessage = new ACLMessage(ACLMessage.INFORM);
@@ -60,5 +62,21 @@ public class GlobalTimeAgent extends Agent {
         Duration realSimulationDuration = Duration.between(startSimulationTime, endSimulationTime).dividedBy(speedup);
         logger.info("Simulating from: "+startSimulationTime+" till: "+endSimulationTime+" with speedup: "+speedup);
         logger.info("Simulation takes: " +realSimulationDuration.getSeconds()+ "s, from: "+ realStartTime+" till: " + realStartTime.plus(realSimulationDuration));
+    }
+
+    public int getSpeedup(){
+        return speedup;
+    }
+
+    public Instant getStartSimulationTime(){
+        return startSimulationTime;
+    }
+
+    public Instant getEndSimulationTime(){
+        return endSimulationTime;
+    }
+
+    public Instant getRealStartTime(){
+        return realStartTime;
     }
 }
