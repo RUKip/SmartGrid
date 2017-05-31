@@ -3,9 +3,6 @@ package com.rug.energygrid.parser;
 import java.io.File;
 import java.util.regex.Pattern;
 
-/**
- * Created by Ruben on 09-May-17.
- */
 public class ConstantsParser {
 
     public static final String JSON_GRID_FILE_LOCATION = "src" + File.separator + "main" + File.separator + "resources" +File.separator+ "grid.json"; // use C:\\grid.json in windows, linus uses /home/etc..
@@ -31,6 +28,6 @@ public class ConstantsParser {
     public static final String GLOBAL_TIMER_NAME = "globalTimer";
 
     public static final String GLOBAL_TIMER_START = "1995-01-01T10:15:30.00Z"; //simulation start time
-    public static final String GLOBAL_TIMER_END = "1996-02-01T10:15:30.00Z";   //simulation end time
-    public static final int GLOBAL_TIMER_SPEEDUP = 200000;
+    public static final String GLOBAL_TIMER_END = "1995-03-01T10:15:30.00Z";   //simulation end time
+    public static final int GLOBAL_TIMER_SPEEDUP = 85200;
 }

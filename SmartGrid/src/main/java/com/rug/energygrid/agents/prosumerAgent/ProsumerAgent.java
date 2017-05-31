@@ -151,6 +151,7 @@ public class ProsumerAgent extends TimedAgent {
         Instant deadline = end.minus(ProsumerConstants.ENERGY_MAX_KEEP_TIME);
         double energyChange = 0;
         while (!generationQueue.isEmpty() && generationQueue.peek().genTime.isAfter(deadline)) {
+            //TODO: send buy offer to big Guy
             GenEntry curEntry = generationQueue.remove();
             energyChange += curEntry.energy;
         }
@@ -179,10 +180,6 @@ public class ProsumerAgent extends TimedAgent {
         public GenEntry(Instant genTime, double energy) {
             this.genTime = genTime;
             this.energy = energy;
-        }
-
-        public boolean equalSign(double otherEnergy) {
-            return (energy < 0 && otherEnergy < 0) || (energy > 0 && otherEnergy > 0);
         }
     }
 }

@@ -19,6 +19,7 @@ public class BigGuyAgent extends ProsumerAgent {
         super.setup();
         curEnergy = Double.MAX_VALUE;
         sellEnergy.setLocalEnergyPrice(CONSTANTPRICE);
+        BigGuyHolder.setBigGuy(this.getAID());
     }
 
     @Override

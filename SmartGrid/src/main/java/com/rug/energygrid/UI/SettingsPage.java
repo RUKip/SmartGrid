@@ -6,7 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Duration;
+import java.time.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SettingsPage extends JFrame{
     private JButton startSimulationButton;
@@ -15,9 +17,10 @@ public class SettingsPage extends JFrame{
     private JPanel panel;
     private JButton confirmSettingsButton;
     private JLabel settingsConfirmed;
-    private JFormattedTextField endTimeField;
-    private JFormattedTextField startTimeField;
-    private JFormattedTextField speedupField;
+
+    private JTextField endTimeField;
+    private JTextField startTimeField;
+    private JTextField speedupField;
 
     private Timer t;
 
@@ -38,20 +41,20 @@ public class SettingsPage extends JFrame{
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
         setVisible(true);
 
-
-
         advancedOptionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                //TODO: here add/show the options to change constants like constant pricing, L from the cable energyLoss etc.
             }
         });
+        advancedOptionsButton.setEnabled(false);//TODO: remove when button is implemented
 
         startSimulationButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 startSimulationButton.setEnabled(false);
                 globaltimeAgent.sendGlobalTime();
+                t.start();
             }
         });
 
@@ -77,10 +80,36 @@ public class SettingsPage extends JFrame{
         confirmSettingsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Integer speedup = (Integer) speedupField.getValue();
+                Integer speedup =  Integer.getInteger(speedupField.getText());
 
 
-                //TODO: Call the intializer with the new functions
+                String value;
+                value = startTimeField.getText();
+                Pattern p = Pattern.compile("[0-9][0-9][0-9][0-9]\\-[0-9][0-9]\\-[0-9][0-9]T[0-9][0-9]\\:[0-9][0-9]\\:[0-9][0-9]\\.[0-9][0-9]Z");
+                Matcher m = p.matcher(value);
+                if(m.matches()){
+                    LocalDate localDate = LocalDate.parse(value);
+                    LocalDateTime localDateTime = localDate.atStartOfDay();
+                    Instant startTime = localDateTime.toInstant(ZoneOffset.UTC);
+                }else{
+                    settingsConfirmed.setText("This is not a valid value, for example: 1995-01-01T10:15:30.00Z");
+                    return;
+                }
+                value = endTimeField.getText();
+                m = p.matcher(value);
+                if(m.matches()){
+                    LocalDate localDate = LocalDate.parse(value);
+                    LocalDateTime localDateTime = localDate.atStartOfDay();
+                    Instant endTime = localDateTime.toInstant(ZoneOffset.UTC);
+                }else{
+                    settingsConfirmed.setText("This is not a valid value, for example: 1995-01-01T10:15:30.00Z");
+                    return;
+                }
+
+
+
+
+                //TODO: Call the intializer with the new variables(so create new json)
                 //TODO: for each agent call the PARSEJSON fucntion
             }
         });
@@ -89,6 +118,5 @@ public class SettingsPage extends JFrame{
     private void createUIComponents() {
         // TODO: place custom component creation code here
     }
-
 
 }
