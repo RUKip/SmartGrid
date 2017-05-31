@@ -93,7 +93,7 @@ public class OutputR extends OutputData{
 
 
         for (GatherData.TimedEnergyDeal ted: gatherData.getDeals()) {
-            if (sellers.containsKey(ted.buyer)) {
+            if (buyers.containsKey(ted.buyer)) {
                 buyers.get(ted.buyer).add(ted);
             } else {
                 List<GatherData.TimedEnergyDeal> list = new ArrayList<>();

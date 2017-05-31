@@ -14,7 +14,6 @@ public class FinishedChecker {
 
     public static synchronized void agentRemoved() {
         counter--;
-        System.out.println("counter: "+counter);
         if (counter < 1) {
             GatherData.GATHER_DATA.createOutput();
             System.exit(-1);
