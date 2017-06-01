@@ -15,6 +15,7 @@ import com.rug.energygrid.logging.LocalLogger;
 import com.rug.energygrid.weather.ExampleDataSet_KNI;
 import com.rug.energygrid.weather.Weather;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
+import jade.gui.GuiEvent;
 import jade.util.Logger;
 
 
@@ -34,7 +35,7 @@ public class ProsumerAgent extends TimedAgent {
     private List<EnergyProducer> energyProducers;
     //TODO: add Adjustable Energy Producer list, (generators etc)
     private List<EnergyConsumer> energyConsumers;
-    private Weather usedWeather = new ExampleDataSet_KNI();
+    private Weather usedWeather = new ExampleDataSet_KNI(); //TODO: should be got from parser (Parse Json)
     private ServiceDescription sd; //The serviceDescription of an Agent
     private Queue<GenEntry> generationQueue = new ArrayDeque<>();
 

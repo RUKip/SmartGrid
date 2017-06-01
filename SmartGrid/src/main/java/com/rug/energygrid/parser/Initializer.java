@@ -14,6 +14,7 @@ import jade.util.Logger;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,6 +27,11 @@ public class Initializer {
     private List<JSON_Array_Group<JSON_Array_Group<EnergyProducer>>> agentEPList;
     private List<Cable> cableList;
     private List<String> prosumerAgents, bigGuyAgents;
+
+    public String GLOBAL_TIMER_START = "1995-01-01T10:15:30.00Z"; //simulation start time
+    public String GLOBAL_TIMER_END = "1995-03-01T10:15:30.00Z";   //simulation end time
+    public int GLOBAL_TIMER_SPEEDUP = 85200;
+
 
     public Initializer(){
       this.agentEPList = new ArrayList();
@@ -96,7 +102,7 @@ public class Initializer {
     //add Agents here
     private void initAgents(){
         //normal houses
-        prosumerAgents = new ArrayList<>(); //TODO: store this list in the parser file aswell
+        prosumerAgents = new ArrayList<>();
         prosumerAgents.add("9471KN24");
         prosumerAgents.add("9717KH6");
         prosumerAgents.add("9733AB50");
@@ -114,6 +120,7 @@ public class Initializer {
 
     //serializes
     public void build(){
+        logger.info("starting build");
 
         List<JSON_Array_Group> listOfGroups = new ArrayList<>();
         listOfGroups.add(new JSON_Array_Group(ConstantsParser.CABLE_LIST_NAME, cableList));
@@ -139,7 +146,7 @@ public class Initializer {
                 String bigGuy = bigGuyAgents.get(i);
                 writer.println(bigGuy+":"+ConstantsParser.BIGGUY_AGENT_CLASS+"();\\");
             }
-            writer.println(ConstantsParser.GLOBAL_TIMER_NAME+":"+ ConstantsParser.GLOBAL_TIMER_AGENT_CLASS+"("+ ConstantsParser.GLOBAL_TIMER_START+","+ ConstantsParser.GLOBAL_TIMER_END+","+ ConstantsParser.GLOBAL_TIMER_SPEEDUP+")");
+            writer.println(ConstantsParser.GLOBAL_TIMER_NAME+":"+ ConstantsParser.GLOBAL_TIMER_AGENT_CLASS+"("+ GLOBAL_TIMER_START+","+ GLOBAL_TIMER_END+","+ GLOBAL_TIMER_SPEEDUP+")");
             writer.println("port="+ ConstantsParser.PORT_NR);
             writer.println("host="+ ConstantsParser.HOST);
             writer.println("main="+ ConstantsParser.MAIN);
@@ -150,5 +157,17 @@ public class Initializer {
             logger.warning("Initializer can't write agents to file.");
         }
 
+    }
+
+    public void setStartTime(String startTime){
+        GLOBAL_TIMER_START = startTime;
+    }
+
+    public void setEndTime(String endTime){
+        GLOBAL_TIMER_END = endTime;
+    }
+
+    public void setSpeedup(int speedup){
+        GLOBAL_TIMER_SPEEDUP = speedup;
     }
 }

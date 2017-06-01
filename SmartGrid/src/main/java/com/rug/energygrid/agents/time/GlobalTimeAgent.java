@@ -1,10 +1,13 @@
 package com.rug.energygrid.agents.time;
 
-import com.rug.energygrid.UI.SettingsPage;
+import com.rug.energygrid.UI.StartSimulation;
 import com.rug.energygrid.logging.LocalLogger;
 import jade.core.Agent;
+import jade.domain.AMSService;
 import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
@@ -30,7 +33,7 @@ public class GlobalTimeAgent extends Agent {
         //wait untill all other agents registerd in the yellow pages.
         this.doWait(TimerComConstants.YELLOW_PAGES_REGISTER_WAIT_TIME);
 
-        SettingsPage sPage = new SettingsPage(this);
+        StartSimulation sPage = new StartSimulation(this);
     }
 
     //Send the starting time to all the time dependant agents.
