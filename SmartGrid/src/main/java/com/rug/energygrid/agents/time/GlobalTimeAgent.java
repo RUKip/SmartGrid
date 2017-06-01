@@ -1,9 +1,13 @@
 package com.rug.energygrid.agents.time;
 
+import com.rug.energygrid.UI.StartSimulation;
 import com.rug.energygrid.logging.LocalLogger;
 import jade.core.Agent;
+import jade.domain.AMSService;
 import jade.domain.DFService;
+import jade.domain.FIPAAgentManagement.AMSAgentDescription;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
+import jade.domain.FIPAAgentManagement.SearchConstraints;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
@@ -28,14 +32,15 @@ public class GlobalTimeAgent extends Agent {
 
         //wait untill all other agents registerd in the yellow pages.
         this.doWait(TimerComConstants.YELLOW_PAGES_REGISTER_WAIT_TIME);
-        sendGlobalTime();
+
+        StartSimulation sPage = new StartSimulation(this);
     }
 
     //Send the starting time to all the time dependant agents.
-    private void sendGlobalTime() {
+    public void sendGlobalTime() {
         DFAgentDescription template = new DFAgentDescription();
         ServiceDescription sd = new ServiceDescription();
-        sd.setType(TimerComConstants.TIMER_SD);
+            sd.setType(TimerComConstants.TIMER_SD);
         template.addServices(sd);
 
         ACLMessage timeMessage = new ACLMessage(ACLMessage.INFORM);
@@ -60,5 +65,21 @@ public class GlobalTimeAgent extends Agent {
         Duration realSimulationDuration = Duration.between(startSimulationTime, endSimulationTime).dividedBy(speedup);
         logger.info("Simulating from: "+startSimulationTime+" till: "+endSimulationTime+" with speedup: "+speedup);
         logger.info("Simulation takes: " +realSimulationDuration.getSeconds()+ "s, from: "+ realStartTime+" till: " + realStartTime.plus(realSimulationDuration));
+    }
+
+    public int getSpeedup(){
+        return speedup;
+    }
+
+    public Instant getStartSimulationTime(){
+        return startSimulationTime;
+    }
+
+    public Instant getEndSimulationTime(){
+        return endSimulationTime;
+    }
+
+    public Instant getRealStartTime(){
+        return realStartTime;
     }
 }

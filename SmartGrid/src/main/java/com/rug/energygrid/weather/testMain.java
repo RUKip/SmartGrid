@@ -2,9 +2,6 @@ package com.rug.energygrid.weather;
 
 import java.time.*;
 
-/**
- * Created by Ruben on 02-May-17.
- */
 public class testMain {
     public static void main(String args[]){
         Weather w = new ExampleDataSet_KNI();

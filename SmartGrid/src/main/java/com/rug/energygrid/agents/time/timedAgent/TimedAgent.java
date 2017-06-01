@@ -7,15 +7,13 @@ import jade.domain.DFService;
 import jade.domain.FIPAAgentManagement.DFAgentDescription;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
 import jade.domain.FIPAException;
+import jade.gui.GuiAgent;
 import jade.util.Logger;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Iterator;
 
-/**
- * Created by thijs on 9-5-17.
- */
 public abstract class TimedAgent extends Agent {
     private Logger logger = LocalLogger.getLogger();
     private DFAgentDescription dfd = new DFAgentDescription();
