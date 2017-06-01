@@ -3,9 +3,6 @@ package com.rug.energygrid.parser;
 import java.io.File;
 import java.util.regex.Pattern;
 
-/**
- * Created by Ruben on 09-May-17.
- */
 public class ConstantsParser {
 
     public static final String JSON_GRID_FILE_LOCATION = "src" + File.separator + "main" + File.separator + "resources" +File.separator+ "grid.json"; // use C:\\grid.json in windows, linus uses /home/etc..

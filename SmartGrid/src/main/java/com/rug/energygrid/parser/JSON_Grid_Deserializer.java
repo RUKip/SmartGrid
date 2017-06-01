@@ -16,9 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ruben on 09-May-17.
- */
 public class JSON_Grid_Deserializer {
 
     private JSON_Array_Group cableGroup;

@@ -1,9 +1,6 @@
-package com.rug.energygrid.agents.bigGuy;
+package com.rug.energygrid.agents.bigGuyAgent;
 
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
-import com.rug.energygrid.agents.prosumerAgent.ProsumerConstants;
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.EnergyOffer;
-import jade.core.Agent;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -27,6 +24,7 @@ public class BigGuyAgent extends ProsumerAgent {
         //This should be executed one time.
         if (!sendOffer) {
             sellEnergy.sellSurplussEnergy();
+            sendOffer = true;
         }
         curEnergy = Double.MAX_VALUE;
         //TODO: here you might add some dynamic price changing

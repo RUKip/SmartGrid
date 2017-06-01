@@ -16,9 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
-/**
- * Created by thijs on 22-5-17.
- */
 public class OutputR extends OutputData{
     Logger logger = LocalLogger.getLogger();
     DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy").withZone( ZoneId.systemDefault() );
@@ -116,13 +113,17 @@ public class OutputR extends OutputData{
         File sellerDeals = createFile(localFolder, SELLERDEALS_FILE_NAME);
         PrintWriter writer = createWriter(sellerDeals);
         writer.write(addSeperators("Date", "Time", "Buyer", "price", "amount")+"\n");
-        for (GatherData.TimedEnergyDeal ted : sellers.get(agent)) {
-            writer.write(addSeperators(dateFormatter.format(ted.time),
-                    timeFormatter.format(ted.time),
-                    ted.buyer.getLocalName(),
-                    Double.toString(ted.price),
-                    Double.toString(ted.energyAmount)) + "\n");
-            amount += ted.energyAmount;
+        if (sellers.containsKey(agent)) {
+            for (GatherData.TimedEnergyDeal ted : sellers.get(agent)) {
+                writer.write(addSeperators(dateFormatter.format(ted.time),
+                        timeFormatter.format(ted.time),
+                        ted.buyer.getLocalName(),
+                        Double.toString(ted.price),
+                        Double.toString(ted.energyAmount)) + "\n");
+                amount += ted.energyAmount;
+            }
+        } else {
+            System.out.println(agent.getLocalName()+" doesn't have seller deals");
         }
         writer.close();
         return amount;

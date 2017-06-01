@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Created by chewbaka on 16-5-17.
- */
 public class AgentDeseriaizer {
 
     public static Logger logger = LocalLogger.getLogger();
