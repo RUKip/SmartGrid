@@ -54,16 +54,18 @@ public class SellEnergy {
         ServiceDescription sd = new ServiceDescription();
         sd.setType(BuySellComConstants.CONSUMER_SD);
         template.addServices(sd);
-
         ACLMessage energyOffer = new ACLMessage(ACLMessage.PROPOSE);
         energyOffer.setConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
         energyOffer.setContent(offer.serialize());
+        int j=0;
         try {
             DFAgentDescription[] result = DFService.search(prosumerAgent, template);
             for (int i = 0; i < result.length; ++i) {
                 //To make sure that you don't send offers to yourself
-                if (!result[i].getName().equals(prosumerAgent.getAID()))
+                if (!result[i].getName().equals(prosumerAgent.getAID())) {
                     energyOffer.addReceiver(result[i].getName());
+                    j++;
+                }
             }
         }
         catch (FIPAException fe) {

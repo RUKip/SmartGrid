@@ -1,10 +1,8 @@
-package com.rug.energygrid.agents.bigGuy;
+package com.rug.energygrid.agents.bigGuyAgent;
 
 import com.rug.energygrid.logging.LocalLogger;
 import jade.core.AID;
 import jade.util.Logger;
-
-import java.awt.dnd.InvalidDnDOperationException;
 
 /**
  * Created by thijs on 31-5-17.

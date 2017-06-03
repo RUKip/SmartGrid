@@ -156,7 +156,7 @@ public class ProsumerAgent extends TimedAgent {
             GenEntry curEntry = generationQueue.remove();
             energyChange += curEntry.energy;
         }
-        addCurEnergyWithoutTable(energyChange);
+        //addCurEnergyWithoutTable(energyChange);
     }
 
     private void updateGenTable(double energy) {

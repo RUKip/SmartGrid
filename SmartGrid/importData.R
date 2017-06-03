@@ -93,10 +93,10 @@ plotData <- function() {
     buyerDeals <- readCSV(paste0(folder,"/buyerDeals.csv"))
     pdf(paste0(folder,".pdf"))
     plot(c(minTime,maxTime), c(minAmount,maxAmount), main = folder, type = 'n', xlab="Time",ylab="Energy (Joule)")
-    addProductionPlot(production)
-    addEnergyStatus(energyStatus)
+    #addProductionPlot(production)
+    #addEnergyStatus(energyStatus)
     addSellerDeals(sellerDeals)
-    addBuyerDeals(buyerDeals)
+    #addBuyerDeals(buyerDeals)
     dev.off()
   }
 }

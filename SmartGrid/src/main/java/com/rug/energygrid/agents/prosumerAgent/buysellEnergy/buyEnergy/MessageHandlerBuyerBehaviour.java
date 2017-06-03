@@ -23,7 +23,7 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
     @Override
     public void action() {
         ACLMessage message = myAgent.receive(mt);
-        if (message != null) {
+        while (message != null) {
             // Reply received
             if (message.getPerformative() == ACLMessage.PROPOSE) {
                 // This is an offer
@@ -32,9 +32,8 @@ public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
                 //Store the RemoteEnergyOffer in the priorityQueue
                 buyEnergy.addEnergyOffer(new RemoteEnergyOffer(message.getSender(), energyOffer, buyEnergy.getProsumerAgent().getRoutingValueTo(message.getSender().getLocalName())));
             }
+            message = myAgent.receive(mt);
         }
-        else {
-            block();
-        }
+        block();
     }
 }
