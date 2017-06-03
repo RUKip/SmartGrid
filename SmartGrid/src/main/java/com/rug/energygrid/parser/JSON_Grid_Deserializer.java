@@ -30,7 +30,7 @@ public class JSON_Grid_Deserializer {
         deserialize();
     }
 
-    private void deserialize() {
+    public void deserialize() {
         Gson gson = new Gson();
 
         try (FileReader reader = new FileReader(ConstantsParser.JSON_GRID_FILE_LOCATION)) {

@@ -28,6 +28,7 @@ public class SettingsParser extends JFrame{
     private static int DEFAULT_FRAME_WIDTH = 500;
     private static int DEFAULT_FRAME_HEIGHT = 500;
 
+    //TODO: add/show the options to change constants like constant pricing, L from the cable energyLoss etc.
     public SettingsParser(Initializer init) {
         super("Settings Smartgrid");
 
@@ -45,10 +46,23 @@ public class SettingsParser extends JFrame{
         advancedOptionsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //TODO: here add/show the options to change constants like constant pricing, L from the cable energyLoss etc.
+                JFrame frame = new JFrame("Agents/Houses");
+
+                //Create and set up the content pane.
+                JComponent newContentPane =  new SettingsAgent();
+                newContentPane.setOpaque(true); //content panes must be opaque
+                frame.setContentPane(newContentPane);
+
+                frame.setSize(DEFAULT_FRAME_WIDTH, DEFAULT_FRAME_HEIGHT/2);
+                Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+                frame.setLocation(dim.width / 2 - frame.getSize().width / 2, dim.height / 2 - frame.getSize().height / 2);
+
+                //Display the window.
+                frame.pack();
+                frame.setVisible(true);
             }
         });
-        advancedOptionsButton.setEnabled(false);//TODO: remove when button is implemented
+        //advancedOptionsButton.setEnabled(false);//TODO: remove when button is implemented
 
 
         confirmSettingsButton.addActionListener(new ActionListener() {
