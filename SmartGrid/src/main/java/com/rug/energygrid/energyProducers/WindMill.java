@@ -60,4 +60,8 @@ public class WindMill extends WeatherDependantEP{
         }
         this.efficiency = efficiency;
     }
+
+    public String getName(){
+        return "Wind mill";
+    }
 }

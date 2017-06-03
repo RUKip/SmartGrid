@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class AgentDeseriaizer {
+public class AgentDeserializer {
 
     public static Logger logger = LocalLogger.getLogger();
 
     private List<String> agentList = new ArrayList<>();
 
-    public AgentDeseriaizer(){
+    public AgentDeserializer(){
         deserialize();
     }
 

@@ -20,4 +20,8 @@ public class Generator implements AdjustableEP {
     public double generateEnergy(Instant end, Duration duration, double energyNeeded) {
         return 0;
     }
+
+    public String getName(){
+        return "Generator";
+    }
 }

@@ -4,9 +4,6 @@ import com.rug.energygrid.logging.LocalLogger;
 import jade.core.AID;
 import jade.util.Logger;
 
-/**
- * Created by thijs on 31-5-17.
- */
 public class BigGuyHolder {
     private static final Logger logger = LocalLogger.getLogger();
     public static AID bigGuy;

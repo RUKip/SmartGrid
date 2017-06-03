@@ -1,6 +1,8 @@
 package com.rug.energygrid.UI;
 
+import com.rug.energygrid.parser.AgentDeserializer;
 import com.rug.energygrid.parser.Initializer;
+import com.rug.energygrid.parser.JSON_Grid_Deserializer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +15,7 @@ import java.util.regex.Pattern;
 public class SettingsParser extends JFrame{
 
     private JButton confirmSettingsButton;
-    private JButton advancedOptionsButton;
+    private JButton showGridButton;
     private JLabel confirmedSettings;
     private JTextField startTimeField;
     private JTextField endTimeField;
@@ -24,6 +26,10 @@ public class SettingsParser extends JFrame{
     private JPanel panel;
 
     private Initializer initializer;
+    private JSON_Grid_Deserializer deserializer;
+    private AgentDeserializer agentDeserializer;
+
+    private static final String AGENT_CABLE_SETTING_NAME = "Houses and Cables";
 
     private static int DEFAULT_FRAME_WIDTH = 500;
     private static int DEFAULT_FRAME_HEIGHT = 500;
@@ -43,13 +49,15 @@ public class SettingsParser extends JFrame{
 
 
 
-        advancedOptionsButton.addActionListener(new ActionListener() {
+        showGridButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JFrame frame = new JFrame("Agents/Houses");
+                JFrame frame = new JFrame(AGENT_CABLE_SETTING_NAME);
 
                 //Create and set up the content pane.
-                JComponent newContentPane =  new SettingsAgent();
+                deserializer = new JSON_Grid_Deserializer();
+                agentDeserializer = new AgentDeserializer();
+                JComponent newContentPane =  new SettingsAgent(deserializer, agentDeserializer);
                 newContentPane.setOpaque(true); //content panes must be opaque
                 frame.setContentPane(newContentPane);
 
@@ -62,8 +70,6 @@ public class SettingsParser extends JFrame{
                 frame.setVisible(true);
             }
         });
-        //advancedOptionsButton.setEnabled(false);//TODO: remove when button is implemented
-
 
         confirmSettingsButton.addActionListener(new ActionListener() {
             @Override

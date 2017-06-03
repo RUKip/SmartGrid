@@ -69,4 +69,8 @@ public class SolarPanel extends WeatherDependantEP{
         this.qualityFactor = q;
     }
 
+    public String getName(){
+        return "Solar panel";
+    }
+
 }

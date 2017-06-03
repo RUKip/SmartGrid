@@ -2,7 +2,7 @@ package com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
 import com.rug.energygrid.logging.LocalLogger;
-import com.rug.energygrid.parser.AgentDeseriaizer;
+import com.rug.energygrid.parser.AgentDeserializer;
 import jade.util.Logger;
 
 import java.util.*;
@@ -11,7 +11,7 @@ public class ShortestPath {
 
 
     public static Logger logger = LocalLogger.getLogger();
-    private AgentDeseriaizer agentDeseriaizer = new AgentDeseriaizer();
+    private AgentDeserializer agentDeseriaizer = new AgentDeserializer();
 
     private HashMap<String, Node> createGraph(List<Cable> cables){
         HashMap<String, Node> graph = new HashMap<String, Node>(); //this is the graph of each agent and there connected cost

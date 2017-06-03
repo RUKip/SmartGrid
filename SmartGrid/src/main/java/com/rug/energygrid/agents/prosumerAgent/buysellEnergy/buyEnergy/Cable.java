@@ -21,6 +21,8 @@ public class Cable {
         return this.connectedNode;
     }
 
+    public double getLength(){ return this.length;}
+
     //This is the cost, the total amount of energy left is this number times the energy
     public double getCost(){
         return (resistance*length);
