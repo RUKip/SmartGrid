@@ -2,85 +2,85 @@
   {
     "name": "Cables",
     "list": [
-	  {
+      {
         "originNode": "7450AB42",
         "connectedNode": "9717KH6",
         "length": 35.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "4444NP1",
         "connectedNode": "9717KH6",
         "length": 35.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "4444NP3",
         "connectedNode": "6666HL777",
         "length": 35.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "4444NP3",
         "connectedNode": "4444NP2",
         "length": 35.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "8748NJ373",
         "connectedNode": "9717KH6",
         "length": 35.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "4444NP4",
         "connectedNode": "9400HE1",
         "length": 762.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "1111HJ60b",
         "connectedNode": "4444NP5",
         "length": 762.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "7450AB42",
         "connectedNode": "9717KH6",
         "length": 35.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "1234AB56",
         "connectedNode": "9717KH6",
         "length": 22.0,
         "resistance": 0.2
       },
-	  {
+      {
         "originNode": "8748NJ373",
         "connectedNode": "1234AB56",
         "length": 12.0,
         "resistance": 0.2
       },
-	  {
+      {
         "originNode": "7450AB42",
         "connectedNode": "6666HL777",
         "length": 72.0,
         "resistance": 0.31
       },
-	  {
+      {
         "originNode": "8748NJ373",
         "connectedNode": "6666HL777",
         "length": 26.0,
         "resistance": 0.34
       },
-	  {
+      {
         "originNode": "6666HL777",
         "connectedNode": "9733AB50",
         "length": 12.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "7450AB42",
         "connectedNode": "1111HJ60b",
         "length": 14.0,
@@ -92,19 +92,19 @@
         "length": 42.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "9400HE1",
         "connectedNode": "7450AB42",
         "length": 42.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "9400HE1",
         "connectedNode": "1111HJ60b",
         "length": 412.0,
         "resistance": 0.3
       },
-	  {
+      {
         "originNode": "1111HJ60b",
         "connectedNode": "9400HE1",
         "length": 762.0,
@@ -233,7 +233,7 @@
           }
         ]
       },
-	  {
+      {
         "name": "7450AB42",
         "list": [
           {
@@ -275,7 +275,7 @@
           }
         ]
       },
-	  {
+      {
         "name": "9400HE1",
         "list": [
           {

@@ -71,6 +71,7 @@ public class ProsumerAgent extends TimedAgent {
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
         checkGenTable(end);
+        sellEnergy.sellSurplussEnergy();
         gatherData.addEnergyStatus(this.getAID(), end, curEnergy);
     }
 
@@ -95,7 +96,8 @@ public class ProsumerAgent extends TimedAgent {
     private void addCurEnergyWithoutTable(double energy) {
         curEnergy += energy;
         if (curEnergy > 0) {
-            sellEnergy.sellSurplussEnergy();
+            //This caused the seller to overflow all other agents with sell messages.
+            //sellEnergy.sellSurplussEnergy();
         } else if (curEnergy < 0){
             buyEnergy.refillEnergy();
         }

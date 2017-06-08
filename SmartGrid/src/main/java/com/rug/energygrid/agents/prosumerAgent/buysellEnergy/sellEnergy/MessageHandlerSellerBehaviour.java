@@ -13,7 +13,7 @@ import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
 public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
-    private static final int MAX_MESSAGE_QUEUE_SIZE = 25;
+    private static final int MAX_MESSAGE_QUEUE_SIZE = 200;
     private static final Logger logger = LocalLogger.getLogger();
     MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION),
                                                         MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
@@ -26,6 +26,7 @@ public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
 
     @Override
     public void action() {
+        System.out.println(myAgent.getCurQueueSize());
         if (myAgent.getCurQueueSize() > MAX_MESSAGE_QUEUE_SIZE) {
             logger.severe(myAgent.getAID().getLocalName() +": Queue size is larger than MAX, probably seller can't keep up");
             int i = 0;

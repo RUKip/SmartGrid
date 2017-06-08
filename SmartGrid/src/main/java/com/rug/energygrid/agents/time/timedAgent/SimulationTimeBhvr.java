@@ -22,7 +22,7 @@ public class SimulationTimeBhvr extends Behaviour {
 
     private Instant simulationTime;
 
-    private Duration minimalStepsize = Duration.ofMillis(50);
+    private Duration minimalStepsize = Duration.ofMillis(25);
 
 
     public SimulationTimeBhvr(TimedAgent timedAgent, Instant startTime, Instant startSimulationTime, Instant endSimulationTime, long speedup) {
