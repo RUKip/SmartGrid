@@ -1,0 +1,356 @@
+[
+  {
+    "name": "Cables",
+    "list": [
+	  {
+        "originNode": "7450AB42",
+        "connectedNode": "9717KH6",
+        "length": 35.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "4444NP1",
+        "connectedNode": "9717KH6",
+        "length": 35.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "4444NP3",
+        "connectedNode": "6666HL777",
+        "length": 35.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "4444NP3",
+        "connectedNode": "4444NP2",
+        "length": 35.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "8748NJ373",
+        "connectedNode": "9717KH6",
+        "length": 35.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "4444NP4",
+        "connectedNode": "9400HE1",
+        "length": 762.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "1111HJ60b",
+        "connectedNode": "4444NP5",
+        "length": 762.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "7450AB42",
+        "connectedNode": "9717KH6",
+        "length": 35.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "1234AB56",
+        "connectedNode": "9717KH6",
+        "length": 22.0,
+        "resistance": 0.2
+      },
+	  {
+        "originNode": "8748NJ373",
+        "connectedNode": "1234AB56",
+        "length": 12.0,
+        "resistance": 0.2
+      },
+	  {
+        "originNode": "7450AB42",
+        "connectedNode": "6666HL777",
+        "length": 72.0,
+        "resistance": 0.31
+      },
+	  {
+        "originNode": "8748NJ373",
+        "connectedNode": "6666HL777",
+        "length": 26.0,
+        "resistance": 0.34
+      },
+	  {
+        "originNode": "6666HL777",
+        "connectedNode": "9733AB50",
+        "length": 12.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "7450AB42",
+        "connectedNode": "1111HJ60b",
+        "length": 14.0,
+        "resistance": 0.3
+      },
+      {
+        "originNode": "1111HJ60b",
+        "connectedNode": "8748NJ373",
+        "length": 42.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "9400HE1",
+        "connectedNode": "7450AB42",
+        "length": 42.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "9400HE1",
+        "connectedNode": "1111HJ60b",
+        "length": 412.0,
+        "resistance": 0.3
+      },
+	  {
+        "originNode": "1111HJ60b",
+        "connectedNode": "9400HE1",
+        "length": 762.0,
+        "resistance": 0.3
+      },
+      {
+        "originNode": "1111HJ60b",
+        "connectedNode": "9717KH6",
+        "length": 20.0,
+        "resistance": 0.3
+      },
+      {
+        "originNode": "8748NJ373",
+        "connectedNode": "9717KH6",
+        "length": 32.0,
+        "resistance": 0.3
+      },
+      {
+        "originNode": "9733AB50",
+        "connectedNode": "1111HJ60b",
+        "length": 27.0,
+        "resistance": 0.7
+      },
+      {
+        "originNode": "9717KH6",
+        "connectedNode": "9733AB50",
+        "length": 30.0,
+        "resistance": 0.2
+      },
+      {
+        "originNode": "9471KN24",
+        "connectedNode": "9717KH6",
+        "length": 8.0,
+        "resistance": 0.4
+      },
+      {
+        "originNode": "1111HJ60b",
+        "connectedNode": "BigGuyEssent",
+        "length": 1200.0,
+        "resistance": 0.2
+      },
+      {
+        "originNode": "9717KH6",
+        "connectedNode": "BigGuyEssent",
+        "length": 1200.0,
+        "resistance": 0.2
+      },
+      {
+        "originNode": "9733AB50",
+        "connectedNode": "BigGuyEssent",
+        "length": 1230.0,
+        "resistance": 0.2
+      }
+    ]
+  },
+  {
+    "name": "EnergyProducers",
+    "list": [
+      {
+        "name": "9471KN24",
+        "list": [
+          {
+            "name": "windmills",
+            "list": [
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
+              }
+            ]
+          },
+          {
+            "name": "solarpanels",
+            "list": [
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "9717KH6",
+        "list": [
+          {
+            "name": "windmills",
+            "list": [
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
+              },
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
+              },
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
+              }
+            ]
+          }
+        ]
+      },
+	  {
+        "name": "7450AB42",
+        "list": [
+          {
+            "name": "windmills",
+            "list": [
+              {
+                "airDensity": 2.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 6000.0,
+                "efficiency": 0.35
+              }
+            ]
+          },
+          {
+            "name": "solarpanels",
+            "list": [
+              {
+                "surfaceArea": 1.75,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.85
+              },
+              {
+                "surfaceArea": 1.615,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.95
+              },
+              {
+                "surfaceArea": 1.615,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.55
+              }
+            ]
+          }
+        ]
+      },
+	  {
+        "name": "9400HE1",
+        "list": [
+          {
+            "name": "solarpanels",
+            "list": [
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 3.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.5,
+                "peakOutput": 515.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 3.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.5,
+                "peakOutput": 515.0,
+                "qualityFactor": 0.75
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "8748NJ373",
+        "list": [
+          {
+            "name": "solarpanels",
+            "list": [
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              },
+              {
+                "surfaceArea": 1.65,
+                "solarRadiation": 40.0,
+                "efficiency": 0.192,
+                "peakOutput": 315.0,
+                "qualityFactor": 0.75
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

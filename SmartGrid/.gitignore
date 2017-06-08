@@ -9,11 +9,7 @@ MTPs-Main-Container.txt
 
 SmartGrid.iml
 
-*.json
-
 logs/*
-
-src/main/resources/*
 
 test.csv
 output/*
