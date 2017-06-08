@@ -19,8 +19,6 @@ readCSV <- function(filename) {
 initializeMinMax <- function() {
   minAmount <<- 0
   maxAmount <<- 0
-  minTime <<- NULL
-  maxTime <<- NULL
 }
 
 updateMinMax <- function(dataset) {
@@ -29,19 +27,6 @@ updateMinMax <- function(dataset) {
       minAmount <<- curAmount
     } else if (curAmount > maxAmount) {
       maxAmount <<- curAmount
-    }
-  }
-  for (curTime in dataset$DateTime){
-    if (is.null(minTime)) {
-      minTime <<- curTime
-    } else if (curTime < minTime) {
-      minTime <<- curTime
-    } 
-    
-    if (is.null(maxTime)) {
-      maxTime <<- curTime
-    } else if (curTime > maxTime) {
-      maxTime <<- curTime
     }
   }
 }
@@ -92,17 +77,19 @@ plotData <- function() {
     sellerDeals <- readCSV(paste0(folder,"/sellerDeals.csv"))
     buyerDeals <- readCSV(paste0(folder,"/buyerDeals.csv"))
     pdf(paste0(folder,".pdf"))
-    plot(c(minTime,maxTime), c(minAmount,maxAmount), main = folder, type = 'n', xlab="Time",ylab="Energy (Joule)")
-    #addProductionPlot(production)
-    #addEnergyStatus(energyStatus)
+    plot(c(production$DateTime[1],production$DateTime[length(production$DateTime)]), c(minAmount,maxAmount), main = folder, type = 'n', xlab="Time",ylab="Energy (Joule)")
+    addProductionPlot(production)
+    addEnergyStatus(energyStatus)
     addSellerDeals(sellerDeals)
-    #addBuyerDeals(buyerDeals)
+    addBuyerDeals(buyerDeals)
     dev.off()
   }
 }
 
 start <- function() {
   library("chron")
-  setwd("/media/HDD-Thijs/Schooldocumenten/2016-2017/BachalorProject/bachelorproject/bachelorproject/SmartGrid/output")
+  setwd(paste0(getwd(),"/","output"))
   plotData()
 }
+#setwd("/media/HDD-Thijs/Schooldocumenten/2016-2017/BachalorProject/bachelorproject/bachelorproject/SmartGrid/output")
+start()
