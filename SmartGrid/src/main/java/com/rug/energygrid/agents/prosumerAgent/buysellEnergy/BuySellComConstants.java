@@ -8,4 +8,9 @@ public class BuySellComConstants {
 
     public static final String CONVERSATIONID = "energy-trade";
     public static final String TRANSACTION = "transaction";
+
+    public static final String BIG_GUY_SD = "bigGuySd";
+    public static final String BIG_GUY_SELL_MESSAGE = "bigGuySell";
+    public static final String BIG_GUY_ENERGY_PROPERTY = "energyProperty";
+
 }
