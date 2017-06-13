@@ -53,8 +53,7 @@ public class ProsumerAgent extends TimedAgent {
         logger.info("NAME: "+getAID().getName()+" is alive!");
     }
 
-    @Override
-    public void timedEvent(Instant end, Duration passedTime) {
+    private double generatedEnergy(Instant end, Duration passedTime) {
         double newEnergy = 0;
         for (EnergyProducer ep : energyProducers) {
             try{
@@ -67,6 +66,12 @@ public class ProsumerAgent extends TimedAgent {
         for (EnergyConsumer ec : energyConsumers) {
             newEnergy -= ec.consumeEnergy(end, passedTime);
         }
+        return newEnergy;
+    }
+
+    @Override
+    public void timedEvent(Instant end, Duration passedTime) {
+        double newEnergy = generatedEnergy(end, passedTime);
 
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
