@@ -26,7 +26,6 @@ public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
 
     @Override
     public void action() {
-        System.out.println(myAgent.getCurQueueSize());
         if (myAgent.getCurQueueSize() > MAX_MESSAGE_QUEUE_SIZE) {
             logger.severe(myAgent.getAID().getLocalName() +": Queue size is larger than MAX, probably seller can't keep up");
             int i = 0;

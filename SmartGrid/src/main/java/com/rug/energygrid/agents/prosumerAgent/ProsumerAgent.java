@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.rug.energygrid.FinishedChecker;
+import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.GraphTuple;
 import com.rug.energygrid.gatherData.GatherData;
 import com.rug.energygrid.parser.JSON_Grid_Deserializer;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
@@ -27,10 +28,10 @@ public class ProsumerAgent extends TimedAgent {
     private static final Logger logger = LocalLogger.getLogger();
     private GatherData gatherData = GatherData.GATHER_DATA;
     protected double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
-    private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative) TODO: implement
+    private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative) TODO: implement moneybalance
     protected BuyEnergy buyEnergy;
     protected SellEnergy sellEnergy;
-    private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
+    private HashMap<String, Double> routingTable, lengthTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
     private List<Cable> allCables;
     private List<EnergyProducer> energyProducers;
     //TODO: add Adjustable Energy Producer list, (generators etc)
@@ -140,12 +141,19 @@ public class ProsumerAgent extends TimedAgent {
         for(EnergyProducer e : energyProducers){
             e.setWeather(usedWeather);
         }
-        routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
+        GraphTuple graphs = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
+
+        routingTable = graphs.getFinalGraph();
+        lengthTable = graphs.getLengthGraph();
     }
 
     public double getRoutingValueTo(String agent){
         return this.routingTable.get(agent);
     }
+    public double getRoutingLengthTo(String agent){
+        return this.lengthTable.get(agent);
+    }
+
 
     private void addToYellowPages() {
         // Register the agent as a Timed instance
