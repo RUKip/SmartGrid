@@ -4,8 +4,8 @@ import java.time.*;
 
 public class testMain {
     public static void main(String args[]){
-        Weather w = new ExampleDataSet_KNI();
-        LocalDateTime date = LocalDateTime.of(1971, 6, 3, 0, 0, 1);
+        Weather w = new AmericanDataset();
+        LocalDateTime date = LocalDateTime.of(2005, 6, 3, 0, 0, 1);
         Instant time = date.toInstant(ZoneOffset.UTC);
         try {
             System.out.println("Wind speed at time: " + time + " is " + w.getWindSpeed(time));

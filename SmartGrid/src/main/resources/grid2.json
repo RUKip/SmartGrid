@@ -33,12 +33,6 @@
         "resistance": 0.3
       },
 	  {
-        "originNode": "4444NP4",
-        "connectedNode": "9400HE1",
-        "length": 762.0,
-        "resistance": 0.3
-      },
-	  {
         "originNode": "1111HJ60b",
         "connectedNode": "4444NP5",
         "length": 762.0,

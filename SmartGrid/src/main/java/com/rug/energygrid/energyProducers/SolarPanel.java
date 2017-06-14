@@ -8,9 +8,6 @@ import java.time.Instant;
 
 import jade.util.Logger;
 
-/**
- * Created by Ruben on 04-May-17.
- */
 public class SolarPanel extends WeatherDependantEP{
 
     private static Logger logger = LocalLogger.getLogger();

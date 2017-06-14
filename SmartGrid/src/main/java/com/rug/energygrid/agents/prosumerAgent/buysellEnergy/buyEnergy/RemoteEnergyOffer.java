@@ -11,7 +11,6 @@ public class RemoteEnergyOffer {
     private static final double INDUCTION_PER_METER = 2.6;
     private static final double SPEED_OF_LIGHT = 3*Math.pow(10,8);
 
-    //TODO: fix this cableEnergyLoss
     public RemoteEnergyOffer(AID agent, EnergyOffer energyOffer, double cableTotalResistance) {
         this.agent = agent;
         this.energyOffer = energyOffer;

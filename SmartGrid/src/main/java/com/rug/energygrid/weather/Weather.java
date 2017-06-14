@@ -12,7 +12,7 @@ import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class Weather { //TODO: extend with max, min and adjustable
+public abstract class Weather {
 
     protected static int TIME_POS;
     protected static int WIND_SPEED_POS;
@@ -21,7 +21,7 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
     private static final Logger logger = LocalLogger.getLogger();
 
 
-    protected Map<Integer, Map<Integer, Double>> dataSet;
+    protected Map<Long, Map<Integer, Double>> dataSet;
 
     public Weather() {
         this.TIME_POS = getTimePos();;
@@ -48,13 +48,14 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
 
     public class TimeOutOfBoundsException extends Exception{}
 
-    //when using data set has to be implemented
-    protected abstract int convertToIntOfDataSet(Instant time);
+    //NOTE: should return shortest form for hours, so in case of 01:00 should return 1:00
+    protected abstract long convertToIntOfDataSet(Instant time);
 
-    protected Map<Integer, Map<Integer, Double>> readDataSet(String fileName, String seperator, String... cleanStrings){
+    //NOTE: Read data set can only read from one column, thus your time should be unique in that column
+    protected Map<Long, Map<Integer, Double>> readDataSet(String fileName, String seperator, String... cleanStrings){
         BufferedReader br = null;
         int nrElements;
-        Map<Integer, Map<Integer, Double>> dataSet = new HashMap<Integer, Map<Integer, Double>>();
+        Map<Long, Map<Integer, Double>> dataSet = new HashMap<Long, Map<Integer, Double>>();
         try {
             br = new BufferedReader(new FileReader(fileName));
         } catch (FileNotFoundException e) {
@@ -70,7 +71,7 @@ public abstract class Weather { //TODO: extend with max, min and adjustable
                     line = line.replace(clean, ""); //cleans string before split
                 }
                 String[] rowEntry = line.split(seperator);
-                Integer key = Integer.parseInt(rowEntry[TIME_POS]);
+                Long key = Long.parseLong(rowEntry[TIME_POS]);
                 nrElements = rowEntry.length;
 
                 for (int i = 0; i < nrElements; i++) {

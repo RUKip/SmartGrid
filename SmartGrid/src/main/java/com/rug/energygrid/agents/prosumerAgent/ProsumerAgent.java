@@ -1,15 +1,13 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.rug.energygrid.FinishedChecker;
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellToBigGuyBhvr;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellingAgent;
+import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.GraphTuple;
 import com.rug.energygrid.gatherData.GatherData;
 import com.rug.energygrid.parser.JSON_Grid_Deserializer;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
-import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
 import com.rug.energygrid.energyConsumers.EnergyConsumer;
 import com.rug.energygrid.energyConsumers.GeneralEnergyConsumer;
 import com.rug.energygrid.energyProducers.EnergyProducer;
@@ -17,7 +15,6 @@ import com.rug.energygrid.logging.LocalLogger;
 import com.rug.energygrid.weather.ExampleDataSet_KNI;
 import com.rug.energygrid.weather.Weather;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.gui.GuiEvent;
 import jade.util.Logger;
 
 
@@ -29,7 +26,7 @@ public class ProsumerAgent extends SellingAgent {
     private static final Logger logger = LocalLogger.getLogger();
     private GatherData gatherData = GatherData.GATHER_DATA;
     protected BuyEnergy buyEnergy;
-    private HashMap<String, Double> routingTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
+    private HashMap<String, Double> routingTable, lengthTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
     private List<Cable> allCables;
     private List<EnergyProducer> energyProducers;
     //TODO: add Adjustable Energy Producer list, (generators etc)
@@ -50,8 +47,7 @@ public class ProsumerAgent extends SellingAgent {
         logger.info("NAME: "+getAID().getName()+" is alive!");
     }
 
-    @Override
-    public void timedEvent(Instant end, Duration passedTime) {
+    private double generatedEnergy(Instant end, Duration passedTime) {
         double newEnergy = 0;
         for (EnergyProducer ep : energyProducers) {
             try{
@@ -64,6 +60,12 @@ public class ProsumerAgent extends SellingAgent {
         for (EnergyConsumer ec : energyConsumers) {
             newEnergy -= ec.consumeEnergy(end, passedTime);
         }
+        return newEnergy;
+    }
+
+    @Override
+    public void timedEvent(Instant end, Duration passedTime) {
+        double newEnergy = generatedEnergy(end, passedTime);
 
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
@@ -120,12 +122,19 @@ public class ProsumerAgent extends SellingAgent {
         for(EnergyProducer e : energyProducers){
             e.setWeather(usedWeather);
         }
-        routingTable = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
+        GraphTuple graphs = new ShortestPath().calcShortestPath(this.getLocalName(), allCables);
+
+        routingTable = graphs.getFinalGraph();
+        lengthTable = graphs.getLengthGraph();
     }
 
     public double getRoutingValueTo(String agent){
         return this.routingTable.get(agent);
     }
+    public double getRoutingLengthTo(String agent){
+        return this.lengthTable.get(agent);
+    }
+
 
     private void addToYellowPages() {
         // Register the agent as a Timed instance

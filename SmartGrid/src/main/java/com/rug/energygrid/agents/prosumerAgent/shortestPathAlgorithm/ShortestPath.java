@@ -29,10 +29,10 @@ public class ShortestPath {
             Node node1 = graph.get(c.getOriginNode());
             Node node2 = graph.get(c.getConnectedNode());
 
-            node1.addConnection(graph.get(node2.getName()), c.getCost());
+            node1.addConnection(graph.get(node2.getName()), c.getCost(), c.getLength());
             graph.put(c.getOriginNode(), node1);
 
-            node2.addConnection(graph.get(node1.getName()), c.getCost());
+            node2.addConnection(graph.get(node1.getName()), c.getCost(), c.getLength());
             graph.put(c.getConnectedNode(), node2);
         }
 
@@ -40,7 +40,7 @@ public class ShortestPath {
     }
 
     //fills the routingTable
-    public HashMap<String, Double> calcShortestPath(String startingNode, List<Cable> cables){
+    public GraphTuple calcShortestPath(String startingNode, List<Cable> cables){
         HashMap<String, Node> graph = createGraph(cables);
         PriorityQueue<Node> unvisitedNodes = new PriorityQueue<>(new Comparator<Node>() {
             @Override
@@ -70,6 +70,7 @@ public class ShortestPath {
         //step 1 set starting node to 0
         Node sNode = graph.get(startingNode);
         sNode.setCost(0.0);
+        sNode.setLength(0.0);
         graph.put(startingNode, sNode);
         unvisitedNodes.add(sNode);
 
@@ -86,6 +87,7 @@ public class ShortestPath {
                 Node n = graph.get(c.getConnectedNode().getName());
                 if ((!n.getVisited()) && (n.getCost() > currentNode.getCost() + c.getConnectionCost())) {
                     n.setCost(currentNode.getCost() + c.getConnectionCost());
+                    n.setLength(currentNode.getLength() + c.getLength());
                     unvisitedNodes.add(n); //duplicates can be added but once visited all are visited an thus never become the new current node or updated.
                 }
 
@@ -94,15 +96,19 @@ public class ShortestPath {
 
         //We just convert or calculated graph to one with only a double as cost
         HashMap<String,Double> finalGraph = new HashMap<>();
+        HashMap<String,Double> lenghtGraph = new HashMap<>();
         for(Map.Entry<String, Node> entry : graph.entrySet()){
-            finalGraph.put(entry.getKey(), entry.getValue().getCost());
+            String key = entry.getKey();
+            Node value = entry.getValue();
+            finalGraph.put(key, value.getCost());
+            lenghtGraph.put(key, value.getLength());
         }
-        return finalGraph;
+        return new GraphTuple(finalGraph, lenghtGraph);
     }
 
     private class Node{
         private String name;
-        private Double cost;
+        private Double cost, length;
         private boolean visited = false;
         private List<Connection> connected = new ArrayList<>();
 
@@ -131,8 +137,12 @@ public class ShortestPath {
             cost = c;
         }
 
-        void addConnection(Node node, Double cost){
-            connected.add(new Connection(node, cost));
+        Double getLength(){return length;}
+
+        void setLength(Double l){ length = l;}
+
+        void addConnection(Node node, Double cost, Double length){
+            connected.add(new Connection(node, cost, length));
         }
 
         List<Connection> getConnections(){
@@ -142,11 +152,12 @@ public class ShortestPath {
 
     private class Connection{
         private Node connectedTo;
-        private Double connectionCost;
+        private Double connectionCost, length;
 
-        Connection(Node node, Double cost){
+        Connection(Node node, Double cost, Double length){
             this.connectedTo = node;
             this.connectionCost = cost;
+            this.length = length;
         }
 
         Node getConnectedNode(){
@@ -155,6 +166,7 @@ public class ShortestPath {
         Double getConnectionCost(){
             return connectionCost;
         }
+        Double getLength(){return length;}
     }
 }
 
