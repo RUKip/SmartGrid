@@ -66,7 +66,6 @@ public class ProsumerAgent extends SellingAgent {
     @Override
     public void timedEvent(Instant end, Duration passedTime) {
         double newEnergy = generatedEnergy(end, passedTime);
-
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
         checkGenTable(end);

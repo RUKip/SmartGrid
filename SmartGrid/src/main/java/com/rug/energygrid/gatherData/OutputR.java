@@ -42,17 +42,6 @@ public class OutputR extends OutputData{
             logger.info(agent.getLocalName()+ " " + agentResult);
         }
         logger.info("Done with writing deals");
-
-
-        /*File file = createFile(fileName);
-        File production = createFile("production.csv");
-        PrintWriter writer = createWriter(file);
-        writeDeals(writer, gatherData);
-        PrintWriter writerProduction = createWriter(production);
-        writeProductions(writerProduction, gatherData);
-        System.out.println("Done with writing deals");
-        writer.close();
-        writerProduction.close();*/
     }
 
     private String storeAgentData(AID agent, File localFolder, GatherData gatherData) {
@@ -122,8 +111,6 @@ public class OutputR extends OutputData{
                         Double.toString(ted.energyAmount)) + "\n");
                 amount += ted.energyAmount;
             }
-        } else {
-            System.out.println(agent.getLocalName()+" doesn't have seller deals");
         }
         writer.close();
         return amount;
@@ -134,20 +121,21 @@ public class OutputR extends OutputData{
         File buyerDeals = createFile(localFolder, BUYERDEALS_FILE_NAME);
         PrintWriter writer = createWriter(buyerDeals);
         writer.write(addSeperators("Date", "Time", "Seller", "price", "amount")+"\n");
-        for (GatherData.TimedEnergyDeal ted : buyers.get(agent)) {
-            writer.write(addSeperators(dateFormatter.format(ted.time),
-                    timeFormatter.format(ted.time),
-                    ted.seller.getLocalName(),
-                    Double.toString(ted.price),
-                    Double.toString(ted.energyAmount)) + "\n");
-            amount += ted.energyAmount;
+        if (buyers.containsKey(agent)) {
+            for (GatherData.TimedEnergyDeal ted : buyers.get(agent)) {
+                writer.write(addSeperators(dateFormatter.format(ted.time),
+                        timeFormatter.format(ted.time),
+                        ted.seller.getLocalName(),
+                        Double.toString(ted.price),
+                        Double.toString(ted.energyAmount)) + "\n");
+                amount += ted.energyAmount;
+            }
         }
         writer.close();
         return amount;
     }
 
     private String storeDeals(AID agent, File localFolder, GatherData gatherData) {
-        orderDeals(gatherData);
         double sellAmount = storeSellerDeals(agent, localFolder, gatherData);
         double buyAmount = storeBuyerDeals(agent, localFolder, gatherData);
         return "Sold: " +sellAmount+ " bought: " + buyAmount;
@@ -174,45 +162,6 @@ public class OutputR extends OutputData{
             e.printStackTrace();
         }
         return writer;
-    }
-
-    private void writeDeals(PrintWriter writer, GatherData gatherData) {
-        orderDeals(gatherData);
-        boolean first = false;
-        for (List<GatherData.TimedEnergyDeal> agentDeals: sellers.values()) {
-            if (!first) {
-                writer.write(addSeperators("Date", "Time", "Seller", "Buyer", "price", "amountEnergy") + "\n");
-                for (GatherData.TimedEnergyDeal ted : agentDeals) {
-                    try {
-                        writer.write(addSeperators(dateFormatter.format(ted.time),
-                                timeFormatter.format(ted.time),
-                                ted.seller != null ? ted.seller.getLocalName() : "BigGuy",
-                                ted.buyer.getLocalName(),
-                                Double.toString(ted.price),
-                                Double.toString(ted.energyAmount)) + "\n");
-                    } catch (NullPointerException e) {
-                        System.out.println("" + ted.time + (ted.seller != null ? ted.seller.getLocalName() : "BigGuy") + ted.buyer + ted.price + ted.energyAmount);
-                        e.printStackTrace();
-                        System.exit(-1);
-                    }
-                }
-                first = true;
-            }
-            //writer.write("\n");
-        }
-    }
-
-    private void writeProductions(PrintWriter writer, GatherData gatherData) {
-        for (List<GatherData.TimedProduction> perAgentProductions: gatherData.getProductions().values()) {
-            if (perAgentProductions.get(0).producer.getLocalName().equals("9471KN24")) {
-                //writer.write("Agent: " + perAgentProductions.get(0).producer.getLocalName() + "\n");
-                writer.write(addSeperators("Date","Time", "amount") + "\n");
-                for (GatherData.TimedProduction tp : perAgentProductions) {
-                    writer.write(addSeperators(dateFormatter.format(tp.time), timeFormatter.format(tp.time),Double.toString(tp.amount))+"\n");
-                }
-                //writer.write("\n");
-            }
-        }
     }
 
     private static final char DEFAULT_SEPARATOR = ',';

@@ -32,13 +32,13 @@ updateMinMax <- function(dataset) {
 }
 
 addProductionPlot <- function(productionData) {
-  points(productionData$DateTime, productionData$amount, col="yellow")
-  lines(productionData$DateTime, productionData$amount, col="yellow")
+  points(productionData$DateTime, productionData$amount, col="blue")
+  lines(productionData$DateTime, productionData$amount, col="blue")
 }
 
 addEnergyStatus <- function(energyStatusData) {
-  points(energyStatusData$DateTime, energyStatusData$amount, col="blue")
-  lines(energyStatusData$DateTime, energyStatusData$amount, col="blue")
+  points(energyStatusData$DateTime, energyStatusData$amount, col="purple")
+  lines(energyStatusData$DateTime, energyStatusData$amount, col="purple")
 }
 
 addSellerDeals <- function(sellerDealsData) {

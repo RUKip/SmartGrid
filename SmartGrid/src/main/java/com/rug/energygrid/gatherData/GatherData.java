@@ -15,10 +15,10 @@ public class GatherData {
     //Singleton pattern
     public static final GatherData GATHER_DATA = new GatherData(new OutputR());
 
-    List<TimedEnergyDeal> deals = new ArrayList<>();
-    HashMap<AID, List<TimedProduction>> productions = new HashMap<>();
-    HashMap<AID, List<TimedProduction>> energyStatus = new HashMap<>();
-    OutputData output;
+    private List<TimedEnergyDeal> deals = new ArrayList<>();
+    private HashMap<AID, List<TimedProduction>> productions = new HashMap<>();
+    private HashMap<AID, List<TimedProduction>> energyStatus = new HashMap<>();
+    private OutputData output;
 
     public GatherData(OutputData output) {
         this.output = output;
@@ -43,7 +43,7 @@ public class GatherData {
     }
 
     public HashMap<AID, List<TimedProduction>> getProductions() { return productions; }
-    public HashMap<AID, List<TimedProduction>> getEnergyStatus() { return productions; }
+    public HashMap<AID, List<TimedProduction>> getEnergyStatus() { return energyStatus; }
 
     public void createOutput() {
         output.output(this);
