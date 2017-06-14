@@ -24,7 +24,6 @@ public abstract class SellingAgent extends TimedAgent {
 
     @Override
     public void timedEvent(Instant end, Duration duration) {
-        System.out.println("selling: "+this.getAID().getLocalName());
         sellEnergy.sellSurplussEnergy();
     }
 

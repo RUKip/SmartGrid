@@ -143,7 +143,7 @@ public class ProsumerAgent extends SellingAgent {
             energyChange += curEntry.energy;
         }
         if (energyChange > 0) {
-            //addCurEnergyWithoutTable(energyChange);
+            addCurEnergyWithoutTable(energyChange);
             //addBehaviour(new SellToBigGuyBhvr(this, energyChange));
         }
     }
