@@ -1,14 +1,13 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.rug.energygrid.FinishedChecker;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellingAgent;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.GraphTuple;
 import com.rug.energygrid.gatherData.GatherData;
 import com.rug.energygrid.parser.JSON_Grid_Deserializer;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.ShortestPath;
-import com.rug.energygrid.agents.time.timedAgent.TimedAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.BuyEnergy;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.Cable;
-import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellEnergy;
 import com.rug.energygrid.energyConsumers.EnergyConsumer;
 import com.rug.energygrid.energyConsumers.GeneralEnergyConsumer;
 import com.rug.energygrid.energyProducers.EnergyProducer;
@@ -16,7 +15,6 @@ import com.rug.energygrid.logging.LocalLogger;
 import com.rug.energygrid.weather.ExampleDataSet_KNI;
 import com.rug.energygrid.weather.Weather;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
-import jade.gui.GuiEvent;
 import jade.util.Logger;
 
 
@@ -24,13 +22,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 
-public class ProsumerAgent extends TimedAgent {
+public class ProsumerAgent extends SellingAgent {
     private static final Logger logger = LocalLogger.getLogger();
     private GatherData gatherData = GatherData.GATHER_DATA;
-    protected double curEnergy = 0; //This is the amount of energy that is currently not anywhere on the market.
-    private double moneyBalance = 0; //The amount of money the prosumer currently has (can be negative) TODO: implement moneybalance
     protected BuyEnergy buyEnergy;
-    protected SellEnergy sellEnergy;
     private HashMap<String, Double> routingTable, lengthTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
     private List<Cable> allCables;
     private List<EnergyProducer> energyProducers;
@@ -45,9 +40,7 @@ public class ProsumerAgent extends TimedAgent {
         super.setup();
         FinishedChecker.agentAdded();
         buyEnergy = new BuyEnergy(this);
-        sellEnergy = new SellEnergy(this);
         parseJSON(); //TODO: if no parser file exists then run initializer
-
         energyConsumers = new ArrayList<>(); //TODO: add this to parser
         energyConsumers.add(new GeneralEnergyConsumer());
         addToYellowPages();
@@ -73,10 +66,9 @@ public class ProsumerAgent extends TimedAgent {
     @Override
     public void timedEvent(Instant end, Duration passedTime) {
         double newEnergy = generatedEnergy(end, passedTime);
-
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
-        checkGenTable(end);
+        //checkGenTable(end);
         sellEnergy.sellSurplussEnergy();
         gatherData.addEnergyStatus(this.getAID(), end, curEnergy);
     }
@@ -84,9 +76,9 @@ public class ProsumerAgent extends TimedAgent {
     //This method is ran when the agent shuts down
     @Override
     public void takeDown() {
-        buyEnergy.takeDown();
-        sellEnergy.takeDown();
         removeService(sd);
+        buyEnergy.takeDown();
+        super.takeDown();
         FinishedChecker.agentRemoved();
     }
 
@@ -107,18 +99,6 @@ public class ProsumerAgent extends TimedAgent {
         } else if (curEnergy < 0){
             buyEnergy.refillEnergy();
         }
-    }
-
-    public void addMoney(double amount) {
-        moneyBalance += amount;
-    }
-
-    public void subtractMoney(double amount) {
-        moneyBalance -= amount;
-    }
-
-    public synchronized double getCurEnergy() {
-        return curEnergy;
     }
 
     //Can be used to extend the grid with an extra node later on.
@@ -168,25 +148,30 @@ public class ProsumerAgent extends TimedAgent {
         Instant deadline = end.minus(ProsumerConstants.ENERGY_MAX_KEEP_TIME);
         double energyChange = 0;
         while (!generationQueue.isEmpty() && generationQueue.peek().genTime.isAfter(deadline)) {
-            //TODO: send buy offer to big Guy
             GenEntry curEntry = generationQueue.remove();
             energyChange += curEntry.energy;
         }
-        //addCurEnergyWithoutTable(energyChange);
+        if (energyChange > 0) {
+            addCurEnergyWithoutTable(energyChange);
+            //addBehaviour(new SellToBigGuyBhvr(this, energyChange));
+        }
     }
 
     private void updateGenTable(double energy) {
         // Add to the gen table if it was a positive production.
-        if (energy > 0) {
-            generationQueue.add(new GenEntry(curTime, energy));
+        double curEnergy = this.getCurEnergy();
+        if (energy > 0 && curEnergy+energy > 0) {
+            generationQueue.add(new GenEntry(curTime, Math.min(energy,curEnergy+energy)));
             return;
         }
-        // energy is here negative since it is consuming.
-        while (!generationQueue.isEmpty() && generationQueue.peek().energy <= energy*-1) {
-            energy += generationQueue.remove().energy;
-        }
-        if (!generationQueue.isEmpty()) {
-            generationQueue.peek().energy += energy;
+        if (energy < 0) {
+            // energy is here negative since it is consuming.
+            while (!generationQueue.isEmpty() && generationQueue.peek().energy <= energy * -1) {
+                energy += generationQueue.remove().energy;
+            }
+            if (!generationQueue.isEmpty()) {
+                generationQueue.peek().energy += energy;
+            }
         }
     }
 

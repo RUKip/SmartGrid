@@ -5,7 +5,7 @@ import jade.core.AID;
 
 public class RemoteEnergyOffer {
     private AID agent;
-    EnergyOffer energyOffer;
+    public EnergyOffer energyOffer;
     private double cableTotalResistance, cableEnergyLoss;
 
     private static final double INDUCTION_PER_METER = 2.6;
