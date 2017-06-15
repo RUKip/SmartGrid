@@ -68,7 +68,7 @@ public class ProsumerAgent extends SellingAgent {
         double newEnergy = generatedEnergy(end, passedTime);
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
-        checkGenTable(end);
+        //checkGenTable(end);
         sellEnergy.sellSurplussEnergy();
         gatherData.addEnergyStatus(this.getAID(), end, curEnergy);
     }
@@ -163,12 +163,14 @@ public class ProsumerAgent extends SellingAgent {
             generationQueue.add(new GenEntry(curTime, Math.min(energy,curEnergy+energy)));
             return;
         }
-        // energy is here negative since it is consuming.
-        while (!generationQueue.isEmpty() && generationQueue.peek().energy <= energy*-1) {
-            energy += generationQueue.remove().energy;
-        }
-        if (!generationQueue.isEmpty()) {
-            generationQueue.peek().energy += energy;
+        if (energy < 0) {
+            // energy is here negative since it is consuming.
+            while (!generationQueue.isEmpty() && generationQueue.peek().energy <= energy * -1) {
+                energy += generationQueue.remove().energy;
+            }
+            if (!generationQueue.isEmpty()) {
+                generationQueue.peek().energy += energy;
+            }
         }
     }
 

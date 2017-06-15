@@ -1,6 +1,6 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
-import com.rug.energygrid.agents.bigGuyAgent.BigGuyComConstants;
+import com.rug.energygrid.agents.bigGuyAgent.BigGuyConstants;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.RemoteEnergyOffer;
@@ -50,7 +50,7 @@ public class SellToBigGuyBhvr extends Behaviour {
                 AID bigGuy = result[0].getName();
                 energyOffer.addReceiver(bigGuy);
                 //Big guy energy price is currently static.
-                currentOffer = new RemoteEnergyOffer(bigGuy,new EnergyOffer(BigGuyComConstants.BUYBACKPRICE, energy), prosumerAgent.getRoutingValueTo(bigGuy.getLocalName()));
+                currentOffer = new RemoteEnergyOffer(bigGuy,new EnergyOffer(BigGuyConstants.BUYBACKPRICE, energy), prosumerAgent.getRoutingValueTo(bigGuy.getLocalName()));
                 energyOffer.setContent(currentOffer.energyOffer.serialize());
                 mt = MessageTemplate.and(MessageTemplate.MatchConversationId(energyOffer.getConversationId()),
                         MessageTemplate.MatchInReplyTo(energyOffer.getReplyWith()));

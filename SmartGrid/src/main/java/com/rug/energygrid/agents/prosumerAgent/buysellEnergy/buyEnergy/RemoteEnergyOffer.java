@@ -15,7 +15,7 @@ public class RemoteEnergyOffer {
         this.agent = agent;
         this.energyOffer = energyOffer;
         this.cableTotalResistance = cableTotalResistance;
-        this.cableEnergyLoss = 1;//Math.pow((Math.E),(-1*this.cableTotalResistance)/(INDUCTION_PER_METER*SPEED_OF_LIGHT));
+        this.cableEnergyLoss = Math.pow((Math.E),(-1*this.cableTotalResistance)/(INDUCTION_PER_METER*SPEED_OF_LIGHT));
     }
 
     public double getEnergy(){
