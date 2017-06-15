@@ -4,9 +4,6 @@ import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.RemoteEne
 
 import java.util.Comparator;
 
-/**
- * Created by thijs on 16-5-17.
- */
 public class GreedyPrice implements Comparator<RemoteEnergyOffer> {
 
     @Override

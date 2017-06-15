@@ -108,7 +108,7 @@ public class ShortestPath {
 
     private class Node{
         private String name;
-        private Double cost, length;
+        private Double cost, length = 0.0;
         private boolean visited = false;
         private List<Connection> connected = new ArrayList<>();
 

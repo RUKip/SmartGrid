@@ -38,11 +38,11 @@ public class TransactionHandlerBuyer extends Behaviour{
             if (msg.getPerformative() == ACLMessage.ACCEPT_PROPOSAL) {
                 double boughtEnergy = Double.parseDouble(msg.getContent());
                 if (boughtEnergy < currentOffer.getEnergy()) {
-                    buyEnergy.boughtLessEnergy(currentOffer.getEnergyLeft() - boughtEnergy*currentOffer.getCableEnergyLoss()); //TODO: this seems like its calculating cable loss twice
+                    buyEnergy.boughtLessEnergy(currentOffer.getEnergyLeft() - boughtEnergy*currentOffer.getCableEnergyLoss()); //Removes cable loss on both sides, so you'll get the energy still to be bought
                 }
                 buyEnergy.processPayment(msg.getSender(), currentOffer.getPrice(), boughtEnergy);
             } else if (msg.getPerformative() == ACLMessage.REJECT_PROPOSAL) {
-                buyEnergy.boughtLessEnergy(currentOffer.getEnergyLeft());  //TODO: getEnergyLeft() is  energy minus loss right?? so this will mean on cancel energy is lost?
+                buyEnergy.boughtLessEnergy(currentOffer.getEnergyLeft());  //counter max which is cable loss
             }
             finished = true;
         } else {
