@@ -76,7 +76,7 @@ public class CustomPriorityQueue {
 
     public void print() {
         for (RemoteEnergyOffer offer : queue) {
-            System.out.println("energy:" + offer.getEnergy()+"agent: "+offer.getAgent());
+            System.out.println("energy:" + offer.getEnergy()+"agent: "+offer.getAgent().getLocalName()+" price: "+offer.getPrice());
         }
     }
 

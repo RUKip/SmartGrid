@@ -12,6 +12,7 @@ public class GreedyEnergy implements Comparator<RemoteEnergyOffer> {
 
     @Override
     public int compare(RemoteEnergyOffer me, RemoteEnergyOffer others) {
+        //TODO: this has to change to something with cable energy loss
         return (int) ((others.getEnergy() - others.getCableTotalResistance())-(me.getEnergy() - me.getCableTotalResistance()));
     }
 }

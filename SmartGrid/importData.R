@@ -37,8 +37,8 @@ addProductionPlot <- function(productionData) {
 }
 
 addEnergyStatus <- function(energyStatusData) {
-  points(energyStatusData$DateTime, energyStatusData$amount, col="purple")
-  lines(energyStatusData$DateTime, energyStatusData$amount, col="purple")
+  points(energyStatusData$DateTime, energyStatusData$amount, col="orange")
+  lines(energyStatusData$DateTime, energyStatusData$amount, col="orange")
 }
 
 addSellerDeals <- function(sellerDealsData) {

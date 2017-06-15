@@ -11,6 +11,11 @@ public class GreedyPrice implements Comparator<RemoteEnergyOffer> {
 
     @Override
         public int compare(RemoteEnergyOffer me, RemoteEnergyOffer others) {
-            return (int) (me.getPrice()-others.getPrice());
+            //System.out.println("Compare "+me.getAgent().getLocalName()+" : " +others.getAgent().getLocalName() + "");
+            if (me.getPrice()-others.getPrice() == 0) {
+                return 0;
+            } else {
+                return me.getPrice()-others.getPrice() < 0 ? -1 : 1;
+            }
         }
 }
