@@ -126,6 +126,24 @@
                 "areaBlades": 2.269800692218625,
                 "maxPower": 5700.0,
                 "efficiency": 0.35
+              },
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
+              },
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
+              },
+              {
+                "airDensity": 1.225,
+                "areaBlades": 2.269800692218625,
+                "maxPower": 5700.0,
+                "efficiency": 0.35
               }
             ]
           }
