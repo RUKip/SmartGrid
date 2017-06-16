@@ -1,6 +1,5 @@
 package com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy;
 
-import com.rug.energygrid.agents.prosumerAgent.ProsumerAgent;
 import com.rug.energygrid.agents.prosumerAgent.ProsumerConstants;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
 import jade.domain.DFService;
@@ -16,7 +15,7 @@ public class SellEnergy {
 
     public SellEnergy(SellingAgent sellingAgent) {
         this.sellingAgent = sellingAgent;
-        sellingAgent.addBehaviour(new MessageHandlerSellerBehaviour(sellingAgent, this));
+        sellingAgent.addBehaviour(new MessageHandlerSellerBhvr(sellingAgent, this));
     }
 
     public int compareDeal(EnergyOffer energyOffer) {
