@@ -13,12 +13,12 @@ public class BuyEnergy {
     private CustomPriorityQueue pq;
     private ProsumerAgent prosumerAgent;
     private ServiceDescription sd;
-    private MessageHandlerBuyerBehaviour messageHandler;
+    private MessageHandlerBuyerBhvr messageHandler;
 
     public BuyEnergy(ProsumerAgent prosumerAgent) {
         this.pq = new CustomPriorityQueue(new GreedyPrice()); //TODO: add a nice place to set/choose the Comperator
         this.prosumerAgent = prosumerAgent;
-        messageHandler = new MessageHandlerBuyerBehaviour(prosumerAgent, this);
+        messageHandler = new MessageHandlerBuyerBhvr(prosumerAgent, this);
         prosumerAgent.addBehaviour(messageHandler);
         registerConsumer();
         refillEnergy();

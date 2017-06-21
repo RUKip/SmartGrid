@@ -11,11 +11,11 @@ import jade.domain.FIPAException;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 
-public class MessageHandlerBuyerBehaviour extends CyclicBehaviour {
+public class MessageHandlerBuyerBhvr extends CyclicBehaviour {
     private MessageTemplate mt = MessageTemplate.MatchConversationId(BuySellComConstants.ENERGY_OFFER_MESSAGE);
     private BuyEnergy buyEnergy;
 
-    public MessageHandlerBuyerBehaviour(Agent myAgent, BuyEnergy buyEnergy) {
+    public MessageHandlerBuyerBhvr(Agent myAgent, BuyEnergy buyEnergy) {
         super(myAgent);
         this.buyEnergy = buyEnergy;
     }

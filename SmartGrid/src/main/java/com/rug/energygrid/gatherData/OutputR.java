@@ -33,6 +33,7 @@ public class OutputR extends OutputData{
     @Override
     public void output(GatherData gatherData) {
         File outputFolder = new File(OUTPUT_FILE_NAME);
+        emptyDirectory(outputFolder);
         outputFolder.mkdir();
         orderDeals(gatherData);
         for (AID agent : gatherData.getAgents()) {
@@ -177,5 +178,24 @@ public class OutputR extends OutputData{
             first = false;
         }
         return seperated;
+    }
+
+    private static void emptyDirectory(File folder) {
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
+        }
+    }
+
+    //This program is found from https://stackoverflow.com/questions/7768071/how-to-delete-directory-content-in-java
+    private static void deleteFolder(File folder) {
+        emptyDirectory(folder);
+        folder.delete();
     }
 }

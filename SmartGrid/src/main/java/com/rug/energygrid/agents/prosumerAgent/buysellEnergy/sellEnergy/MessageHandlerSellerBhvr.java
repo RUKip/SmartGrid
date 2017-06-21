@@ -12,14 +12,14 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.util.Logger;
 
-public class MessageHandlerSellerBehaviour extends CyclicBehaviour {
+public class MessageHandlerSellerBhvr extends CyclicBehaviour {
     private static final int MAX_MESSAGE_QUEUE_SIZE = 200;
     private static final Logger logger = LocalLogger.getLogger();
     MessageTemplate mtTransaction = MessageTemplate.and(MessageTemplate.MatchConversationId(BuySellComConstants.TRANSACTION),
                                                         MessageTemplate.MatchPerformative(ACLMessage.PROPOSE));
     SellEnergy sellEnergy;
 
-    public MessageHandlerSellerBehaviour(Agent myAgent, SellEnergy sellEnergy) {
+    public MessageHandlerSellerBhvr(Agent myAgent, SellEnergy sellEnergy) {
         super(myAgent);
         this.sellEnergy = sellEnergy;
     }

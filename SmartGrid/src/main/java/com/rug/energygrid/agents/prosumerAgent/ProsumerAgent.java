@@ -1,6 +1,7 @@
 package com.rug.energygrid.agents.prosumerAgent;
 
 import com.rug.energygrid.FinishedChecker;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellToBigGuyBhvr;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellingAgent;
 import com.rug.energygrid.agents.prosumerAgent.shortestPathAlgorithm.GraphTuple;
 import com.rug.energygrid.gatherData.GatherData;
@@ -68,7 +69,7 @@ public class ProsumerAgent extends SellingAgent {
         double newEnergy = generatedEnergy(end, passedTime);
         gatherData.addProduction(this.getAID(), end, newEnergy);
         addCurEnergy(newEnergy);
-        //checkGenTable(end);
+        checkGenTable(end);
         sellEnergy.sellSurplussEnergy();
         gatherData.addEnergyStatus(this.getAID(), end, curEnergy);
     }
@@ -147,13 +148,13 @@ public class ProsumerAgent extends SellingAgent {
     private void checkGenTable(Instant end) {
         Instant deadline = end.minus(ProsumerConstants.ENERGY_MAX_KEEP_TIME);
         double energyChange = 0;
-        while (!generationQueue.isEmpty() && generationQueue.peek().genTime.isAfter(deadline)) {
+        while (!generationQueue.isEmpty() && generationQueue.peek().genTime.isBefore(deadline)) {
             GenEntry curEntry = generationQueue.remove();
             energyChange += curEntry.energy;
         }
         if (energyChange > 0) {
-            addCurEnergyWithoutTable(energyChange);
-            //addBehaviour(new SellToBigGuyBhvr(this, energyChange));
+            addCurEnergyWithoutTable(-energyChange);
+            addBehaviour(new SellToBigGuyBhvr(this, energyChange));
         }
     }
 

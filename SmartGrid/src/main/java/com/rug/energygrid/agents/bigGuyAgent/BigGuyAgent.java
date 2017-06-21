@@ -1,6 +1,8 @@
 package com.rug.energygrid.agents.bigGuyAgent;
 
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.BuySellComConstants;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.buyEnergy.RemoteEnergyOffer;
+import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.EnergyOffer;
 import com.rug.energygrid.agents.prosumerAgent.buysellEnergy.sellEnergy.SellingAgent;
 import jade.domain.FIPAAgentManagement.Property;
 import jade.domain.FIPAAgentManagement.ServiceDescription;
@@ -8,6 +10,7 @@ import jade.domain.FIPAAgentManagement.ServiceDescription;
 //currently not used
 public class BigGuyAgent extends SellingAgent {
 
+    private double buyBackPrice = BigGuyConstants.BUYBACKPRICE;
     private ServiceDescription sd; //The serviceDescription of the BigGuy
 
     @Override
@@ -15,6 +18,7 @@ public class BigGuyAgent extends SellingAgent {
         super.setup();
         curEnergy = Double.MAX_VALUE;
         sellEnergy.setLocalEnergyPrice(BigGuyConstants.CONSTANTPRICE);
+        this.addBehaviour(new MessageHandlerBigGuyBhvr(this));
         addToYellowPages();
     }
 
@@ -35,5 +39,10 @@ public class BigGuyAgent extends SellingAgent {
     @Override
     public void subtractCurEnergy(double soldEnergy) {
         //Nothing has to happen since the big guy has infinite energy.
+    }
+
+    //checks if the deal the seller send is valid.
+    public boolean checkBuyBackOffer(EnergyOffer offer) {
+        return (offer.getPrice()==buyBackPrice) && (this.curEnergy >= offer.getEnergy());
     }
 }
