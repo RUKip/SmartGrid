@@ -6,7 +6,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 public interface EnergyProducer {
-    double generateMaxEnergy(Instant end, Duration duration) throws NullPointerException;
+    public double generateMaxEnergy(Instant end, Duration duration) throws NullPointerException;
     void setWeather(Weather w);
     String getName();
 }
