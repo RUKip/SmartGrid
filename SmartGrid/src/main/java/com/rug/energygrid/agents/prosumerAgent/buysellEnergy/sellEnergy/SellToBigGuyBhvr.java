@@ -84,7 +84,6 @@ public class SellToBigGuyBhvr extends Behaviour {
 
     public void processPayment(AID buyer, double price, double amountEnergy) {
         prosumerAgent.addMoney(price * amountEnergy);
-        System.out.println(""+prosumerAgent.getCurrentTime()+ prosumerAgent.getAID()+ buyer+ price+ amountEnergy);
         gatherData.addDeal(prosumerAgent.getCurrentTime(), prosumerAgent.getAID(), buyer, price, amountEnergy);
     }
 

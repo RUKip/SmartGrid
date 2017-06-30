@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GatherData {
     //Singleton pattern
-    public static final GatherData GATHER_DATA = new GatherData(new OutputR());
+    public static final GatherData GATHER_DATA = new GatherData(new OutputBigGuy());
 
     private List<TimedEnergyDeal> deals = new ArrayList<>();
     private HashMap<AID, List<TimedProduction>> productions = new HashMap<>();
