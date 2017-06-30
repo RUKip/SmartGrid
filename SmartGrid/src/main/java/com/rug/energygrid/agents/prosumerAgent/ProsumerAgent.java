@@ -132,6 +132,7 @@ public class ProsumerAgent extends SellingAgent {
         return this.routingTable.get(agent);
     }
     public double getRoutingLengthTo(String agent){
+        if(lengthTable.get(agent) == 0.0) System.out.println("The value is 0 to the agent " + agent + " from the agent " + this.getLocalName());
         return this.lengthTable.get(agent);
     }
 

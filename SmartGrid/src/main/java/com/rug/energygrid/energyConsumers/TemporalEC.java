@@ -2,9 +2,6 @@ package com.rug.energygrid.energyConsumers;
 
 import java.time.*;
 
-/**
- * Created by thijs on 8-5-17.
- */
 public abstract class TemporalEC extends ConstantEC {
     private LocalDate lastUsed;
 
