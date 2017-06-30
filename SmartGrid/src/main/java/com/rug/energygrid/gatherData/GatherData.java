@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GatherData {
     //Singleton pattern
-    public static final GatherData GATHER_DATA = new GatherData(new OutputBigGuy());
+    public static final GatherData GATHER_DATA = new GatherData(new OutputR());
 
     private List<TimedEnergyDeal> deals = new ArrayList<>();
     private HashMap<AID, List<TimedProduction>> productions = new HashMap<>();
@@ -46,6 +46,9 @@ public class GatherData {
     public HashMap<AID, List<TimedProduction>> getEnergyStatus() { return energyStatus; }
 
     public void createOutput() {
+        for (TimedEnergyDeal deal : deals) {
+            System.out.println(deal);
+        }
         output.output(this);
     }
 
@@ -71,6 +74,10 @@ public class GatherData {
             this.buyer = buyer;
             this.price = price;
             this.energyAmount = energyAmount;
+        }
+
+        public String toString() {
+            return seller.getLocalName()+" : "+ buyer.getLocalName()+ " , "+ price + " - " +energyAmount;
         }
     }
 

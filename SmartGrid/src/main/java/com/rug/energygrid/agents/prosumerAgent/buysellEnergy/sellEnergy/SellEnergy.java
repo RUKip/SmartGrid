@@ -11,9 +11,10 @@ import jade.lang.acl.ACLMessage;
 public class SellEnergy {
     public static final int PERFECT_DEAL = 0, LESSTHAN_DEAL = 1, NO_DEAL = 2;
     private SellingAgent sellingAgent;
-    private double localEnergyPrice = ProsumerConstants.PROSUMER_PRICE;
+    private double localEnergyPrice;
 
-    public SellEnergy(SellingAgent sellingAgent) {
+    public SellEnergy(SellingAgent sellingAgent, double energyPrice) {
+        this.localEnergyPrice = energyPrice;
         this.sellingAgent = sellingAgent;
         sellingAgent.addBehaviour(new MessageHandlerSellerBhvr(sellingAgent, this));
     }

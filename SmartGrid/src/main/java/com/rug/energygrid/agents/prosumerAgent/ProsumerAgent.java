@@ -24,7 +24,6 @@ import java.time.Instant;
 import java.util.*;
 
 public class ProsumerAgent extends SellingAgent {
-    private static final Logger logger = LocalLogger.getLogger();
     private GatherData gatherData = GatherData.GATHER_DATA;
     protected BuyEnergy buyEnergy;
     private HashMap<String, Double> routingTable, lengthTable;  //KEY is ZIPCODE_HOUSENUMBER, has to be unique!!!
